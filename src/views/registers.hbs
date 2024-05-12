@@ -1,0 +1,68 @@
+<div class="container p-4" >
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card text-center">
+                <div class="card-body" align="left">
+    
+
+       
+        
+<h1>{{tableName}}</h1>
+<hr class="hr" />
+
+
+
+                    
+                    
+                    
+                    <nav aria-label="...">
+
+
+<div class="d-flex align-items-start">
+    
+        <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        {{#each tables}}
+            <form action="/registers" method="POST">
+         <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="submit" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="{{icons this.TABLE_NAME}}"></i>&nbsp;{{this.TABLE_NAME}}</button>
+            <input type="hidden" name="table_name" id="table_name", value={{this.TABLE_NAME}} class="form-control">  
+        </form>
+        {{/each}}
+        
+        </div>
+   
+</div>
+<div class="col-md-10 mx-auto" id="cont">
+
+    <table class="table table-striped" id="tabletable">
+        <thead>
+            <tr align="center">
+                   <th><i class="fas fa-bolt"></i></th> {{#each desc }}<th scope="col" align="center">{{this.nombreColumn}}{{/each}}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{#table as |tr|}}
+        <tr ><td align="left"><a href="edit?{{findTable this}}={{findId this}}"><i class="fas fa-edit"></i></a>&nbsp;<a href="#"><i class="fas fa-minus"></i></a></td>
+            {{#each tr}}
+            <td align="centre"> {{this}}</td> 
+            {{/each}}
+             
+        </tr>
+        {{/table}}
+            </tr>
+        </tbody>
+    </table>
+
+
+
+
+</div>
+
+
+  
+</nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

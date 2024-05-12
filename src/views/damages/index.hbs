@@ -1,0 +1,304 @@
+{{#if user}}
+
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+<div class="container">
+  <div class="row">
+    <div class="col-md-7 mx-auto" align="left">
+      <a href="/sectors?id_adviser={{user.id_adviser}}&id_case={{id_case}}"><i class="fa-solid fa-arrow-left-long"
+          style="margin-left: 0;"></i>Volver a Recintos</a>
+      <div class="card text-center">
+        <div class="card-header" align="left">
+          <h4>Daños en <b>{{sector_name.sector_name}}</b></h4>
+
+
+        </div>
+        <div class="card-body" id="ttk">
+
+          <table class="table" id="table">
+
+            <tbody>
+              {{#damages as |ar|}}
+              <tr align="left">
+                <td colspan="6"><a
+                   onclick="deleteRegConfirm(event,'/delreg?id_c_d_s={{ar.id_c_d_s}}&id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')" href="#"><i
+                      class="fa-solid fa-trash-can"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;<b>N°{{ar.id_c_d_s}} Daño: {{ar.damage_name}}, Cantidad: {{ar.damage_size}} ({{#if ar.customized}}m<sup>2</sup>{{else}}{{ar.damage_unit}}{{/if}}) </b></td></tr>
+              <tr>
+    
+                    <td colspan="2">
+                    {{#if damage_image1}}
+                    <img src="img_t/thumb_{{damage_image1}}" data-full-image="img_w/{{damage_image1}}" width="100%" height="auto" alt={{damage_image1}} class="miniatura" id="imagebox2">
+                    {{/if}}
+                    </td>
+                    <td colspan="2">
+                    {{#if damage_image2}}
+                    <img src="img_t/thumb_{{damage_image2}}" data-full-image="img_w/{{damage_image2}}" width="100%" height="auto" alt={{damage_image2}} class="miniatura" id="imagebox2">
+                    {{/if}}
+                    </td>
+                    <td colspan="2">
+                    {{#if damage_image3}}
+                    <img src="img_t/thumb_{{damage_image3}}" data-full-image="img_w/{{damage_image3}}" width="100%" height="auto" alt={{damage_image3}} class="miniatura" id="imagebox2">
+                    {{/if}}
+                    </td>
+                    <!-- Añade más imágenes según sea necesario -->
+
+                
+              </tr>
+              {{/damages}}
+
+            </tbody>
+
+          </table>
+          <div class="form-control2" style="border: none;float: right;">
+            <a href="#" id="toggleButton">Agregar daños</a>
+          </div>
+          <div id="imagenCompletaContenedor" class="imagen-completa-contenedor" style="display: none;">
+
+            <img src="" id="imagenCompleta" class="imagen-completa">
+
+          </div>
+
+          <br />
+          <div id="form" style="display:none;">
+
+            <h5 style="text-align: left;">Añadir nuevo registro</h5>
+            <div class="form-control2" style="border: none; clear: both;">
+              <a id="mostrarCampo" style="float: right;">Agregar tipo de daño</a>
+            </div> <br>
+            <table class="table" style="text-align: center;">
+              <thead>
+
+              </thead>
+              <tbody style="text-align: center;">
+
+                <form action="/addDamageRepair" method="POST" enctype="multipart/form-data">
+
+                  <div id="addtype" class="form-control2"
+                    style="display: none;border: 1px solid; border-width: thick; border: solid; border-color: blue; padding: 40px; border-radius: 10px;">
+                    <div class="form-control2" style="text-align: left;">
+                      <h6> Agregar tipo de daño</h6>
+                    </div>
+                    <div class="form-control2">
+                      <input type="text" class="form-control" id="damage_name" name="damage_name"
+                        style="text-align: center;" placeholder="Nombre tipo de daño ">
+                    </div>
+                    <div class="form-control2" style="border: none;">
+                      <select class="form-select" aria-label=".form-select-lg example" id="damage_unit"
+                        name="damage_unit" placeholder="Nombre tipo de daño ">
+                        <option value="uni" selected="true">uni</option>
+                        <option value="uni" selected="true">m</option>
+                        <option value="uni" selected="true">cm</option>
+                        <option value="uni" selected="true">mm</option>
+                      </select>
+                    </div>
+                    <div class="form-control2">
+                      <textarea rows="4" cols="33" class="form-control" id="damage_desc" name="damage_desc"
+                        style="text-align: center;" placeholder="Descripción del daño "></textarea>
+                    </div>
+                    <div class="form-control2" style="border: none;text-align: left;">
+                      <p style="float: left;">
+                      <h6> Asociar reparaciones</h6>
+                      </p>
+                      <select class="form-select" aria-label=".form-select-lg example" id="repairs" name="repairs">
+                        {{#each defaultrepairs}}{{this.id_repair}}<option value="{{this.id_repair}}" selected="true">
+                          {{this.repair_name}} ({{this.repair_unit}}, ${{this.repair_price}})</option>{{/each}}
+                      </select>
+                    </div>
+                    <div class="form-control2" style="border: none;">
+                      <select name="id_repairs[]" id="id_repairs" size="4" class="form-control" multiple>
+                      </select>
+
+                    </div>
+                    <input type="hidden" name="id_case" id="id_case" value="{{id_case}}">
+
+                    <input type="hidden" name="id_sector" id="id_sector" value="{{id_sector}}">
+
+                    <button class="form-control" class="btn btn-success btn-block" type="submit" id="adddmg"
+                      style="background-color: blue;" disabled>
+                      <i class="fa-solid fa-upload"></i></button>
+                  </div>
+          </div>
+        </div>
+        </form>
+
+
+        <form action="/damages" method="POST" enctype="multipart/form-data">
+          <div class="form-control2" id="form-control2" style="border: none;">
+            <select class="form-select" aria-label=".form-select-lg example" name="id_damage">
+              {{#each defaultDamages}}{{this.id_damage}}<option value="{{this.id_damage}}" selected="true">
+                {{this.damage_name}} ({{this.damage_unit}})</option>{{/each}}
+            </select>
+          </div>
+
+
+
+
+          <div class="form-control2" style="border: none;" style="text-align: left;">
+            Considerar todo el recinto?
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="0"
+                checked>
+              <label class="form-check-label" for="inlineRadio1">Si</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1">
+              <label class="form-check-label" for="inlineRadio2">No</label>
+            </div>
+          </div>
+
+          <div class="form-control2" style="border: none;">
+            <input type="Number" class="form-control" id="damage_size" name="damage_size" placeholder="Cantidad de daño"
+              style="text-align: center;">
+          </div>
+
+          <div class="form-control2" style="border: none;">
+            <label for="files" class="form-control" style="margin-bottom: -34px; "><i
+                class="fa-solid fa-image"></i></label>
+            <input id='files' type="file" class="form-control" style="visibility:hidden;" name="image" accept="image/*">
+          </div>
+          <div class="form-control2" style="border: none;">
+            <label for="files1" class="form-control" style="margin-bottom: -34px; "><i
+                class="fa-solid fa-image"></i></label>
+            <input id='files1' class="form-control" type="file" style="visibility:hidden;" name="image1"
+              accept="image/*">
+          </div>
+
+          <div class="form-control2" style="border: none;">
+            <label for="files2" class="form-control" style="margin-bottom: -34px; "><i
+                class="fa-solid fa-image"></i></label>
+            <input id='files2' class="form-control" type="file" style="visibility:hidden;" name="image2"
+              accept="image/*">
+          </div>
+
+          <input type="hidden" name="id_case" id="id_case" value="{{id_case}}">
+
+          <input type="hidden" name="id_c_d_s" id="id_c_d_s" value="{{id_c_d_s}}">
+
+          <input type="hidden" name="id_sector" id="id_sector" value="{{id_sector}}">
+          <button class="btn btn-success btn-block form-control" type="submit" id="upload" disabled><i
+              class="fa-solid fa-check"></i></button>
+
+
+        </form>
+      </div>
+      </tbody>
+
+      </table>
+
+      <script>
+        document.getElementById("mostrarCampo").addEventListener("click", function (event) {
+          event.preventDefault(); // Evita que el enlace realice la acción predeterminada (navegar a una nueva página)
+          const final = document.getElementById('form-control2');
+
+          var campo = document.getElementById("addtype");
+          if (campo.style.display === "none") {
+            campo.style.display = "block"; // Muestra el campo si estaba oculto
+            this.textContent = "Ocultar"
+          } else {
+            campo.style.display = "none"; // Oculta el campo si estaba visible
+            this.textContent = "Agregar tipo de daño"
+          }
+          final.scrollIntoView({ behavior: 'smooth' });
+        });
+        // Seleccionar el primer select
+        var select1 = document.getElementById("repairs");
+        // Seleccionar el segundo select
+        var select2 = document.getElementById("id_repairs");
+
+        // Agregar un evento de cambio al primer select
+        select2.addEventListener("click", function (event) {
+          // Verificar si el clic ocurrió en una opción del select
+          if (event.target.tagName === 'OPTION') {
+            // Eliminar la opción seleccionada
+            event.target.remove();
+          }
+        });
+        // Agregar un evento de cambio al primer select
+        select1.addEventListener("change", function () {
+          // Iterar sobre las opciones seleccionadas del primer select
+          Array.from(select1.selectedOptions).forEach(function (option) {
+            var value = option.value;
+            // Verificar si el valor ya existe en el segundo select
+            if (!select2.querySelector('option[value="' + value + '"]')) {
+              // Si no existe, clonar la opción seleccionada y agregarla al segundo select
+              var cloneOption = option.cloneNode(true);
+              select2.appendChild(cloneOption);
+            }
+          });
+        });
+
+        function verificarCamposCompletos() {
+          // Obtener los valores de los campos
+          var damage_name = document.getElementById('damage_name').value;
+          var damage_unit = document.getElementById('damage_unit').value;
+          var repairs = document.getElementById('repairs').value;
+          var id_repairs = document.getElementById('id_repairs').value;
+
+          // Verificar si todos los campos excepto 'damage_desc' están completos
+          if (damage_name && damage_unit && repairs && id_repairs) {
+            // Habilitar el botón 'adddmg'
+            document.getElementById('adddmg').disabled = false;
+          } else {
+            // Deshabilitar el botón 'adddmg'
+            document.getElementById('adddmg').disabled = true;
+          }
+        }
+
+        // Escuchar cambios en los campos del formulario
+        document.addEventListener('DOMContentLoaded', function () {
+          document.getElementById('damage_name').addEventListener('input', verificarCamposCompletos);
+          document.getElementById('damage_unit').addEventListener('change', verificarCamposCompletos);
+          document.getElementById('repairs').addEventListener('change', verificarCamposCompletos);
+          document.getElementById('id_repairs').addEventListener('change', verificarCamposCompletos);
+
+        });
+        var radioButtons = document.querySelectorAll('input[name="inlineRadioOptions"]');
+        var iNumber = document.getElementById('damage_size');
+
+        // Iterar sobre todos los radio buttons
+        radioButtons.forEach(function (radioButton) {
+          // Agregar un evento 'change' a cada radio button
+          radioButton.addEventListener('change', function () {
+            // Cuando se produce un cambio en el radio button, imprimir su nuevo valor
+            if (radioButton.value == 0) {
+              iNumber.setAttribute('placeholder', 'Cantidad de daño');
+
+            }
+            else if (radioButton.value == 1) {
+              iNumber.setAttribute('placeholder', 'Cantidad de daño en m^2');
+            }
+          });
+        });
+      </script>
+
+
+
+
+
+      <div class="container">
+
+
+
+      </div>
+
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<!-- Button trigger modal -->
+
+{{else}}
+{{/if}}

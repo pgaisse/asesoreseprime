@@ -1,0 +1,149 @@
+<div class="container p-10">
+    <div class="row">
+        <div class="col-md-7 mx-auto" align="left">
+            <div class="card text-center">
+                <div class="card-header" align="left">
+                    <style>
+                        .image-container {
+                            width: 100%;
+                            max-width: 300px;
+
+                            position: relative;
+                            display: inline-block;
+                            border: 2px solid #ccc;
+                            /* Añade un marco a la imagen */
+                            margin: 10px;
+                        }
+
+                        .image-container img {
+                            display: block;
+                            /* Ajusta esto según tus necesidades */
+                        }
+
+                        .delete-btn {
+                            position: absolute;
+                            width: 30px;
+                            height: 30px;
+                            top: 0;
+                            right: 0;
+                            padding: 5px 5px 5px 5px;
+                            background-color: red;
+                            color: white;
+                            border: none;
+                            cursor: pointer;
+                            border-bottom-left-radius: 5px;
+                            border-bottom-right-radius: 5px;
+                            border-top-left-radius: 5px;
+                            border-top-right-radius: 5px;
+                            z-index: 1000;
+                            /* Asegúrate de que está encima de otros elementos */
+                        }
+                    </style>
+                    <h4>Casos asignados a <b>{{user.adviser_name}} {{user.adviser_lastname}}</b> <b>{{sname}}</b></h4>
+
+
+                </div>
+                <div class="card-body">
+                    <table class="table" id="table">
+
+                        <tbody>
+                            {{#each cases as |tr|}}
+                            <tr>
+                                <td colspan="4" style="text-align: justify;"><a href="sectors?id_case={{tr.id_case}}"><i
+                                            class="fas fa-edit"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;N° {{tr.id_case}}
+                                    Estado: <b>{{tr.status_name}} </b>Fecha: {{tr.case_date}} N° de recintos: {{nsectors}}
+                                    Nombre Cliente: {{tr.client_name}}&nbsp;{{tr.client_lastname}}
+                                    Dirección: {{tr.client_address}}
+                                </td>
+                            </tr>
+                            <tr style="text-align: center;">
+
+                                {{#or tr.case_img1 tr.case_img2}}
+                                <td colspan="2" style="vertical-align: middle; text-align: center;">
+                                    {{#if tr.case_img1}}
+                                    <div class="image-container">
+                                        <img src="img_t/thumb_{{tr.case_img1}}" width="100%" height="auto"  data-full-image="/{{tr.case_img1}}">
+                                        <a href="myinsp?id_case={{tr.id_case}}&case_img=case_img1&imageName={{tr.case_img1}}"
+                                            class="delete-btn"><i class="fa-solid fa-xmark"></i></a>
+                                    </div>
+                                    {{/if}}
+                                </td>
+                                <td colspan="2" style="vertical-align: middle; text-align: center;">
+                                    {{#if tr.case_img2}}
+                                    <div class="image-container">
+                                        <img src="img_t/thumb_{{tr.case_img2}}" width="100%" height="auto" data-full-image="/{{tr.case_img2}}">
+                                        <a href="myinsp?id_case={{tr.id_case}}&case_img=case_img2&imageName={{tr.case_img2}}"
+                                            class="delete-btn "><i class="fa-solid fa-xmark"></i></a>
+                                    </div>
+
+                                    {{/if}}
+                                </td>
+
+                                {{else}}
+
+                                <td  colspan="4">
+                                    <form action="/myinsp" method="POST" enctype="multipart/form-data">
+
+                                        <div class="row" style="text-align: center; margin: auto;">
+                                            <div class="col-3" style="margin: auto;">
+                                                <label for="files_"><i class="fa-solid fa-image elemento1 "
+                                                        id="icono1"></i></label>
+                                                <input id='files_' type="file"
+                                                    style="visibility:hidden; width: 2px; padding: 0; margin:0"
+                                                    name="image" id="image" accept="image/*">
+                                            </div>
+                                            <div class="col-3" style="margin: auto;">
+                                                <label for="files_1"><i class="fa-solid fa-image elemento2"
+                                                        id="icono2"></i></label>
+                                                <input id='files_1' type="file"
+                                                    style="visibility:hidden; width: 2px; padding: 0;margin=0"
+                                                    name="image1" id="image1" accept="image/*">
+                                            </div>
+                                            <div class="col-3" style="margin: auto;">
+                                                <button id="submitBtn" class="btn btn-primary" disabled><i
+                                                        class="fa-solid fa-upload"></i></button>
+
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="id_case" value={{tr.id_case}}>
+                                    </form>
+                                {{/or}}
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function updateButtonDisplay() {
+        var fileInput1 = document.getElementById('files_');
+        var fileInput2 = document.getElementById('files_1');
+        var submitButton = document.getElementById('submitBtn');
+
+        if (fileInput1.files.length > 0 && fileInput2.files.length > 0) {
+            submitButton.disabled = false; // Activar el botón
+        } else {
+            submitButton.disabled = true; // Desactivar el botón
+        }
+    }
+
+    document.getElementById('files_').addEventListener('change', function () {
+        if (this.files.length > 0) {
+            document.getElementById('icono1').classList.remove('fa-image');
+            document.getElementById('icono1').classList.add('fa-check');
+        }
+        updateButtonDisplay(); // Actualiza la visibilidad del botón
+    });
+
+    document.getElementById('files_1').addEventListener('change', function () {
+        if (this.files.length > 0) {
+            document.getElementById('icono2').classList.remove('fa-image');
+            document.getElementById('icono2').classList.add('fa-check');
+        }
+        updateButtonDisplay(); // Actualiza la visibilidad del botón
+    });
+</script>

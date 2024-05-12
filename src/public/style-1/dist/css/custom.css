@@ -1,0 +1,318 @@
+.masthead {
+
+ 
+  background: none;
+}
+.form-group {
+    margin: 2%;
+    
+  }
+
+  .card-body {
+    
+  }
+
+  .container1{
+    width: 50%;
+  }
+
+  .select {
+   
+    height:40px;
+    width:50%;
+  }
+  #search_input {
+    height:40px;
+      
+  }
+  
+  .search_input{
+    float: right;
+    width: 50%;
+  }
+  .btn{
+    float: right;
+  }
+  .fas{
+    float: right;
+  }
+  #v-pills-profile-tab:hover{
+    background-color: rgb(30, 0, 255);
+    color: aliceblue;
+  }
+  #cont{
+    float: left;
+    margin: auto;
+    padding-left: 100px;
+    align-self: center;
+  }
+  #tabletable{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    text-transform: capitalize;
+  }
+
+  h1  {
+    text-transform: capitalize;
+  }
+  
+  .nav-link  {
+    text-transform: capitalize;
+  }
+
+  thead{
+    text-transform: capitalize;
+  }
+
+  .small{
+    text-transform: capitalize;
+  }
+  .navbar-brand{
+   padding-top: 1%;
+  }
+  
+  
+.sb-sidenav{
+  opacity: 100%;
+  margin-top: 44.5%;
+
+}
+.container{
+  text-align: center;
+}
+.bg-body-tertiary{
+  margin: auto;
+}
+p h6{
+  text-align: left;
+  float: left;
+}
+.sp{
+font-size: 44px;
+
+}
+#ttk{
+  text-align: center;
+}
+.mb-3{
+  text-align: left;
+}
+.form-select {
+
+    display:block;
+    height:35px;
+    width:100%;
+    margin: auto;
+    
+}
+#cap{
+  text-transform: capitalize;
+}
+select{
+  text-align: center;
+}
+
+tbody{
+  vertical-align: middle;
+  border-collapse: collapse;
+  text-align: center;
+}
+.row{
+  width: auto;
+}
+.col{
+  width: auto;
+}
+
+body{
+	margin:0;
+	padding:0;
+}
+/* .container{
+	width:90%
+	margin:10px auto;
+} */
+.portfolio-menu{
+	text-align:center;
+}
+.portfolio-menu ul li{
+	display:inline-block;
+	margin:0;
+	list-style:none;
+	padding:10px 15px;
+	cursor:pointer;
+	-webkit-transition:all 05s ease;
+	-moz-transition:all 05s ease;
+	-ms-transition:all 05s ease;
+	-o-transition:all 05s ease;
+	transition:all .5s ease;
+}
+
+.portfolio-item{
+	/*width:100%;*/
+}
+.portfolio-item .item{
+	/*width:303px;*/
+	float:left;
+	margin-bottom:10px;
+}
+.custom-file-upload{
+  background: #f7f7f7; 
+  padding: 8px;
+  border: 1px solid #e3e3e3; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.img-fluid{
+ 
+}
+#imagebox1, #imagebox2, #imagebox3{
+  position: relative;
+  margin: auto;
+  border-radius: 10px;
+  border: 1px solid white; /* Ajusta el grosor del marco aquí */
+  display: inline-block; /* Esto ayuda a aplicar el marco correctamente */
+  
+  /* Opcionales según tu necesidad */
+  background-color: white; /* Fondo, útil si usas border-radius */
+  padding: 5px; /* Espacio adicional alrededor de la imagen, dentro del marco */
+  box-shadow: 0 0 10px #ccc; /* Sombra para darle un poco de profundidad, opcional */
+}
+
+#imagebox1, #imagebox2, #imagebox3{
+  position: relative;
+  margin: auto;
+  border-radius: 10px;
+  border: 1px solid white; /* Ajusta el grosor del marco aquí */
+  display: inline-block; /* Esto ayuda a aplicar el marco correctamente */
+  align-items:start;
+  /* Opcionales según tu necesidad */
+  background-color: white; /* Fondo, útil si usas border-radius */
+  padding: 5px; /* Espacio adicional alrededor de la imagen, dentro del marco */
+  box-shadow: 0 0 10px #ccc; /* Sombra para darle un poco de profundidad, opcional */
+}
+
+#imagebox1{
+  z-index: 1;
+  left: 0px;
+}
+#imagebox2{
+  z-index: 2;
+}
+#imagebox3{
+  z-index: 3;
+
+}
+
+#imagebox1:hover, #imagebox2:hover, #imagebox3:hover {
+  transform: scale(1.05); /* Agrandamiento suave al pasar el mouse */
+  z-index: 10; /* Eleva el elemento sobre otros contenidos */
+  box-shadow: 0 0 15px #999; /* Opcional: intensifica la sombra al pasar el mouse */
+}
+
+
+
+.miniatura {
+  cursor: pointer; /* Cambia el cursor para indicar que es clickable */
+  /* Estilos adicionales para las miniaturas */
+}
+
+.imagen-completa-contenedor {
+  display: none; /* Oculta el contenedor por defecto */
+  position: fixed; /* Hace que el contenedor sea flotante */
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;  
+  transform: translate(-50%, -50%);
+  z-index: 1500; /* Asegura que esté al frente */
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con opacidad */
+  display: flex; /* Usa Flexbox para centrar la imagen */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  /* Estilos adicionales para el contenedor */
+  overflow: auto;
+  opacity: 100%;
+}
+#tablecase{
+  text-align: left;
+  color: #2e2b2b;
+}
+#tablecaset{
+  text-align: left;
+}
+.imagen-completa {
+  max-width: 90%; /* Ajusta al tamaño deseado, con espacio alrededor */
+  max-height: 90%; /* Limita la altura para asegurar que quepa en la pantalla */
+  opacity: 100%;
+  overflow: 100px;
+  margin-top: 20%;
+  margin-bottom: 20%;
+  
+
+}
+#files,#files1,#files2 {
+  padding: 2px;
+  margin: 2px;
+}
+
+.thead-gray{
+  background-color: #ccc;
+}
+
+
+.nt-li:focus,
+.nt-li.active {
+  background-color: #f9fafb;
+}
+
+.nt-li:focus *,
+.nt-li.active * {
+  color: black!important;
+}
+
+.nt-li>.d-flex:hover {
+  background-color: #f8f9fa;
+}
+
+
+
+
+.nav-tree{
+  flex-grow: 1; /* Permite que el elemento ocupe todo el espacio disponible */
+  flex-basis: 0; /* Inicializa el tamaño base a cero para que pueda expandirse */
+}
+.form-control2{
+padding: 0;
+  margin-bottom: 10px;
+}.form-control3 {
+  column-count: 2; /* Divide el contenido en dos columnas */
+  column-gap: 20px; /* Espacio entre columnas */
+}
+
+
+/* Estilo base para los elementos */
+.elemento {
+  transition: all 0.3s ease; /* Transición suave para los cambios */
+}
+
+/* Estilo cuando el mouse está encima del elemento */
+.elemento1:hover {
+  color: green; /* Cambio de color a verde */
+  transform: scale(1.5); /* Aumento del tamaño en un 10% */
+  cursor: pointer; /* Cambio del cursor a la forma de puntero */
+  margin-left: auto;
+}
+.elemento2:hover {
+  color: green; /* Cambio de color a verde */
+  transform: scale(1.5); /* Aumento del tamaño en un 10% */
+  cursor: pointer; /* Cambio del cursor a la forma de puntero */
+  margin-left: auto;
+}

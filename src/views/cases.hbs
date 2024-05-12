@@ -1,0 +1,116 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card text-center">
+                <div class="card-body" align="left">
+                    <h4>Lista de Casos</h4>
+
+                    <a href="#" class="form-control" id="toggleButton">Buscar</a>
+                    <br />
+
+                    <div id="form" style="display:none;">
+
+                        <table>
+                            <form action="/cases" method="POST" id="form_submit">
+                                <tr><select class="form-control" name="search" id="search"
+                                        onchange="generatedatafield();">
+                                        {{#each campos as |n|}}
+
+                                        <option value="{{n.campos_en}}">{{n.campos_sp}}</option>
+                                        {{/each }}
+
+                                    </select></tr>
+
+                                <tr>{{#each statusFields}}
+                                    <!-- Para cada elemento del array, crea un campo oculto -->
+                                    <input type="hidden" name="status[]" id="status[]" value="{{this.status_name}}">
+                                    {{/each}}
+                                </tr>
+                                <tr>
+                                    <input class="form-control" id="search_input" name="search_input" type="search" />
+                                    
+                                </tr>
+                                <tr>
+                                    <button class="btn btn-success btn-block form-control"><i class="fas fa-search"></i></button>
+                                </tr>
+
+
+
+                                <input type="hidden" name="table_name" id="table_name" , value="advisers"
+                                    class="form-control">
+
+
+
+                                <tr>&nbsp;</tr>
+                                <tr>&nbsp;</tr>
+
+                            </form>
+
+                        </table>
+                    </div>
+                    <table class="table table-hover" id="tabletable">
+
+                        <thead>
+                            <tr>
+                                <th><i class="fa-solid fa-bolt"></i></th>
+                                <th> Id</th>
+                                <th>Estado</th>
+                                <th>Fecha del caso</th>
+                                <th>Asesor</th>
+                                <th>#Siniestro</th>
+                                <th>Rut propietario</th>
+                                <th>Dirección</th>
+                                <th>Presupuesto</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                            {{#each cases}}
+                            <tr>
+                                <td><a href="/cases_crud?id_case={{this.id_case}}"><i
+                                            class="fa-solid fa-glasses"></i></i></a></td>
+                                <td>#{{this.id_case}}</td>
+                                <td>{{this.status_name}}</td>
+                                <td>{{this.case_date}}</td>
+
+                                {{#if this.adviser_name}}
+                                <td>{{this.adviser_name }} &nbsp; {{this.adviser_lastname }}</td>
+                                {{else}}
+                                <td style="background-color: red;">N/A</td>
+                                {{/if}}
+
+
+                                <td>#{{this.incident_code}}</td>
+                                <td>{{this.client_rut}}</td>
+                                <td>{{this.client_address}}</td>
+                                <td><a href="/createPdf?id_case={{this.id_case}}"><i class="fa-solid fa-file-lines">Presupuesto</i></a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+
+
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item ">
+                                <a class="page-link" href="/cases/?page={{#rest page}}{{/rest}}" tabindex="-1"
+                                    aria-disabled="false">Previous</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="/cases/?page={{#sum page numberOfPages}}{{/sum}}">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

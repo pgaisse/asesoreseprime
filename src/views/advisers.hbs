@@ -1,0 +1,31 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-7 mx-auto">
+            <div class="card text-center">
+                <div class="card-body" align="left">
+                    <table class="table table-hover" id="tabletable">
+                        <thead>
+                            <tr> {{#each desctable}} <th>{{this.COLUMN_NAME}}</th>{{/each}} </tr>
+                        </thead>
+                        <tbody>
+                            {{#users as |tr|}}
+                            <tr>
+                                {{#each tr}}
+
+                                <td> {{this}} </td>
+                                {{/each}}
+                            </tr>
+                            {{/users}}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+

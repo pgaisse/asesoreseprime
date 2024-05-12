@@ -1,0 +1,45 @@
+{{#if user}}
+
+<div class="container p-10">
+  <div class="row">
+    <div class="col-md-10 mx-auto">
+      <div class="card text-center">
+        <div class="card-header" align="left">
+          <p > <div class="sd">  <b>Nombre Asesor: </b>{{action_repairs.adviser_name}}&nbsp;{{adviser_lastname}}</div></p>
+          <p > <div class="sd"> <b> N° de Caso: </b>{{action_repairs.id_case}}</div></p>
+           <p > <div class="sd"> <b>Código de Siniestro: </b>{{action_repairs.incident_code}}</div></p>
+           <p > <div class="sd"> <b>Nombre Asegurado: </b>{{action_repairs.client_name}}&nbsp;{{action_repairs.client_lastname}}</div></p>
+       
+        </div>
+        <div class="card-body">
+
+           
+           <table class="table" id="tabletable">
+        <thead>
+            <tr align="center">
+                  <th>#</th><th>Recinto</th><th>Daño</th> <th>Unidades</th> <th>Longitud de Daño</th><th>Largo del Sector</th><th>ancho del Sector</th><th>alto del Sector</th>
+                    
+            </tr>
+          {{!{{#each temp_view }}{{!<th scope="col" align="center">{{ this.DATA_TYPE}}{{!</th>{{/each}}
+        </thead>
+        <tbody>
+        {{#action_repairs as |ar|}}
+        <tr >            
+            <td>{{ar.ids}}</td><td>{{ar.sector_name}} <td>{{ar.damage_name}}</td> <td>{{ar.unit}}</td> <td>{{ar.dms}}</td><td>{{ar.sws}}</td>
+            <td>{{ar.sls}}</td><td>{{ar.shs}}</td>
+             
+        </tr>
+        {{/action_repairs}}
+        </tbody>
+    </table>
+          <form action="/signup" method="POST">
+
+          
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{else}}
+{{/if}}

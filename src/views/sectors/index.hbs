@@ -1,0 +1,144 @@
+{{#if user}}
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+<div class="container p-10">
+  <div class="row">
+
+    <div class="col-md-7 mx-auto" align="left">
+      <a href="/myinsp?id_adviser={{user.id_adviser}}"><i class="fa-solid fa-arrow-left-long"
+          style="margin-left: 0;"></i>Volver a Casos</a>
+      <div class="card text-center">
+        <div class="card-header" align="left">
+          <h4>Recintos en caso N° <b>{{vcase}}</b></h4>
+          <p>
+          <div class="sd"> <b>Nombre Asesor: </b>{{user.adviser_name}}&nbsp;{{user.adviser_lastname}}</div>
+          </p>
+          <p>
+          <div class="sd"> <b>Nombre Asegurado: </b>{{#client_data}}{{this.vname}} {{this.vlastname}}{{/client_data}}
+          </div>
+          </p>
+          <p>
+          <div class="sd"> <b>Dirección: </b>{{#client_data}}{{this.vaddress}}{{/client_data}}</div>
+          </p>
+
+        </div>
+        <div class="card-body" id="ttk">
+
+          <table class="table">
+          
+            <tbody>
+
+              {{#action_repairs as |ar|}}
+              {{#if ar.id_sector}}
+              <tr>
+                <td colspan="4" style="text-align: left;">
+                  <a href="../damages?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}"><i
+                      class="fas fa-edit"></i></a>
+                  <a
+                    onclick="deleteRegConfirm(event,'/delsector?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')" href="#"><i
+                      class="fa-solid fa-trash-can"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <b>N°{{ar.id_case}}.{{ar.id_sector}} Recinto: {{ar.sector_name}}, Dimensiones:
+                  ancho: {{ar.sector_w_size}} alto: {{ar.sector_h_size}} largo: {{ar.sector_l_size}}, N° de daños: {{ar.ndamages}}</b>
+                </td>
+              </tr>
+              <tr>
+
+                <div class="galeria">
+                  <td colspan="2">
+                    {{#if img1}}
+                    <img src="img_t/thumb_{{img1}}" data-full-image="/{{img1}}" width="100%" height="auto" alt="Imagen 1" class="miniatura"
+                      id="imagebox1">
+                    {{/if}}
+                  </td>
+                  <td colspan="2">
+                    {{#if img2}}
+                    <img src="img_t/thumb_{{img2}}" data-full-image="/{{img2}}" width="100%" height="auto" alt="Imagen 2" class="miniatura"
+                      id="imagebox2">
+                    {{/if}}
+                  </td>
+
+                  <!-- Añade más imágenes según sea necesario -->
+
+                </div>
+
+
+
+                <td>{{ar.shs}}</td>
+                {{else}}
+              <tr>
+                <td colspan="8">Aún no se han agregado sectores</td>
+              </tr>
+              {{/if}}
+
+              {{/action_repairs}}
+              </tr>
+
+            </tbody>
+          </table>
+
+
+          
+          <div style="text-align: left;">
+            <a href="#" id="toggleButton">Agregar Sectores</a>
+          </div>
+          <br />
+          <div id="imagenCompletaContenedor" class="imagen-completa-contenedor" style="display: none;">
+
+            <img src="" id="imagenCompleta" class="imagen-completa">
+
+          </div>
+          <br />
+
+          <div id="form" style="display:none;">
+            <h5 style="text-align: left;">Agregar sector </h5>
+            <form action="/sectors" method="POST" enctype="multipart/form-data">
+              <tr>
+                <td><select class="form-select" aria-label=".form-select-lg example" name="id_sector">
+                    {{#each rowSectors}}{{this.id_sector}}<option value="{{this.id_sector}}" placeholder="Largo"
+                      selected="true">{{this.sector_name}}</option>{{/each}}
+                  </select></td>
+              <tr>
+                <td><input type="Number" class="form-control" id="sector_l_size" name="sector_l_size"
+                    placeholder="Largo"></td>
+              </tr>
+              <tr>
+                <td><input type="Number" class="form-control" id="sector_w_size" name="sector_w_size"
+                    placeholder="Ancho"></td>
+              </tr>
+              <tr>
+                <td><input type="Number" class="form-control" id="sector_h_size" name="sector_h_size"
+                    placeholder="Alto"></td>
+              </tr>
+              <tr>
+                <td><label for="files_" class="form-control" style="margin-bottom: -34px; "><i
+                      class="fa-solid fa-image"></i></label>
+                  <input id='files_' class="form-control" type="file" style="visibility:hidden;" name="image"
+                    accept="image/*">
+                </td>
+              </tr>
+              <tr>
+                <td><label for="files_1" class="form-control" style="margin-bottom: -34px; "><i
+                      class="fa-solid fa-image"></i></label>
+                  <input id='files_1' class="form-control" type="file" style="visibility:hidden;" name="image1"
+                    accept="image/*">
+                </td>
+              </tr>
+
+              <input type="hidden" name="id_case" id="id_case" value="{{vcase}}">
+              <td colspan="2" style=""><button class="btn btn-success btn-block" type="submit" id="upload_" disabled><i
+                    class="fa-solid fa-check"></i></button></td>
+
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{else}}
+{{/if}}
