@@ -16,14 +16,16 @@
 
             <div class="card text-center">
                 <div class="card-body" align="left">
-<div style="float:right; margin-top:1px"> <span ><a href="/generate-pdf?id_case={{data.[0].id_case}}"><i class="fa-regular fa-file-pdf">Descargar Informe</i></a></span>
+                    <div style="float:right; margin-top:1px"> <span><a
+                                href="/generate-pdf?id_case={{data.[0].id_case}}"><i
+                                    class="fa-regular fa-file-pdf">Descargar Informe</i></a></span>
                     </div>
                     <div style="text-align: center;">
                         <p>
                         <h4><b>Detalles del caso N° {{data.[0].id_case}} ({{data.[0].status_name}})</b></h4>
                         </p>
-                        
-                       </div>
+
+                    </div>
                     <table class="table table-hover" align="left">
                         <thead class="thead-gray">
                             <tr>
@@ -310,16 +312,38 @@
 -->
                         <h5><b>Detalles de Inspección</b></h5>
                         <p> Fotos de Fachada: </p>
-                        <p style="text-align: center;"> {{#each data}} 
-                                                         {{#if this.img1}}
-                                            <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}"
-                                                alt="Imagen 1" class="miniatura" id="imagebox1">
-                                            {{/if}}
-                                            {{#if this.img2}}
-                                            <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}"
-                                                alt="Imagen 2" class="miniatura" id="imagebox2">
-                                            {{/if}}
-                              {{/each}} </p>
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    {{#if data.[0].case_img1}}
+                                    <img src="img_t/thumb_{{data.[0].case_img1}}"
+                                        data-full-image="img_w/{{data.[0].case_img1}}" width="100%" height="auto"
+                                        alt={{data.[0].case_img1}} class="miniatura" id="imagebox2">
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    {{#if data.[0].case_img2}}
+                                    <img src="img_t/thumb_{{data.[0].case_img2}}"
+                                        data-full-image="img_w/{{data.[0].case_img2}}" width="100%" height="auto"
+                                        alt={{data.[0].case_img2}} class="miniatura" id="imagebox2">
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                        <p style="text-align: center;"> {{#each data}}
+                            {{#if this.img1}}
+                            <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}" alt="Imagen 1"
+                                class="miniatura" id="imagebox1">
+                            {{/if}}
+                            {{#if this.img2}}
+                            <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}" alt="Imagen 2"
+                                class="miniatura" id="imagebox2">
+                            {{/if}}
+                            {{/each}}
+                        </p>
                         {{#if rowDamages.[0].sector_name}}
 
                         <ul id="nav-tree" class="nav-tree">
@@ -330,29 +354,30 @@
                                 </a>
                                 <ul>
                                     <table class="table">
-                                     {{#with d.damages.[0]}}
-                                     <tr>
-                                        <td>
-                                            <b>Dimensiones: </b> Ancho: {{sector_w_size}}, Alto:{{sector_h_size}}, Largo:{{sector_l_size}}
-                                        </td>
-                                     </tr>
-                                    <tr>
-                                        <td>
-                                           
+                                        {{#with d.damages.[0]}}
+                                        <tr>
+                                            <td>
+                                                <b>Dimensiones: </b> Ancho: {{sector_w_size}}, Alto:{{sector_h_size}},
+                                                Largo:{{sector_l_size}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
 
-                                            {{#if this.img1}}
-                                            <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}"
-                                                alt="Imagen 1" class="miniatura" id="imagebox1">
-                                            {{/if}}
-                                            {{#if this.img2}}
-                                            <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}"
-                                                alt="Imagen 2" class="miniatura" id="imagebox2">
-                                            {{/if}}
-                                            
-                                        </td>
-                                    </tr>
-                                    {{/with}}
-                                </table>
+
+                                                {{#if this.img1}}
+                                                <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}"
+                                                    alt="Imagen 1" class="miniatura" id="imagebox1">
+                                                {{/if}}
+                                                {{#if this.img2}}
+                                                <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}"
+                                                    alt="Imagen 2" class="miniatura" id="imagebox2">
+                                                {{/if}}
+
+                                            </td>
+                                        </tr>
+                                        {{/with}}
+                                    </table>
                                     {{#each damages}}
                                     <li id="li40-{{this.id_damage_images}}" data-value="li40-{{this.id_damage_images}}">
                                         <a>
@@ -388,8 +413,9 @@
                                                         <tr>
                                                             <td id="tablecaset" style="text-transform: none;">
                                                                 <b> Cantidad de daño</b>
-                                                           
-                                                                {{this.damage_size}}({{#if this.customized}} m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}})
+
+                                                                {{this.damage_size}}({{#if this.customized}}
+                                                                m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}})
                                                             </td>
                                                         </tr>
                                                         <tr>

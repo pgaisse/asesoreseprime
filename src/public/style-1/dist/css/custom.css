@@ -221,6 +221,7 @@ body{
 
 .miniatura {
   cursor: pointer; /* Cambia el cursor para indicar que es clickable */
+  max-width: 100%;
   /* Estilos adicionales para las miniaturas */
 }
 

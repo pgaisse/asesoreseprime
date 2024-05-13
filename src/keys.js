@@ -19,6 +19,16 @@ module.exports = {
         //database: 'db_links'
         database: 'asesoresprime_cub',
         dateStrings:true,
+    },
+
+    database_clients_ap: {
+        connectionLimit: 10,
+        host: 'localhost',
+        user: 'root',
+        password: 'Patoch-2202',
+        //database: 'db_links'
+        database: 'asesoresprime_cub',
+        dateStrings:true,
     }
 
 };
