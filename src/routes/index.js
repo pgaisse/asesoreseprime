@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database');
+const pool= require('../database');
 const { isLoggedIn, isNLoggedIn, isAdmin } = require('../lib/auth');
 const { log } = require('handlebars');
 const sharp = require('sharp');
 const pdfService = require('../lib/pdf');
 const helpers = require('../lib/helpers');
-const pdf = require('html-pdf');
 const fs = require('fs')
 const path = require('path');
 const puppeteer = require('puppeteer');
-const ruta = path.join(__dirname, '../public/uploads/')
-//const multer =require('multer');
-
 
 
 
@@ -20,7 +16,10 @@ const ruta = path.join(__dirname, '../public/uploads/')
 
 router.get('/', async (req, res) => {
     try {
-        res.render('index');
+        const query= await pool.query("desc asesoresprime_web.6Scr5XN_clientes;")
+        console.log("mierda de json",JSON.stringify(query,null,2))
+        //res.json(query);
+        res.render('index')
     }
     catch (error) {
         res.render('index');
@@ -43,27 +42,27 @@ router.get('/myinsp', isLoggedIn, async (req, res) => {
     cases.case_img1,
     cases.case_img2,
     cases.case_date,
-    clients.client_name,
-    clients.client_lastname,
-    clients.client_address,
-    clients.client_rut,
+    asesoresprime_web.6Scr5XN_clientes.nombre as client_name,
+    asesoresprime_web.6Scr5XN_clientes.apellidos as client_lastname,
+    asesoresprime_web.6Scr5XN_clientes.direccion as client_address,
+    asesoresprime_web.6Scr5XN_clientes.rut as client_rut,
     status.status_name
 FROM cases
 INNER JOIN advisers ON advisers.id_adviser = cases.id_adviser
 INNER JOIN status ON status.id_status = cases.id_status
-INNER JOIN clients ON clients.id_client = cases.id_client
+INNER JOIN asesoresprime_web.6Scr5XN_clientes ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases.id_client
 WHERE advisers.id_adviser = ${req.user.id_adviser}
 GROUP BY 
     cases.id_case, 
     cases.case_img1, 
     cases.case_img2, 
     cases.case_date, 
-    clients.client_name, 
-    clients.client_lastname, 
-    clients.client_address, 
-    clients.client_rut, 
+    client_name, 
+    client_lastname, 
+    client_address, 
+    client_rut, 
     status.status_name;`;
-
+console.log(showCases)
         if (req.query.case_img && req.query.id_case) {
             const qupdate = `update cases set ${req.query.case_img}=NULL WHERE id_case=${req.query.id_case}`
             await pool.query(qupdate);

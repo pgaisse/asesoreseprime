@@ -1,8 +1,3 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
---
--- Host: localhost    Database: asesoresprime_cub
--- ------------------------------------------------------
--- Server version	8.0.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,11 +9,55 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `6scr5xn_clientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `6scr5xn_clientes` (
+  `cliente_id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(80) NOT NULL,
+  `apellidos` varchar(150) NOT NULL,
+  `rut` varchar(13) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `estado` varchar(80) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `nacionalidad` varchar(100) DEFAULT NULL,
+  `estado_civil` varchar(80) DEFAULT NULL,
+  `profesion_ocupacion` varchar(200) DEFAULT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `tipo_inmueble` varchar(150) DEFAULT NULL,
+  `region` varchar(70) DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `comuna` varchar(100) DEFAULT NULL,
+  `banco` varchar(150) DEFAULT NULL,
+  `aseguradora` varchar(200) DEFAULT NULL,
+  `archivo` varchar(200) DEFAULT NULL,
+  `nombre_archivos` varchar(1000) DEFAULT NULL,
+  `exc_prorroga` tinyint(1) DEFAULT NULL,
+  `exc_pendiente` tinyint(1) DEFAULT NULL,
+  `observaciones` text,
+  `tipo_entidad` varchar(100) NOT NULL,
+  `tipo_siniestros` varchar(100) NOT NULL,
+  `num_bancoestado` varchar(30) DEFAULT NULL,
+  `monto_indemnizado` int DEFAULT NULL,
+  `porcentaje` int DEFAULT NULL,
+  `honorarios` int DEFAULT NULL,
+  `pago_honorarios` date DEFAULT NULL,
+  `correo_enviado` tinyint(1) DEFAULT NULL,
+  `token` varchar(100) DEFAULT NULL,
+  `notas_internas` text,
+  `vencimiento_estado` date DEFAULT NULL,
+  `numero_caso` int DEFAULT NULL,
+  `fecha_siniestro` date DEFAULT NULL,
+  PRIMARY KEY (`cliente_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci CONNECTION='mysql://asesoresprime_asesoresprimeCub:XX;6sU2q46NR@203.30.15.56:3306/asesoresprime_web/6Scr5XN_clientes';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Table structure for table `advisers`
---
-
+LOCK TABLES `6scr5xn_clientes` WRITE;
+/*!40000 ALTER TABLE `6scr5xn_clientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `6scr5xn_clientes` ENABLE KEYS */;
+UNLOCK TABLES;
 DROP TABLE IF EXISTS `advisers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -35,23 +74,14 @@ CREATE TABLE `advisers` (
   `registeredAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `adviser_birthday` date NOT NULL,
   PRIMARY KEY (`id_adviser`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `advisers`
---
 
 LOCK TABLES `advisers` WRITE;
 /*!40000 ALTER TABLE `advisers` DISABLE KEYS */;
-INSERT INTO `advisers` VALUES (1,'adv1','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','admin','hector','monsalves','123456789','galli.no@example.com','7792014','2024-05-08 00:46:21','1980-05-15'),(2,'adv2','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','worker','juan','perez','987654321','juan.perez@example.com','7722014','2024-05-08 00:46:21','1985-08-20'),(3,'adv3','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','admin','pedro','gonzalez','123456789','pgenzalez@example.com','7792014','2024-05-08 00:46:21','1980-05-15'),(4,'adv4','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','worker','cristian','moscoso','987654321','cm@example.com','7722014','2024-05-08 00:46:21','1985-08-20');
+INSERT INTO `advisers` VALUES (1,'adv1','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','admin','hector','monsalves','123456789','galli.no@example.com','7792014','2024-04-08 12:51:48','1980-05-15'),(2,'adv2','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','worker','juan','perez','987654321','juan.perez@example.com','7722014','2024-04-08 12:51:48','1985-08-20'),(3,'adv3','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','admin','pedro','gonzalez','123456789','pgenzalez@example.com','7792014','2024-04-08 12:51:48','1980-05-15'),(4,'adv4','$2a$10$wygKItjiy322HSWqEaSATeKBi3bljtVIRE6UtMY7iHhHpuHEte/uG','worker','cristian','moscoso','987654321','cm@example.com','7722014','2024-04-08 12:51:48','1985-08-20');
 /*!40000 ALTER TABLE `advisers` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `budgets`
---
-
 DROP TABLE IF EXISTS `budgets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -62,22 +92,13 @@ CREATE TABLE `budgets` (
   `createAt` timestamp NOT NULL,
   KEY `fk_table1_cases1_idx` (`cases_id_case`),
   CONSTRAINT `fk_table1_cases1` FOREIGN KEY (`cases_id_case`) REFERENCES `cases` (`id_case`) ON DELETE CASCADE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `budgets`
---
 
 LOCK TABLES `budgets` WRITE;
 /*!40000 ALTER TABLE `budgets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `budgets` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `c_d_s`
---
-
 DROP TABLE IF EXISTS `c_d_s`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -87,29 +108,20 @@ CREATE TABLE `c_d_s` (
   `id_sector` int NOT NULL,
   `id_case` int NOT NULL,
   PRIMARY KEY (`id_c_d_s`),
-  KEY `fk_cases_has_damages_damages1` (`id_damage`),
-  KEY `fk_c_d_sectors1` (`id_sector`),
-  KEY `fk_c_d_cases1` (`id_case`),
+  KEY `fk_cases_has_damages_damages1_idx` (`id_damage`),
+  KEY `fk_c_d_sectors1_idx` (`id_sector`),
+  KEY `fk_c_d_cases1_idx` (`id_case`),
   CONSTRAINT `fk_c_d_cases1` FOREIGN KEY (`id_case`) REFERENCES `cases` (`id_case`) ON DELETE CASCADE,
   CONSTRAINT `fk_c_d_sectors1` FOREIGN KEY (`id_sector`) REFERENCES `sectors` (`id_sector`) ON DELETE CASCADE,
   CONSTRAINT `fk_cases_has_damages_damages1` FOREIGN KEY (`id_damage`) REFERENCES `damages` (`id_damage`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `c_d_s`
---
 
 LOCK TABLES `c_d_s` WRITE;
 /*!40000 ALTER TABLE `c_d_s` DISABLE KEYS */;
-INSERT INTO `c_d_s` VALUES (1,6,15,1),(2,4,15,1),(3,18,15,1);
+INSERT INTO `c_d_s` VALUES (15,26,6,2),(18,26,2,5),(19,26,6,5),(20,26,2,5),(105,26,12,1),(106,26,15,1),(107,15,15,1);
 /*!40000 ALTER TABLE `c_d_s` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `cases`
---
-
 DROP TABLE IF EXISTS `cases`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -120,39 +132,30 @@ CREATE TABLE `cases` (
   `id_client` int NOT NULL,
   `id_incident` int NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `case_date` date NOT NULL,
+  `case_date` timestamp NOT NULL,
   `case_img1` varchar(200) DEFAULT NULL,
   `case_img2` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_case`),
-  KEY `fk_cases_status1` (`id_status`),
-  KEY `fk_cases_advisers1` (`id_adviser`),
-  KEY `fk_cases_asesoresprime_web.6Scr5XN_clientes1` (`id_client`),
-  KEY `fk_cases_incidents1` (`id_incident`),
+  KEY `fk_cases_status1_idx` (`id_status`),
+  KEY `fk_cases_advisers1_idx` (`id_adviser`),
+  KEY `fk_cases_clients1_idx` (`id_client`),
+  KEY `fk_cases_incidents1_idx` (`id_incident`),
   CONSTRAINT `fk_cases_advisers1` FOREIGN KEY (`id_adviser`) REFERENCES `advisers` (`id_adviser`) ON DELETE CASCADE,
-  CONSTRAINT `fk_cases_asesoresprime_web.6Scr5XN_clientes1` FOREIGN KEY (`id_client`) REFERENCES `asesoresprime_web.6Scr5XN_clientes` (`id_client`) ON DELETE CASCADE,
+  CONSTRAINT `fk_cases_clients1` FOREIGN KEY (`id_client`) REFERENCES `clients` (`id_client`) ON DELETE CASCADE,
   CONSTRAINT `fk_cases_incidents1` FOREIGN KEY (`id_incident`) REFERENCES `incidents` (`id_incident`) ON DELETE CASCADE,
   CONSTRAINT `fk_cases_status1` FOREIGN KEY (`id_status`) REFERENCES `status` (`id_status`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cases`
---
 
 LOCK TABLES `cases` WRITE;
 /*!40000 ALTER TABLE `cases` DISABLE KEYS */;
-INSERT INTO `cases` VALUES (1,1,1,1,1,'2024-05-08 00:46:21','2015-05-22',NULL,NULL),(2,2,1,2,2,'2024-05-08 00:46:21','2015-05-23',NULL,NULL),(3,3,3,3,3,'2024-05-08 00:46:21','2015-05-24',NULL,NULL),(4,1,4,4,4,'2024-05-08 00:46:21','2015-05-25',NULL,NULL),(5,1,NULL,1,1,'2024-05-08 00:46:49','2015-05-22',NULL,NULL),(6,1,NULL,2,2,'2024-05-08 00:46:49','2015-05-23',NULL,NULL),(7,2,NULL,4,2,'2024-05-08 00:46:49','2015-05-24',NULL,NULL),(8,2,NULL,3,3,'2024-05-08 00:46:49','2015-05-25',NULL,NULL);
+INSERT INTO `cases` VALUES (1,1,1,1,1,'2024-04-08 12:51:48','2015-05-21 14:00:00','d2131545-e8f6-4670-85af-aad436e4ae61.png','b4046eb0-ad75-4182-bc21-a5d21594a80c.png'),(2,1,1,2,2,'2024-04-08 12:51:48','2015-05-22 14:00:00','329f288f-4961-4e13-aa4e-9132df12c203.png','50169188-0b8a-4e8a-8715-448f3646cc87.png'),(3,3,3,3,3,'2024-04-08 12:51:48','2015-05-23 14:00:00',NULL,NULL),(4,2,4,4,4,'2024-04-08 12:51:48','2015-05-24 14:00:00',NULL,NULL),(5,1,2,1,1,'2024-04-08 12:51:48','2015-05-21 14:00:00',NULL,NULL),(6,1,NULL,2,2,'2024-04-08 12:51:48','2015-05-22 14:00:00',NULL,NULL),(7,1,NULL,4,2,'2024-04-08 12:51:48','2015-05-23 14:00:00',NULL,NULL),(8,2,3,3,3,'2024-04-08 12:51:48','2015-05-24 14:00:00',NULL,NULL);
 /*!40000 ALTER TABLE `cases` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `asesoresprime_web.6Scr5XN_clientes`
---
-
-DROP TABLE IF EXISTS `asesoresprime_web.6Scr5XN_clientes`;
+DROP TABLE IF EXISTS `clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asesoresprime_web.6Scr5XN_clientes` (
+CREATE TABLE `clients` (
   `id_client` int NOT NULL AUTO_INCREMENT,
   `client_name` varchar(100) NOT NULL,
   `client_lastname` varchar(100) NOT NULL,
@@ -163,23 +166,14 @@ CREATE TABLE `asesoresprime_web.6Scr5XN_clientes` (
   `client_email` varchar(100) NOT NULL,
   `registeredAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_client`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `asesoresprime_web.6Scr5XN_clientes`
---
-
-LOCK TABLES `asesoresprime_web.6Scr5XN_clientes` WRITE;
-/*!40000 ALTER TABLE `asesoresprime_web.6Scr5XN_clientes` DISABLE KEYS */;
-INSERT INTO `asesoresprime_web.6Scr5XN_clientes` VALUES (1,'Ana','Ramos S谩nchez','15.152.156-5','1982-02-20','OUTER HEBRIDES','(306) 906-7975','parkes@hotmail.com','2024-05-08 00:46:21'),(2,'Alfredo','Perez Reina','15.192.156-2','1991-02-19','82 Windsor Road','(452) 597-0784','sjava@yahoo.ca','2024-05-08 00:46:21'),(3,'Moncho','Pereira Reinaldo','15.142.156-2','1992-02-19','14-16 Oconnor ','(452) 037-0784','sjeewqava@yahoo.ca','2024-05-08 00:46:21'),(4,'Sergio','Garrido Arrizabalaga','15.192.156-3','1981-02-20','PH82 4OY','(363) 441-6561','jipsen@outlook.com','2024-05-08 00:46:21');
-/*!40000 ALTER TABLE `asesoresprime_web.6Scr5XN_clientes` ENABLE KEYS */;
+LOCK TABLES `clients` WRITE;
+/*!40000 ALTER TABLE `clients` DISABLE KEYS */;
+INSERT INTO `clients` VALUES (1,'Ana','Ramos S谩nchez','15.152.156-5','1982-02-20','OUTER HEBRIDES','(306) 906-7975','parkes@hotmail.com','2024-04-08 12:51:48'),(2,'Alfredo','Perez Reina','15.192.156-2','1991-02-19','82 Windsor Road','(452) 597-0784','sjava@yahoo.ca','2024-04-08 12:51:48'),(3,'Moncho','Pereira Reinaldo','15.142.156-2','1992-02-19','14-16 Oconnor ','(452) 037-0784','sjeewqava@yahoo.ca','2024-04-08 12:51:48'),(4,'Sergio','Garrido Arrizabalaga','15.192.156-3','1981-02-20','PH82 4OY','(363) 441-6561','jipsen@outlook.com','2024-04-08 12:51:48');
+/*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `d_c_d_s`
---
-
 DROP TABLE IF EXISTS `d_c_d_s`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -189,25 +183,16 @@ CREATE TABLE `d_c_d_s` (
   `size` decimal(10,0) NOT NULL,
   `customized` int DEFAULT NULL,
   PRIMARY KEY (`id_d_c_d_s`),
-  KEY `fk_d_c_d_s_c_d_s1` (`id_c_d_s`),
+  KEY `fk_d_c_d_s_c_d_s1_idx` (`id_c_d_s`),
   CONSTRAINT `fk_d_c_d_s_c_d_s1` FOREIGN KEY (`id_c_d_s`) REFERENCES `c_d_s` (`id_c_d_s`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `d_c_d_s`
---
 
 LOCK TABLES `d_c_d_s` WRITE;
 /*!40000 ALTER TABLE `d_c_d_s` DISABLE KEYS */;
-INSERT INTO `d_c_d_s` VALUES (1,1,10,0),(2,2,1,0),(3,3,20,0);
+INSERT INTO `d_c_d_s` VALUES (15,15,118,NULL),(18,18,24,NULL),(19,19,23,NULL),(20,20,23,NULL),(97,105,23,0),(98,106,45,0),(99,107,56,0);
 /*!40000 ALTER TABLE `d_c_d_s` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `damage_images`
---
-
 DROP TABLE IF EXISTS `damage_images`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -218,25 +203,17 @@ CREATE TABLE `damage_images` (
   `image3` varchar(200) DEFAULT NULL,
   `id_d_c_d_s` int NOT NULL,
   PRIMARY KEY (`id_damage_images`),
-  KEY `fk_damage_images_d_c_d_s1` (`id_d_c_d_s`),
+  UNIQUE KEY `id_damage_images_UNIQUE` (`id_damage_images`),
+  KEY `fk_damage_images_d_c_d_s1_idx` (`id_d_c_d_s`),
   CONSTRAINT `fk_damage_images_d_c_d_s1` FOREIGN KEY (`id_d_c_d_s`) REFERENCES `d_c_d_s` (`id_d_c_d_s`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `damage_images`
---
 
 LOCK TABLES `damage_images` WRITE;
 /*!40000 ALTER TABLE `damage_images` DISABLE KEYS */;
-INSERT INTO `damage_images` VALUES (1,'acd067db-dd1d-4989-8a1d-384756b530ac.png','5d54246a-4929-41c0-b545-7700634d9507.png','e713b6bb-9d3b-4315-8725-a9ff9f4655c9.png',1),(2,'3de4fa59-62d3-4898-9aaa-ea962a6277b0.png','ebc137c4-fb27-4b6e-b658-1900c3ac2871.png','a5fd70f1-4416-4ef8-988e-36fab583a437.png',2),(3,'f95ed6ca-e94f-4d14-9cf7-84fe252f52f5.png','7f4bc1fa-c53c-44d9-a4b6-42299a23f9b9.png','751bef88-becc-4e4a-b563-b817a93c95fc.png',3);
+INSERT INTO `damage_images` VALUES (15,'img151','img1q5','img15ewq',15),(18,'a8cbc105-2e91-4106-b506-424395cd0c91.jpeg','5b4d7bfd-160b-4343-93c1-f610651506f4.jpeg','50aabfd3-d4c4-4d5a-a06a-1e1ce3435210.jpeg',18),(19,'95d2e0f0-90b2-45c8-8e90-934c7f976805.jpeg','84ef937e-af39-41c4-9113-9d0b67a628c4.jpeg','eb58f73a-4d95-4d4d-aae3-f261e4b03ffe.jpg',19),(20,'2d29c2a3-e6d7-4c94-9667-b00149ec5023.jpeg','65c7a343-8f3c-4aa6-8759-0f9d1f278636.jpeg','b31d8b63-b83e-42fc-9c16-fcd0d8b62549.jpeg',20),(97,'631e31af-b0ec-4ec6-a6f5-eea44712b303.png','92da6d21-e2ad-4959-b02b-982c51b92210.png','66acbed7-59c2-4977-99ae-d6ee457fdc02.png',97),(98,'270993aa-e38d-4e14-b4ab-e86d9b1e72ce.png','d36d5ddc-8da8-4d39-82af-e65ba2c09bca.png','4c6b4753-b747-4a44-8646-773c80e208f7.png',98),(99,'3606088d-cbcf-416c-a8af-de2b89ce713a.png','db629d6b-c594-44c0-a58c-f5a5722fa026.png','24e5656d-0901-4d80-a37f-f0abf602eb23.png',99);
 /*!40000 ALTER TABLE `damage_images` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `damages`
---
-
 DROP TABLE IF EXISTS `damages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -245,26 +222,17 @@ CREATE TABLE `damages` (
   `damage_name` varchar(150) NOT NULL,
   `damage_description` text,
   `damage_unit` varchar(40) NOT NULL,
-  `createdby` varchar(40) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdby` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id_damage`)
-) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `damages`
---
 
 LOCK TABLES `damages` WRITE;
 /*!40000 ALTER TABLE `damages` DISABLE KEYS */;
-INSERT INTO `damages` VALUES (1,'fisura en muro','desc 1','mm',NULL,'2024-05-08 00:46:21'),(2,'fisura en sello de marco de puerta','desc 2','mm',NULL,'2024-05-08 00:46:21'),(3,'fisura en sello de marco de ventana','desc 3','mm',NULL,'2024-05-08 00:46:21'),(4,'fisura en cielo','desc 4','mm',NULL,'2024-05-08 00:46:21'),(5,'fisura dintel','desc 5','mm',NULL,'2024-05-08 00:46:21'),(6,'fisura antepecho','desc 6','mm',NULL,'2024-05-08 00:46:21'),(7,'fisura encuentro de muros','desc 7','mm',NULL,'2024-05-08 00:46:21'),(8,'fisura encuentro tabique y cielo','desc 8','mm',NULL,'2024-05-08 00:46:21'),(9,'fisura sello cornisa','desc 10','mm',NULL,'2024-05-08 00:46:21'),(10,'fijaciones a la vista en tabiques','desc 11','cm',NULL,'2024-05-08 00:46:21'),(11,'fijaciones a la vista en cielo','desc 12','cm',NULL,'2024-05-08 00:46:21'),(12,'cer谩micas muro fisuradas','desc 13','cm',NULL,'2024-05-08 00:46:21'),(13,'cer谩micas piso fisuradas','desc 14','cm',NULL,'2024-05-08 00:46:21'),(14,'fisura de emboquillado','desc 15','mm',NULL,'2024-05-08 00:46:21'),(15,'placas fisuradas','desc 16','uni',NULL,'2024-05-08 00:46:21'),(16,'pilares fisurados','desc 17','uni',NULL,'2024-05-08 00:46:21'),(17,'bardas fisurados','desc 18','mm',NULL,'2024-05-08 00:46:21'),(18,'pintura muro','desc 19','m',NULL,'2024-05-08 00:46:21');
+INSERT INTO `damages` VALUES (1,'fisura en muro','desc 1','mm','2024-04-08 12:51:48',NULL),(2,'fisura en sello de marco de puerta','desc 2','mm','2024-04-08 12:51:48',NULL),(3,'fisura en sello de marco de ventana','desc 3','mm','2024-04-08 12:51:48',NULL),(4,'fisura en cielo','desc 4','mm','2024-04-08 12:51:48',NULL),(5,'fisura dintel','desc 5','mm','2024-04-08 12:51:48',NULL),(6,'fisura antepecho','desc 6','mm','2024-04-08 12:51:48',NULL),(7,'fisura encuentro de muros','desc 7','mm','2024-04-08 12:51:48',NULL),(8,'fisura encuentro tabique y cielo','desc 8','mm','2024-04-08 12:51:48',NULL),(9,'fisura sello cornisa','desc 10','mm','2024-04-08 12:51:48',NULL),(10,'fijaciones a la vista en tabiques','desc 11','cm','2024-04-08 12:51:48',NULL),(11,'fijaciones a la vista en cielo','desc 12','cm','2024-04-08 12:51:48',NULL),(12,'cer谩micas muro fisuradas','desc 13','cm','2024-04-08 12:51:48',NULL),(13,'cer谩micas piso fisuradas','desc 14','cm','2024-04-08 12:51:48',NULL),(14,'fisura de emboquillado','desc 15','mm','2024-04-08 12:51:48',NULL),(15,'placas fisuradas','desc 16','uni','2024-04-08 12:51:48',NULL),(16,'pilares fisurados','desc 17','uni','2024-04-08 12:51:48',NULL),(17,'bardas fisurados','desc 18','mm','2024-04-08 12:51:48',NULL),(18,'pintura muro','desc 19','m','2024-04-08 12:51:48',NULL),(19,'desc 1','mm','Da?o de prueba 1','2024-04-14 03:59:02','TITO'),(20,'desc 1','mm','Da?o de prueba 1','2024-04-14 04:01:00','TITO'),(21,'Da?o de prueba 1','desc 1','mm','2024-04-14 04:01:48','TITO'),(22,'damage de prueba 2','descrip2','mm','2024-04-14 04:38:57','tito'),(23,'da帽o 3 test','desc 3','uni','2024-04-14 05:01:41','hector monsalves'),(24,'da帽o 4 test','desc 4','uni','2024-04-14 05:29:02','hector monsalves'),(25,'dasdsad','fdsfdsf','uni','2024-04-14 06:05:10','hector monsalves'),(26,'moco en la pared','blablabla','uni','2024-04-14 08:11:41','hector monsalves');
 /*!40000 ALTER TABLE `damages` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `damages_repairs`
---
-
 DROP TABLE IF EXISTS `damages_repairs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -272,29 +240,19 @@ CREATE TABLE `damages_repairs` (
   `id_damage_repair` int NOT NULL AUTO_INCREMENT,
   `id_damage` int NOT NULL,
   `id_repair` int NOT NULL,
-  `createdby` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_damage_repair`),
-  KEY `fk_damages_has_repairs_damages1` (`id_damage`),
-  KEY `fk_damages_has_repairs_repairs1` (`id_repair`),
+  KEY `fk_damages_has_repairs_repairs1_idx` (`id_repair`),
+  KEY `fk_damages_has_repairs_damages1_idx` (`id_damage`),
   CONSTRAINT `fk_damages_has_repairs_damages1` FOREIGN KEY (`id_damage`) REFERENCES `damages` (`id_damage`) ON DELETE CASCADE,
   CONSTRAINT `fk_damages_has_repairs_repairs1` FOREIGN KEY (`id_repair`) REFERENCES `repairs` (`id_repair`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `damages_repairs`
---
 
 LOCK TABLES `damages_repairs` WRITE;
 /*!40000 ALTER TABLE `damages_repairs` DISABLE KEYS */;
-INSERT INTO `damages_repairs` VALUES (1,1,1,NULL),(2,1,2,NULL),(3,2,6,NULL),(4,3,6,NULL),(5,4,8,NULL),(6,4,9,NULL),(7,4,10,NULL),(8,4,11,NULL),(9,4,12,NULL),(10,5,1,NULL),(11,5,2,NULL),(12,5,3,NULL),(13,5,4,NULL),(14,5,5,NULL),(15,6,1,NULL),(16,6,2,NULL),(17,6,3,NULL),(18,6,4,NULL),(19,6,5,NULL),(20,7,1,NULL),(21,7,2,NULL),(22,7,3,NULL),(23,7,4,NULL),(24,7,5,NULL),(25,8,1,NULL),(26,8,2,NULL),(27,8,3,NULL),(28,8,4,NULL),(29,8,5,NULL),(30,8,8,NULL),(31,8,9,NULL),(32,8,10,NULL),(33,8,11,NULL),(34,8,12,NULL),(35,9,15,NULL),(36,10,2,NULL),(37,10,3,NULL),(38,10,4,NULL),(39,10,5,NULL),(40,11,9,NULL),(41,11,10,NULL),(42,11,11,NULL),(43,11,12,NULL),(44,12,18,NULL),(45,12,19,NULL),(46,12,20,NULL),(47,12,21,NULL),(48,12,22,NULL),(49,14,23,NULL),(50,15,24,NULL),(51,15,25,NULL),(52,16,26,NULL),(53,16,27,NULL),(54,17,28,NULL),(55,17,29,NULL),(56,18,30,NULL);
+INSERT INTO `damages_repairs` VALUES (1,1,1),(2,1,2),(3,2,6),(4,3,6),(5,4,8),(6,4,9),(7,4,10),(8,4,11),(9,4,12),(10,5,1),(11,5,2),(12,5,3),(13,5,4),(14,5,5),(15,6,1),(16,6,2),(17,6,3),(18,6,4),(19,6,5),(20,7,1),(21,7,2),(22,7,3),(23,7,4),(24,7,5),(25,8,1),(26,8,2),(27,8,3),(28,8,4),(29,8,5),(30,8,8),(31,8,9),(32,8,10),(33,8,11),(34,8,12),(35,9,15),(36,10,2),(37,10,3),(38,10,4),(39,10,5),(40,11,9),(41,11,10),(42,11,11),(43,11,12),(44,12,18),(45,12,19),(46,12,20),(47,12,21),(48,12,22),(49,14,23),(50,15,24),(51,15,25),(52,16,26),(53,16,27),(54,17,28),(55,17,29),(56,18,30),(57,22,2),(58,22,3),(59,22,4),(60,22,5),(61,23,32),(62,23,26),(63,23,18),(64,23,12),(65,24,30),(66,24,22),(67,24,6),(68,24,4),(69,25,29),(70,25,21),(71,25,5),(72,26,29),(73,26,22),(74,26,19),(75,26,13),(76,26,9);
 /*!40000 ALTER TABLE `damages_repairs` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `dimentions`
---
-
 DROP TABLE IF EXISTS `dimentions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -308,91 +266,36 @@ CREATE TABLE `dimentions` (
   `id_sector` int NOT NULL,
   `id_case` int NOT NULL,
   PRIMARY KEY (`id_dimention`),
-  KEY `fk_dimentions_sectors1` (`id_sector`),
-  KEY `fk_dimentions_cases1` (`id_case`),
+  KEY `fk_dimentions_sectors1_idx` (`id_sector`),
+  KEY `fk_dimentions_cases1_idx` (`id_case`),
   CONSTRAINT `fk_dimentions_cases1` FOREIGN KEY (`id_case`) REFERENCES `cases` (`id_case`) ON DELETE CASCADE,
   CONSTRAINT `fk_dimentions_sectors1` FOREIGN KEY (`id_sector`) REFERENCES `sectors` (`id_sector`) ON DELETE CASCADE
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dimentions`
---
 
 LOCK TABLES `dimentions` WRITE;
 /*!40000 ALTER TABLE `dimentions` DISABLE KEYS */;
-INSERT INTO `dimentions` VALUES (1,10.00,20.00,1.00,'1979e937-15f4-4051-8e47-61aee7a3a786.png','295d42a1-b57f-446e-b400-21ec9c455581.png',15,1);
+INSERT INTO `dimentions` VALUES (6,19.00,6.00,2.00,'img1','img2',6,2),(10,32.00,20.00,12.00,'b836ab98-ca7a-4495-b6e8-2b531538e399.jpg','1bb4492e-5f26-4df0-877b-16c8f84b815e.png',6,5);
 /*!40000 ALTER TABLE `dimentions` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `incidents`
---
-
 DROP TABLE IF EXISTS `incidents`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `incidents` (
   `id_incident` int NOT NULL AUTO_INCREMENT,
   `incident_code` varchar(120) NOT NULL,
-  `incident_type` varchar(120) NOT NULL,
-  `incident_scale` varchar(120) NOT NULL,
   `incident_date` date NOT NULL,
   `incident_description` text NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_incident`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `incidents`
---
-
-DROP TABLE IF EXISTS `incidents`;
-CREATE TABLE `incidents` (
-  `id_incident` int(11) NOT NULL,
-  `incident_code` varchar(120) NOT NULL,
-  `incident_date` date NOT NULL,
-  `incident_description` text NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `incident_type` varchar(120) NOT NULL,
-  `incident_scale` varchar(120) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `incidents`
---
-
-INSERT INTO `incidents` (`id_incident`, `incident_code`, `incident_date`, `incident_description`, `createdAt`, `incident_type`, `incident_scale`) VALUES
-(1, 'AK420', '2022-01-15', 'Terremoto en la regi', '2024-05-08 00:46:21', 'terremoto', 'R'),
-(2, 'AK421', '2022-01-20', 'Alerta de tsunami a lo largo de las ', '2024-05-08 00:46:21', 'terremoto', 'R'),
-(3, 'AK422', '2022-02-05', 'Inundaciones en la ciudad X debido a lluvias intensas', '2024-05-08 00:46:21', 'marepoto', 'M'),
-(4, 'AK422', '2022-02-12', 'Brote de incendios forestales en el bosque B', '2024-05-08 00:46:21', 'marepoto', 'M');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `incidents`
---
-ALTER TABLE `incidents`
-  ADD PRIMARY KEY (`id_incident`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `incidents`
---
-ALTER TABLE `incidents`
-  MODIFY `id_incident` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-COMMIT;
-
-
---
-
+LOCK TABLES `incidents` WRITE;
+/*!40000 ALTER TABLE `incidents` DISABLE KEYS */;
+INSERT INTO `incidents` VALUES (1,'AK420','2022-01-15','Terremoto en la regi贸n A, magnitud 6.5','2024-04-08 12:51:48'),(2,'AK421','2022-01-20','Alerta de tsunami a lo largo de las 谩reas costeras','2024-04-08 12:51:48'),(3,'AK422','2022-02-05','Inundaciones en la ciudad X debido a lluvias intensas','2024-04-08 12:51:48'),(4,'AK422','2022-02-12','Brote de incendios forestales en el bosque B','2024-04-08 12:51:48');
+/*!40000 ALTER TABLE `incidents` ENABLE KEYS */;
+UNLOCK TABLES;
 DROP TABLE IF EXISTS `repairs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -403,24 +306,16 @@ CREATE TABLE `repairs` (
   `repair_price` decimal(19,2) NOT NULL,
   `repair_description` text,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdby` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_repair`)
-) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `repairs`
---
 
 LOCK TABLES `repairs` WRITE;
 /*!40000 ALTER TABLE `repairs` DISABLE KEYS */;
-INSERT INTO `repairs` VALUES (1,'Reparaci贸n de fisura en muro ','ML',20500.00,'desc_1','2024-05-08 00:46:21'),(2,'Empaste y lijado de muro ','M2',4750.00,'desc_2','2024-05-08 00:46:21'),(3,'Preparaci贸n de superficie de muro ','M2',2100.00,'desc_3','2024-05-08 00:46:21'),(4,'Aplicaci贸n de textura martellina muro','M2',7600.00,'desc_4','2024-05-08 00:46:21'),(5,'Aplicaci贸n de pintura de muro ','M2',7300.00,'desc_5','2024-05-08 00:46:21'),(6,'Sellado y pintura de marco de puerta','ML',3500.00,'desc_6','2024-05-08 00:46:21'),(7,'Sellado y pintura de marco de ventana','ML',3500.00,'desc_7','2024-05-08 00:46:21'),(8,'Reparaci贸n de fisura en cielo','ML',20500.00,'desc_8','2024-05-08 00:46:21'),(9,'Empaste y lijado de cielo','M2',4750.00,'desc_9','2024-05-08 00:46:21'),(10,'Preparaci贸n de superficie de cielo ','M2',2100.00,'desc_10','2024-05-08 00:46:21'),(11,'Aplicaci贸n de textura martellina cielo ','M2',7600.00,'desc_11','2024-05-08 00:46:21'),(12,'Aplicaci贸n de pintura de cielo ','M2',7300.00,'desc_12','2024-05-08 00:46:21'),(13,'Reparaci贸n de fisura en muro','ML',20500.00,'desc_13','2024-05-08 00:46:21'),(14,'Aplicaci贸n de textura martellina muro ','M2',7600.00,'desc_14','2024-05-08 00:46:21'),(15,'Sellado y pintura de cornisas','ML',3500.00,'desc_15','2024-05-08 00:46:21'),(16,'Preparaci贸n de superficie de cielo','M2',2100.00,'desc_16','2024-05-08 00:46:21'),(17,'Aplicaci贸n de pintura de cielo','M2',7300.00,'desc_17','2024-05-08 00:46:21'),(18,'Retiro de ceramica de muro ','M2',7300.00,'desc_18','2024-05-08 00:46:21'),(19,'Preparacion de superficie ','M2',3100.00,'desc_19','2024-05-08 00:46:21'),(20,'Provision e instalacion de ceramica de muro ','M2',18500.00,'desc_20','2024-05-08 00:46:21'),(21,'Fraguado de ceramica de muro ','M2',4100.00,'desc_21','2024-05-08 00:46:21'),(22,'Retiro e instalacion de artefacto','UN',32000.00,'desc_22','2024-05-08 00:46:21'),(23,'Revoque muro','ML',3500.00,'desc_23','2024-05-08 00:46:21'),(24,'Retiro de placas fisuradas','UN',4900.00,'desc_24','2024-05-08 00:46:21'),(25,'Instalaci贸n de placas nuevas','UN',11500.00,'desc_25','2024-05-08 00:46:21'),(26,'Retiro de pilares fisurados','UN',9500.00,'desc_26','2024-05-08 00:46:21'),(27,'Instalaci贸n de pilares nuevos','UN',16500.00,'desc_27','2024-05-08 00:46:21'),(28,'Retiro de bardas fisuradas','UN',3500.00,'desc_28','2024-05-08 00:46:21'),(29,'Instalaci贸n de bardas nuevas','UN',8100.00,'desc_29','2024-05-08 00:46:21'),(30,'Aplicaci贸n de pintura de muro ','M2',8200.00,'desc_30','2024-05-08 00:46:21'),(31,'Flete de materiales','UN',30000.00,'desc_31','2024-05-08 00:46:21'),(32,'Protecci贸n de areas de trabajo','GL',35000.00,'desc_32','2024-05-08 00:46:21'),(33,'Acomodo de mobiliario','GL',50000.00,'desc_33','2024-05-08 00:46:21'),(34,'Retiro de escombros','M3',50000.00,'desc_34','2024-05-08 00:46:21'),(35,'Aseo y entrega ','GL',75000.00,'desc_35','2024-05-08 00:46:21');
+INSERT INTO `repairs` VALUES (1,'Reparaci贸n de fisura en muro ','ML',20500.00,'desc_1','2024-04-08 12:51:48',NULL),(2,'Empaste y lijado de muro ','M2',4750.00,'desc_2','2024-04-08 12:51:48',NULL),(3,'Preparaci贸n de superficie de muro ','M2',2100.00,'desc_3','2024-04-08 12:51:48',NULL),(4,'Aplicaci贸n de textura martellina muro','M2',7600.00,'desc_4','2024-04-08 12:51:48',NULL),(5,'Aplicaci贸n de pintura de muro ','M2',7300.00,'desc_5','2024-04-08 12:51:48',NULL),(6,'Sellado y pintura de marco de puerta','ML',3500.00,'desc_6','2024-04-08 12:51:48',NULL),(7,'Sellado y pintura de marco de ventana','ML',3500.00,'desc_7','2024-04-08 12:51:48',NULL),(8,'Reparaci贸n de fisura en cielo','ML',20500.00,'desc_8','2024-04-08 12:51:48',NULL),(9,'Empaste y lijado de cielo','M2',4750.00,'desc_9','2024-04-08 12:51:48',NULL),(10,'Preparaci贸n de superficie de cielo ','M2',2100.00,'desc_10','2024-04-08 12:51:48',NULL),(11,'Aplicaci贸n de textura martellina cielo ','M2',7600.00,'desc_11','2024-04-08 12:51:48',NULL),(12,'Aplicaci贸n de pintura de cielo ','M2',7300.00,'desc_12','2024-04-08 12:51:48',NULL),(13,'Reparaci贸n de fisura en muro','ML',20500.00,'desc_13','2024-04-08 12:51:48',NULL),(14,'Aplicaci贸n de textura martellina muro ','M2',7600.00,'desc_14','2024-04-08 12:51:48',NULL),(15,'Sellado y pintura de cornisas','ML',3500.00,'desc_15','2024-04-08 12:51:48',NULL),(16,'Preparaci贸n de superficie de cielo','M2',2100.00,'desc_16','2024-04-08 12:51:48',NULL),(17,'Aplicaci贸n de pintura de cielo','M2',7300.00,'desc_17','2024-04-08 12:51:48',NULL),(18,'Retiro de ceramica de muro ','M2',7300.00,'desc_18','2024-04-08 12:51:48',NULL),(19,'Preparacion de superficie ','M2',3100.00,'desc_19','2024-04-08 12:51:48',NULL),(20,'Provision e instalacion de ceramica de muro ','M2',18500.00,'desc_20','2024-04-08 12:51:48',NULL),(21,'Fraguado de ceramica de muro ','M2',4100.00,'desc_21','2024-04-08 12:51:48',NULL),(22,'Retiro e instalacion de artefacto','UN',32000.00,'desc_22','2024-04-08 12:51:48',NULL),(23,'Revoque muro','ML',3500.00,'desc_23','2024-04-08 12:51:48',NULL),(24,'Retiro de placas fisuradas','UN',4900.00,'desc_24','2024-04-08 12:51:48',NULL),(25,'Instalaci贸n de placas nuevas','UN',11500.00,'desc_25','2024-04-08 12:51:48',NULL),(26,'Retiro de pilares fisurados','UN',9500.00,'desc_26','2024-04-08 12:51:48',NULL),(27,'Instalaci贸n de pilares nuevos','UN',16500.00,'desc_27','2024-04-08 12:51:48',NULL),(28,'Retiro de bardas fisuradas','UN',3500.00,'desc_28','2024-04-08 12:51:48',NULL),(29,'Instalaci贸n de bardas nuevas','UN',8100.00,'desc_29','2024-04-08 12:51:48',NULL),(30,'Aplicaci贸n de pintura de muro ','M2',8200.00,'desc_30','2024-04-08 12:51:48',NULL),(31,'Flete de materiales','UN',30000.00,'desc_31','2024-04-08 12:51:48',NULL),(32,'Protecci贸n de areas de trabajo','GL',35000.00,'desc_32','2024-04-08 12:51:48',NULL),(33,'Acomodo de mobiliario','GL',50000.00,'desc_33','2024-04-08 12:51:48',NULL),(34,'Retiro de escombros','M3',50000.00,'desc_34','2024-04-08 12:51:48',NULL),(35,'Aseo y entrega ','GL',75000.00,'desc_35','2024-04-08 12:51:48',NULL);
 /*!40000 ALTER TABLE `repairs` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sectors`
---
-
 DROP TABLE IF EXISTS `sectors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -430,23 +325,14 @@ CREATE TABLE `sectors` (
   `sector_description` text,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_sector`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sectors`
---
 
 LOCK TABLES `sectors` WRITE;
 /*!40000 ALTER TABLE `sectors` DISABLE KEYS */;
-INSERT INTO `sectors` VALUES (1,'fachada frontal ','desc_repair_1','2024-05-08 00:46:21'),(2,'living comedor','desc_repair_2','2024-05-08 00:46:21'),(3,'dormitorio 1 (principal)','desc_repair_3','2024-05-08 00:46:21'),(4,'ba?o (1er nive)','desc_repair_4','2024-05-08 00:46:21'),(5,'ba?o (2do nivel)','desc_repair_5','2024-05-08 00:46:21'),(6,'cocina','desc_repair_6','2024-05-08 00:46:21'),(7,'caja escala / sala de estar','desc_repair_7','2024-05-08 00:46:21'),(8,'dormitorio 2','desc_repair_8','2024-05-08 00:46:21'),(9,'cierre perimetral','desc_repair_9','2024-05-08 00:46:21'),(10,'logia','desc_repair_10','2024-05-08 00:46:21'),(11,'bodega','desc_repair_11','2024-05-08 00:46:21'),(12,'sala de estar primer piso','desc_repair_12','2024-05-08 00:46:21'),(13,'sala de estar segundo piso','desc_repair_13','2024-05-08 00:46:21'),(14,'hall de acceso','desc_repair_14','2024-05-08 00:46:21'),(15,'pasillo','desc_repair_15','2024-05-08 00:46:21');
+INSERT INTO `sectors` VALUES (1,'fachada frontal ','desc_repair_1','2024-04-08 12:51:48'),(2,'living comedor','desc_repair_2','2024-04-08 12:51:48'),(3,'dormitorio 1 (principal)','desc_repair_3','2024-04-08 12:51:48'),(4,'ba?o (1er nive)','desc_repair_4','2024-04-08 12:51:48'),(5,'ba?o (2do nivel)','desc_repair_5','2024-04-08 12:51:48'),(6,'cocina','desc_repair_6','2024-04-08 12:51:48'),(7,'caja escala / sala de estar','desc_repair_7','2024-04-08 12:51:48'),(8,'dormitorio 2','desc_repair_8','2024-04-08 12:51:48'),(9,'cierre perimetral','desc_repair_9','2024-04-08 12:51:48'),(10,'logia','desc_repair_10','2024-04-08 12:51:48'),(11,'bodega','desc_repair_11','2024-04-08 12:51:48'),(12,'sala de estar primer piso','desc_repair_12','2024-04-08 12:51:48'),(13,'sala de estar segundo piso','desc_repair_13','2024-04-08 12:51:48'),(14,'hall de acceso','desc_repair_14','2024-04-08 12:51:48'),(15,'pasillo','desc_repair_15','2024-04-08 12:51:48');
 /*!40000 ALTER TABLE `sectors` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sessions`
---
-
 DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -455,23 +341,14 @@ CREATE TABLE `sessions` (
   `expires` int unsigned NOT NULL,
   `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   PRIMARY KEY (`session_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sessions`
---
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('IS42TgfKdFIvzpdVkLNUUN_FVrU2jdho',1715216114,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"passport\":{\"user\":1},\"flash\":{}}');
+INSERT INTO `sessions` VALUES ('ycQZ83ess7iOYYzOTMsXfAZz7my4On4j',1715180897,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"passport\":{\"user\":1},\"flash\":{}}');
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `status`
---
-
 DROP TABLE IF EXISTS `status`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -480,22 +357,14 @@ CREATE TABLE `status` (
   `status_name` varchar(40) NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `status`
---
 
 LOCK TABLES `status` WRITE;
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
-INSERT INTO `status` VALUES (1,'No iniciado','2024-05-08 00:46:21'),(2,'En proceso','2024-05-08 00:46:21'),(3,'completado','2024-05-08 00:46:21');
+INSERT INTO `status` VALUES (1,'No iniciado','2024-04-08 12:51:48'),(2,'En proceso','2024-04-08 12:51:48'),(3,'completado','2024-04-08 12:51:48');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'asesoresprime_cub'
---
 /*!50003 DROP PROCEDURE IF EXISTS `addDamageRepair` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -506,7 +375,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `addDamageRepair`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addDamageRepair`(
         IN damage_name VARCHAR(100),
         IN damage_unit VARCHAR(10),
         IN damage_desc VARCHAR(200),
@@ -556,7 +425,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `budget`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `budget`(
         IN id_adviser INT,
         IN id_case INT)
 BEGIN
@@ -568,8 +437,8 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        inner join clients
+        on clients.id_client=c.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -620,9 +489,8 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER // 
-        DROP PROCEDURE IF EXISTS dataInsert;
-        CREATE PROCEDURE dataInsert(
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dataInsert`(
         IN id_sector INT,
         IN id_c_d_s INT,
         IN id_damage INT,
@@ -632,27 +500,27 @@ DELIMITER //
         IN img2 VARCHAR(200),
         IN img3 VARCHAR(200),
         IN customized INT)
-        BEGIN
-        SELECT 'Se est谩 ingresando al procedure' AS Mensaje;
-                IF id_c_d_s = 0   THEN
+BEGIN
+        SELECT 'Se está ingresando al procedure' AS Mensaje;
+                IF id_c_d_s = 0  THEN
                 
-                        SELECT 'Se est谩 ingresando un nuevo da帽o' AS Mensaje;
+                        SELECT 'Se está ingresando un nuevo da?o' AS Mensaje;
    
-                        INSERT INTO c_d_s(c_d_s.id_c_d_s,c_d_s.id_damage,c_d_s.id_case,c_d_s.id_sector)
+                        INSERT INTO c_d_s(id_c_d_s,id_damage,id_case,id_sector)
                         VALUES (0,id_damage,id_case,id_sector);
 
                         SET @ultimo_id = LAST_INSERT_ID();
 
-                        INSERT INTO d_c_d_s(d_c_d_s.id_d_c_d_s,d_c_d_s.id_c_d_s,d_c_d_s.size,d_c_d_s.customized)
+                        INSERT INTO d_c_d_s(id_d_c_d_s,id_c_d_s,size,customized)
                         VALUES (0,@ultimo_id,damage_size,customized);
 
                         SET @ultimo2_id = LAST_INSERT_ID();
 
-                        INSERT INTO damage_images(damage_images.id_damage_images,damage_images.id_d_c_d_s, damage_images.image1, damage_images.image2, damage_images.image3)
+                        INSERT INTO damage_images(id_damage_images,id_d_c_d_s, image1, image2, image3)
                         VALUES (0,@ultimo2_id, img1,img2,img3);
                 ELSE
-                        SELECT 'Se est谩 actualizando un nuevo da帽o' AS Mensaje;
-                        UPDATE c_d_s SET c_d_s.id_damage = id_damage WHERE c_d_s.id_c_d_s  = id_c_d_s and c_d_s.id_sector=id_sector;
+                        SELECT 'Se está actualizando un nuevo da?o' AS Mensaje;
+                        UPDATE c_d_s SET c_d_s.id_damage = id_damage WHERE id_c_d_s  = id_c_d_s;
 
                         INSERT INTO d_c_d_s(id_d_c_d_s,id_c_d_s,size,customized)
                         VALUES (0,id_c_d_s,damage_size,customized);
@@ -663,8 +531,7 @@ DELIMITER //
                         VALUES (0,@ultimo2_id, img1,img2,img3);
 
                 END IF;
-         END //
-
+         END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -680,7 +547,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `dataUpdate`(IN id_damage INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `dataUpdate`(IN id_damage INT,
         IN id_c_d_s INT,
         IN damage_size INT,
         IN img1 VARCHAR(200),
@@ -712,7 +579,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `queryDamages`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `queryDamages`(
         IN id_sector INT,
         IN id_adviser INT,
         IN id_case INT)
@@ -726,8 +593,8 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        inner join clients
+        on clients.id_client=c.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -771,7 +638,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `queryDamages2`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `queryDamages2`(
         IN id_adviser INT,
         IN id_case INT)
 BEGIN
@@ -783,8 +650,8 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        inner join clients
+        on clients.id_client=c.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -828,7 +695,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `showAllCases`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `showAllCases`(
     IN ntable VARCHAR(40),
     IN nfield VARCHAR(40),
     IN op VARCHAR(40),
@@ -837,8 +704,8 @@ CREATE PROCEDURE `showAllCases`(
 BEGIN
     
     SET @query = CONCAT('SELECT cases.id_case, status.status_name, cases.case_date, advisers.id_adviser, advisers.adviser_name, 
-    advisers.adviser_lastname, incidents.incident_code, asesoresprime_web.6Scr5XN_clientes.nombre client_name, asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname, 
-    asesoresprime_web.6Scr5XN_clientes.rut client_rut, asesoresprime_web.6Scr5XN_clientes.direccion  client_address FROM cases INNER JOIN asesoresprime_web.6Scr5XN_clientes ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases.id_client 
+    advisers.adviser_lastname, incidents.incident_code, clients.client_name, clients.client_lastname, 
+    clients.client_rut, clients.client_address FROM cases INNER JOIN clients ON clients.id_client = cases.id_client 
     LEFT JOIN advisers 
     ON advisers.id_adviser = cases.id_adviser 
     INNER JOIN status 
@@ -868,20 +735,19 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
-DROP PROCEDURE IF EXISTS showCase;
-DELIMITER ;; 
-CREATE PROCEDURE `showCase`(
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `showCase`(
         IN id_case INT,
         IN id_adviser INT)
 BEGIN
-        SELECT cl.client_address, cl.email client_email, cl.nombre client_name, cl.apellidos client_lastname, cl.rut client_rut,cl.cliente_id id_client, cl.telefono client_phone, 
+        SELECT cl.client_address, cl.client_email, cl.client_name, cl.client_lastname, cl.client_rut,cl.id_client, cl.client_phone,
          a.adviser_name, a.adviser_lastname, a.adviser_rut,a.adviser_email,a.adviser_username,a.adviser_role,a.adviser_phone,
-               i.incident_code, i.incident_date, i.incident_description,i.incident_type,cl.ciudad, i.incident_scale,
+               i.incident_code, i.incident_date, i.incident_description,
                c.id_case, c.case_img1,c.case_img2,a.id_adviser,
                st.status_name, st.id_status               
                FROM cases as c
-               INNER JOIN asesoresprime_web.6Scr5XN_clientes as cl
-               ON cl.cliente_id=c.id_client
+               INNER JOIN Clients as cl
+               ON cl.id_client=c.id_client
                LEFT JOIN advisers as a
                ON a.id_adviser=c.id_adviser
                INNER JOIN status as st
@@ -907,7 +773,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `showCases`(IN adviser INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `showCases`(IN adviser INT)
 BEGIN
         SELECT 
         (select count(cs2.id_sector) from c_d_s cs2 inner join cases c2 
@@ -916,10 +782,10 @@ BEGIN
         cases.case_date,
         cases.img1,
         cases.img2,
-        asesoresprime_web.6Scr5XN_clientes.nombre client_name, 
-        asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname,
-        asesoresprime_web.6Scr5XN_clientes.direccion client_address, 
-        asesoresprime_web.6Scr5XN_clientes.rut client_rut,
+        clients.client_name, 
+        clients.client_lastname,
+        clients.client_address, 
+        clients.client_rut,
         status.status_name
         from c_d_s  as cs
         inner join cases
@@ -928,8 +794,8 @@ BEGIN
         on advisers.id_adviser=cases.id_adviser
         inner join status
         on status.id_status=cases.id_status
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases.id_client
+        inner join clients
+        on clients.id_client=cases.id_client
         where advisers.id_adviser=1
         group by cs.id_case;
 
@@ -949,7 +815,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE PROCEDURE `showSectors`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `showSectors`(
         IN id_adviser INT,
         IN id_case INT)
 BEGIN
@@ -966,17 +832,17 @@ BEGIN
             where cs2.id_sector=cs.id_sector AND c2.id_case=id_case and c2.id_adviser=id_adviser and cs2.id_damage is not null)  as ndamages, 
             
         s.sector_name,s.id_sector,d.sector_w_size,d.sector_h_size,d.sector_l_size,d.img1, d.img2,
-        asesoresprime_web.6Scr5XN_clientes.nombre as client_name, 
-        asesoresprime_web.6Scr5XN_clientes.apellidos as client_lastname, 
-        asesoresprime_web.6Scr5XN_clientes.direccion as client_address, 
-        asesoresprime_web.6Scr5XN_clientes.rut as client_rut
+        clients.client_name as client_name, 
+        clients.client_lastname as client_lastname, 
+        clients.client_address as client_address, 
+        clients.client_rut as client_rut
 
         from cases c
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
-        left join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        left join clients
+        on clients.id_client=c.id_client
 
         left join status
         on status.id_status=c.id_status
@@ -1018,4 +884,3 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-08 10:55:33

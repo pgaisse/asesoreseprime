@@ -216,7 +216,7 @@ async function bodybuilder_pdf(data, dataBody) {
             ${scriptStart}Nombre ${scriptMiddle} ${data[0].client_name} ${data[0].client_lastname}${scriptEnd}
             ${scriptStart}Rut ${scriptMiddle} ${data[0].client_rut}${scriptEnd}
             ${scriptStart}Dirección ${scriptMiddle} ${data[0].client_address}${scriptEnd}
-            ${scriptStart}Ciudad ${scriptMiddle} ${data[0].client_city}${scriptEnd}
+            ${scriptStart}Ciudad ${scriptMiddle} ${data[0].ciudad}${scriptEnd}
             ${scriptStart}Email ${scriptMiddle} ${data[0].client_email}${scriptEnd}
             ${scriptStart}Fono ${scriptMiddle} ${data[0].client_phone}${scriptEnd}
             </div>
@@ -227,10 +227,19 @@ async function bodybuilder_pdf(data, dataBody) {
             ${scriptStart}Fecha del Siniestro ${scriptMiddle} ${data[0].incident_date} ${scriptEnd}
             ${scriptStart}Intensidad ${scriptMiddle} ${data[0].incident_scale} ${scriptEnd}
             ${scriptStart}Información adicional ${scriptMiddle} ${data[0].incident_description} ${scriptEnd}
-            <tr><td colspan= 2 style="text-decoration: underline" ><h3>Fotos Fachada </h3><td></tr>
-            <tr> <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>
-            <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>
-            </tr>
+            <tr><td colspan= 2 style="text-decoration: underline" ><h3>Fotos Fachada </h3><td></tr><tr>`
+            imgf1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1));
+            imgf2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2));
+
+            if (imgf1) {
+                ` <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+          
+            }
+            if (imgf2) {
+                `<td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+             
+            }
+             `</tr>
         
 
             </table>

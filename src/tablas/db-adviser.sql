@@ -20,9 +20,9 @@ CREATE SCHEMA IF NOT EXISTS `asesoresprime_cub` ;
 USE `asesoresprime_cub` ;
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`advisers`
+-- Table `advisers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`advisers` (
+CREATE TABLE IF NOT EXISTS `advisers` (
   `id_adviser` INT(11) NOT NULL AUTO_INCREMENT,
   `adviser_username` VARCHAR(16) NOT NULL,
   `adviser_password` VARCHAR(60) NOT NULL,
@@ -38,9 +38,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`advisers` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`damages`
+-- Table `damages`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damages` (
+CREATE TABLE IF NOT EXISTS `damages` (
   `id_damage` INT(11) NOT NULL AUTO_INCREMENT,
   `damage_name` VARCHAR(150) NOT NULL,
   `damage_description` TEXT NULL DEFAULT NULL,
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damages` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`repairs`
+-- Table `repairs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`repairs` (
+CREATE TABLE IF NOT EXISTS `repairs` (
   `id_repair` INT(11) NOT NULL AUTO_INCREMENT,
   `repair_name` VARCHAR(150) NOT NULL,
   `repair_unit` VARCHAR(150) NOT NULL,
@@ -64,9 +64,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`repairs` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`sectors`
+-- Table `sectors`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`sectors` (
+CREATE TABLE IF NOT EXISTS `sectors` (
   `id_sector` INT(11) NOT NULL AUTO_INCREMENT,
   `sector_name` VARCHAR(150) NOT NULL,
   `sector_description` TEXT NULL DEFAULT NULL,
@@ -75,9 +75,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`sectors` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`clients`
+-- Table `clients`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`clients` (
+CREATE TABLE IF NOT EXISTS `clients` (
   `id_client` INT(11) NOT NULL AUTO_INCREMENT,
   `client_name` VARCHAR(100) NOT NULL,
   `client_lastname` VARCHAR(100) NOT NULL,
@@ -91,9 +91,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`clients` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`incidents`
+-- Table `incidents`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`incidents` (
+CREATE TABLE IF NOT EXISTS `incidents` (
   `id_incident` INT(11) NOT NULL AUTO_INCREMENT,
   `incident_code` VARCHAR(120) NOT NULL,
   `incident_date` DATE NOT NULL,
@@ -103,9 +103,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`incidents` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`status`
+-- Table `status`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`status` (
+CREATE TABLE IF NOT EXISTS `status` (
   `id_status` INT(11) NOT NULL,
   `status_name` VARCHAR(40) NOT NULL,
   `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -113,9 +113,9 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`status` (
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`cases`
+-- Table `cases`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`cases` (
+CREATE TABLE IF NOT EXISTS `cases` (
   `id_case` INT(11) NOT NULL AUTO_INCREMENT,
   `id_status` INT(11) NOT NULL,
   `id_adviser` INT(11),
@@ -128,30 +128,30 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`cases` (
   PRIMARY KEY (`id_case`),
   CONSTRAINT `fk_cases_status1`
     FOREIGN KEY (`id_status`)
-    REFERENCES `asesoresprime_cub`.`status` (`id_status`)
+    REFERENCES `status` (`id_status`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cases_advisers1`
     FOREIGN KEY (`id_adviser`)
-    REFERENCES `asesoresprime_cub`.`advisers` (`id_adviser`)
+    REFERENCES `advisers` (`id_adviser`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cases_clients1`
     FOREIGN KEY (`id_client`)
-    REFERENCES `asesoresprime_cub`.`clients` (`id_client`)
+    REFERENCES `clients` (`id_client`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_cases_incidents1`
     FOREIGN KEY (`id_incident`)
-    REFERENCES `asesoresprime_cub`.`incidents` (`id_incident`)
+    REFERENCES `incidents` (`id_incident`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`damages_repairs`
+-- Table `damages_repairs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damages_repairs` (
+CREATE TABLE IF NOT EXISTS `damages_repairs` (
   `id_damage_repair` INT(11) NOT NULL AUTO_INCREMENT,
   `id_damage` INT(11) NOT NULL,
   `id_repair` INT(11) NOT NULL,
@@ -159,20 +159,20 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damages_repairs` (
   PRIMARY KEY (`id_damage_repair`),
   CONSTRAINT `fk_damages_has_repairs_damages1`
     FOREIGN KEY (`id_damage`)
-    REFERENCES `asesoresprime_cub`.`damages` (`id_damage`)
+    REFERENCES `damages` (`id_damage`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_damages_has_repairs_repairs1`
     FOREIGN KEY (`id_repair`)
-    REFERENCES `asesoresprime_cub`.`repairs` (`id_repair`)
+    REFERENCES `repairs` (`id_repair`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`c_d_s`
+-- Table `c_d_s`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`c_d_s` (
+CREATE TABLE IF NOT EXISTS `c_d_s` (
   `id_c_d_s` INT NOT NULL AUTO_INCREMENT,
   `id_damage` INT(11),
   `id_sector` INT(11) NOT NULL,
@@ -180,25 +180,25 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`c_d_s` (
   PRIMARY KEY (`id_c_d_s`),
   CONSTRAINT `fk_cases_has_damages_damages1`
     FOREIGN KEY (`id_damage`)
-    REFERENCES `asesoresprime_cub`.`damages` (`id_damage`)
+    REFERENCES `damages` (`id_damage`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_c_d_sectors1`
     FOREIGN KEY (`id_sector`)
-    REFERENCES `asesoresprime_cub`.`sectors` (`id_sector`)
+    REFERENCES `sectors` (`id_sector`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_c_d_cases1`
     FOREIGN KEY (`id_case`)
-    REFERENCES `asesoresprime_cub`.`cases` (`id_case`)
+    REFERENCES `cases` (`id_case`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`dimentions`
+-- Table `dimentions`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`dimentions` (
+CREATE TABLE IF NOT EXISTS `dimentions` (
   `id_dimention` INT NOT NULL AUTO_INCREMENT,
   `sector_w_size` DECIMAL(19,2) NOT NULL,
   `sector_l_size` DECIMAL(19,2) NOT NULL,
@@ -212,21 +212,21 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`dimentions` (
   PRIMARY KEY (`id_dimention`),
   CONSTRAINT `fk_dimentions_sectors1`
     FOREIGN KEY (`id_sector`)
-    REFERENCES `asesoresprime_cub`.`sectors` (`id_sector`)
+    REFERENCES `sectors` (`id_sector`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_dimentions_cases1`
     FOREIGN KEY (`id_case`)
-    REFERENCES `asesoresprime_cub`.`cases` (`id_case`)
+    REFERENCES `cases` (`id_case`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`d_c_d_s`
+-- Table `d_c_d_s`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`d_c_d_s` (
+CREATE TABLE IF NOT EXISTS `d_c_d_s` (
   `id_d_c_d_s` INT NOT NULL AUTO_INCREMENT,
   `id_c_d_s` INT NOT NULL,
   `size` DECIMAL(10) NOT NULL,
@@ -234,14 +234,14 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`d_c_d_s` (
   PRIMARY KEY (`id_d_c_d_s`),
   CONSTRAINT `fk_d_c_d_s_c_d_s1`
     FOREIGN KEY (`id_c_d_s`)
-    REFERENCES `asesoresprime_cub`.`c_d_s` (`id_c_d_s`)
+    REFERENCES `c_d_s` (`id_c_d_s`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`damage_images`
+-- Table `damage_images`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damage_images` (
+CREATE TABLE IF NOT EXISTS `damage_images` (
   `id_damage_images` INT NOT NULL AUTO_INCREMENT,
   `image1` VARCHAR(200) NOT NULL,
   `image2` VARCHAR(200) NULL,
@@ -250,21 +250,20 @@ CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`damage_images` (
   PRIMARY KEY (`id_damage_images`),
   CONSTRAINT `fk_damage_images_d_c_d_s1`
     FOREIGN KEY (`id_d_c_d_s`)
-    REFERENCES `asesoresprime_cub`.`d_c_d_s` (`id_d_c_d_s`)
+    REFERENCES `d_c_d_s` (`id_d_c_d_s`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 
 -- -----------------------------------------------------
--- Table `asesoresprime_cub`.`budgets`
+-- Table `budgets`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `asesoresprime_cub`.`budgets` (
+CREATE TABLE IF NOT EXISTS `budgets` (
   `cases_id_case` INT(11) NOT NULL AUTO_INCREMENT,
   `budget` VARCHAR(300) NULL,
   `id_case` INT(11) NOT NULL,
   `createAt` TIMESTAMP NOT NULL,
-  INDEX `fk_table1_cases1_idx` (`cases_id_case` ASC) VISIBLE,
   CONSTRAINT `fk_table1_cases1`
     FOREIGN KEY (`cases_id_case`)
-    REFERENCES `asesoresprime_cub`.`cases` (`id_case`)
+    REFERENCES `cases` (`id_case`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
