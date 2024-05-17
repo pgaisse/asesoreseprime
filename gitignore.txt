@@ -1,5 +1,4 @@
-# Dependencias
-node_modules/
+node_modules
 src/backup/keys.js
 src/backup/asesoresprime_cub_procedures.sql
 src/backup/asesoresprime_cub_tables_data.sql
