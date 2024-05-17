@@ -20,4 +20,4 @@ yarn-error.log*
 
 # Otros archivos y carpetas
 src/keys.js
-src/backup/*.*
+src/backup/
