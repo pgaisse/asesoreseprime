@@ -8,11 +8,12 @@ const flash = require('connect-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const bodyParser = require('body-parser');
 
+  
 
 const uuid = require('uuid');
 const unicid = uuid.v4();
 
-// MULTER
+// MULTER HOlas mundo 2
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const { database } = require('./backup/keys');
