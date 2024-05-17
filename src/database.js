@@ -1,9 +1,8 @@
 const mysql = require('mysql');
 const { promisify }= require('util');
-let pool;
 
 const { database } = require('./backup/keys')
-sql.createPool(database);
+const pool = mysql.createPool(database);
 
 
 
