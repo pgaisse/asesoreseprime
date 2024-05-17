@@ -1,15 +1,71 @@
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
-
 <div class="container p-4">
+
     <div class="row">
         <div class="col-md-10 mx-auto">
             <div class="card text-center">
+
+
                 <div class="card-body" align="left">
+                    <h4>Pre-Casos</h4>
+                    <table class="table table-hover" style="margin:auto;display:block;overflow-x:auto;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Acciones
+                                </th>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    num. Siniestro
+                                </th>
+                                <th>
+                                    Siniestro
+                                </th>
+                                <th>
+                                    Nombres
+                                </th>
+                                <th>
+                                    Apellidos
+                                </th>
+                                <th>
+                                    Direccion
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each resultsClients as |c|}}
+                            <tr>
+                                <td>
+                                    <a href="/addCase?id_client={{c.id_client}}&ts={{indicent_type}}"><i
+                                            class="fa-solid fa-file-circle-plus"></i></a>&nbsp <a href=""><i
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                                <td>
+                                    {{c.id_client}}
+                                </td>
+                                <td>
+                                    {{c.numero_caso}}
+                                </td>
+                                <td>
+                                    {{c.indicent_type}}
+                                </td>
+                                <td>
+                                    {{c.client_name}}
+                                </td>
+                                <td>
+                                    {{c.client_lastname}}
+                                </td>
+
+                                <td>
+                                    {{c.client_address}}
+                                </td>
+                            </tr>
+
+                            {{/each}}
+                        </tbody>
+
+                    </table>
                     <h4>Lista de Casos</h4>
 
                     <a href="#" class="form-control" id="toggleButton">Buscar</a>
@@ -35,10 +91,11 @@
                                 </tr>
                                 <tr>
                                     <input class="form-control" id="search_input" name="search_input" type="search" />
-                                    
+
                                 </tr>
                                 <tr>
-                                    <button class="btn btn-success btn-block form-control"><i class="fas fa-search"></i></button>
+                                    <button class="btn btn-success btn-block form-control"><i
+                                            class="fas fa-search"></i></button>
                                 </tr>
 
 
@@ -55,6 +112,7 @@
 
                         </table>
                     </div>
+
                     <table class="table table-hover" id="tabletable">
 
                         <thead>
@@ -62,12 +120,13 @@
                                 <th><i class="fa-solid fa-bolt"></i></th>
                                 <th> Id</th>
                                 <th>Estado</th>
+                                <th>Cliente</th>
                                 <th>Fecha del caso</th>
                                 <th>Asesor</th>
                                 <th>#Siniestro</th>
                                 <th>Rut propietario</th>
                                 <th>Dirección</th>
-                                <th>Presupuesto</th>
+                                
                             </tr>
 
                         </thead>
@@ -78,6 +137,7 @@
                                             class="fa-solid fa-glasses"></i></i></a></td>
                                 <td>#{{this.id_case}}</td>
                                 <td>{{this.status_name}}</td>
+                                <td>{{this.client_name}}</td>
                                 <td>{{this.case_date}}</td>
 
                                 {{#if this.adviser_name}}
@@ -90,7 +150,7 @@
                                 <td>#{{this.incident_code}}</td>
                                 <td>{{this.client_rut}}</td>
                                 <td>{{this.client_address}}</td>
-                                <td><a href="/createPdf?id_case={{this.id_case}}"><i class="fa-solid fa-file-lines">Presupuesto</i></a></td>
+                                
                             </tr>
                             {{/each}}
                         </tbody>
@@ -114,3 +174,10 @@
 
     </div>
 </div>
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>

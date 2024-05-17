@@ -12,7 +12,6 @@ module.exports = {
         return res.redirect('/');
     },
     isAdmin(req, res, next){
-        console.log("   req                                : "+req.user.adviser_role) ;
 
         if (req.isAuthenticated() && req.user.adviser_role=='admin') {
             return next();

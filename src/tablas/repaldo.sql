@@ -116,8 +116,8 @@ DROP TABLE IF EXISTS `cases`;
 CREATE TABLE `cases` (
   `id_case` int NOT NULL AUTO_INCREMENT,
   `id_status` int NOT NULL,
+  `num_case` int NOT NULL,
   `id_adviser` int DEFAULT NULL,
-  `id_client` int NOT NULL,
   `id_incident` int NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `case_date` date NOT NULL,
@@ -244,10 +244,12 @@ CREATE TABLE `damages` (
   `id_damage` int NOT NULL AUTO_INCREMENT,
   `damage_name` varchar(150) NOT NULL,
   `damage_description` text,
+  `id_incident` int(11),
   `damage_unit` varchar(40) NOT NULL,
   `createdby` varchar(40) DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_damage`)
+  PRIMARY KEY (`id_damage`),
+  CONSTRAINT `fk_c_d_cases1` FOREIGN KEY (`id_incident`) REFERENCES `incidents` (`id_incident`) ON DELETE CASCADE
 ) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -280,6 +282,9 @@ CREATE TABLE `damages_repairs` (
   CONSTRAINT `fk_damages_has_repairs_repairs1` FOREIGN KEY (`id_repair`) REFERENCES `repairs` (`id_repair`) ON DELETE CASCADE
 ) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
 
 --
 -- Dumping data for table `damages_repairs`
@@ -325,26 +330,28 @@ INSERT INTO `dimentions` VALUES (1,10.00,20.00,1.00,'1979e937-15f4-4051-8e47-61a
 /*!40000 ALTER TABLE `dimentions` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `incidents`
---
 
-DROP TABLE IF EXISTS `incidents`;
+
+
+DROP TABLE IF EXISTS `cases_clients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `incidents` (
-  `id_incident` int NOT NULL AUTO_INCREMENT,
-  `incident_code` varchar(120) NOT NULL,
-  `incident_type` varchar(120) NOT NULL,
-  `incident_scale` varchar(120) NOT NULL,
-  `incident_date` date NOT NULL,
-  `incident_description` text NOT NULL,
+CREATE TABLE `cases_clients` (
+  `id_case_clients` int NOT NULL AUTO_INCREMENT,
+  `id_case` int NOT NULL,
+  `id_client` int NOT NULL,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_incident`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`id_case_clients`),
+  KEY `fk_cases_has_cases_clients1` (`id_case`),
+  KEY `fk_cases_has_clients_clients1` (`id_client`),
+  CONSTRAINT `fk_cases_has_clients_clients1` FOREIGN KEY (`id_case`) REFERENCES `cases` (`id_case`) ON DELETE CASCADE,
+  CONSTRAINT `fk_cases_has_cases_clients1` FOREIGN KEY (`id_client`) REFERENCES `asesoresprime_web.6Scr5XN_clientes` (`id_client`) ON DELETE CASCADE
+) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
+
 -- Dumping data for table `incidents`
 --
 
@@ -364,10 +371,10 @@ CREATE TABLE `incidents` (
 --
 
 INSERT INTO `incidents` (`id_incident`, `incident_code`, `incident_date`, `incident_description`, `createdAt`, `incident_type`, `incident_scale`) VALUES
-(1, 'AK420', '2022-01-15', 'Terremoto en la regi', '2024-05-08 00:46:21', 'terremoto', 'R'),
-(2, 'AK421', '2022-01-20', 'Alerta de tsunami a lo largo de las ', '2024-05-08 00:46:21', 'terremoto', 'R'),
-(3, 'AK422', '2022-02-05', 'Inundaciones en la ciudad X debido a lluvias intensas', '2024-05-08 00:46:21', 'marepoto', 'M'),
-(4, 'AK422', '2022-02-12', 'Brote de incendios forestales en el bosque B', '2024-05-08 00:46:21', 'marepoto', 'M');
+(1, 'Sismo', '2022-01-15', 'Terremoto en la regi', '2024-05-08 00:46:21', 'terremoto', 'R'),
+(2, 'Incendio', '2022-01-20', 'Alerta de tsunami a lo largo de las ', '2024-05-08 00:46:21', 'terremoto', 'R'),
+(3, 'Rotura de cañerias', '2022-02-05', 'Inundaciones en la ciudad X debido a lluvias intensas', '2024-05-08 00:46:21', 'marepoto', 'M'),
+(4, 'Fenómenos de la naturaleza', '2022-02-12', 'Brote de incendios forestales en el bosque B', '2024-05-08 00:46:21', 'marepoto', 'M');
 
 --
 -- Indexes for dumped tables
@@ -513,6 +520,13 @@ CREATE PROCEDURE `addDamageRepair`(
         IN cadena VARCHAR(200),
         IN adviser_name VARCHAR(100))
 BEGIN
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+      BEGIN
+        SELECT 'ERROR';
+        ROLLBACK;
+      END;
+      START TRANSACTION;
+      SET AUTOCOMMIT=0;
         DECLARE longitud INT;
         DECLARE posicion INT DEFAULT 1;
         DECLARE valor VARCHAR(255);
@@ -538,9 +552,10 @@ BEGIN
             insert into damages_repairs(id_damage_repair,id_damage, id_repair)
         values (0,@ultimo_id, valor);
         END WHILE;
+        END IF;
+        COMMIT;
 
-
-        END ;;
+  END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -568,8 +583,11 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
+        inner join cases_clients
+        on cases_clients.id_case_client=c.id_case
+
         inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -633,6 +651,13 @@ DELIMITER //
         IN img3 VARCHAR(200),
         IN customized INT)
         BEGIN
+      DECLARE EXIT HANDLER FOR SQLEXCEPTION
+      BEGIN
+        SELECT 'ERROR';
+        ROLLBACK;
+      END;
+      START TRANSACTION;  
+        SET AUTOCOMMIT=0;      
         SELECT 'Se está ingresando al procedure' AS Mensaje;
                 IF id_c_d_s = 0   THEN
                 
@@ -663,6 +688,8 @@ DELIMITER //
                         VALUES (0,@ultimo2_id, img1,img2,img3);
 
                 END IF;
+                COMMIT;
+        END ;;
          END //
 
 DELIMITER ;
@@ -687,6 +714,13 @@ CREATE PROCEDURE `dataUpdate`(IN id_damage INT,
         IN img2 VARCHAR(200),
         IN img3 VARCHAR(200))
 BEGIN
+      DECLARE EXIT HANDLER FOR SQLEXCEPTION
+      BEGIN
+        SELECT 'ERROR';
+        ROLLBACK;
+      END;
+      START TRANSACTION;
+      SET AUTOCOMMIT=0;
 
         UPDATE d_c_d_s SET d_c_d_s.id_damage = id_damage WHERE id_c_d_s  = id_c_d_s;
 
@@ -695,7 +729,8 @@ BEGIN
         SET @ultimo2_id = LAST_INSERT_ID();
         INSERT INTO damage_images(id_damage_images,id_d_c_d_s, image1, image2, image3)
         VALUES (0,@ultimo2_id, img1,img2,img3);
-
+        SELECT 'OK';
+        COMMIT;
         END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -711,6 +746,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+drop procedure if EXISTS queryDamages;
 DELIMITER ;;
 CREATE PROCEDURE `queryDamages`(
         IN id_sector INT,
@@ -726,8 +762,11 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
+        inner join cases_clients
+        on cases_clients.id_case=c.id_case
+
         inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -770,6 +809,8 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+
+drop procedure if EXISTS queryDamages2;
 DELIMITER ;;
 CREATE PROCEDURE `queryDamages2`(
         IN id_adviser INT,
@@ -783,8 +824,11 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
+        inner join cases_clients
+        on cases_clients.id_case=c.id_case
+
         inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -827,6 +871,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+drop procedure if EXISTS showAllCases; 
 DELIMITER ;;
 CREATE PROCEDURE `showAllCases`(
     IN ntable VARCHAR(40),
@@ -836,18 +881,22 @@ CREATE PROCEDURE `showAllCases`(
 )
 BEGIN
     
-    SET @query = CONCAT('SELECT cases.id_case, status.status_name, cases.case_date, advisers.id_adviser, advisers.adviser_name, 
-    advisers.adviser_lastname, incidents.incident_code, asesoresprime_web.6Scr5XN_clientes.nombre client_name, asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname, 
-    asesoresprime_web.6Scr5XN_clientes.rut client_rut, asesoresprime_web.6Scr5XN_clientes.direccion  client_address FROM cases INNER JOIN asesoresprime_web.6Scr5XN_clientes ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases.id_client 
+    SET @query = CONCAT('SELECT 
+    cases.id_case, status.status_name, cases.case_date, advisers.id_adviser, advisers.adviser_name, 
+    advisers.adviser_lastname, incidents.incident_code, asesoresprime_web.6Scr5XN_clientes.nombre client_name,
+    asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname, 
+    asesoresprime_web.6Scr5XN_clientes.rut client_rut,
+    asesoresprime_web.6Scr5XN_clientes.direccion  client_address FROM cases 
+    Inner JOIN cases_clients 
+    on cases_clients.id_case=cases.id_case
+    INNER JOIN asesoresprime_web.6Scr5XN_clientes 
+    ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases_clients.id_client 
     LEFT JOIN advisers 
     ON advisers.id_adviser = cases.id_adviser 
     INNER JOIN status 
     ON status.id_status = cases.id_status 
     INNER JOIN incidents 
-    ON incidents.id_incident = cases.id_incident WHERE ', ntable, '.', nfield, ' ', op, ' "', nvalue, '"
-    ORDER BY (cases.id_adviser IS NULL) DESC;
-    
-    ');
+    ON incidents.id_incident = cases.id_incident WHERE ', ntable, '.', nfield, ' ', op, ' "', nvalue, '";');
     
     
     PREPARE stmt FROM @query;
@@ -874,14 +923,16 @@ CREATE PROCEDURE `showCase`(
         IN id_case INT,
         IN id_adviser INT)
 BEGIN
-        SELECT cl.client_address, cl.email client_email, cl.nombre client_name, cl.apellidos client_lastname, cl.rut client_rut,cl.cliente_id id_client, cl.telefono client_phone, 
+        SELECT cl.direccion client_address, cl.email client_email, cl.nombre client_name, cl.apellidos client_lastname, cl.rut client_rut,cl.cliente_id id_client, cl.telefono client_phone, 
          a.adviser_name, a.adviser_lastname, a.adviser_rut,a.adviser_email,a.adviser_username,a.adviser_role,a.adviser_phone,
-               i.incident_code, i.incident_date, i.incident_description,i.incident_type,cl.ciudad, i.incident_scale,
+               i.incident_code, i.incident_date, i.incident_description,i.incident_type,(select p2.provincia from asesoresprime_web.6Scr5XN_clientes c2 inner join asesoresprime_web.6Scr5XN_provincias p2 ON p2.id=c2.ciudad where c2.cliente_id=cl.cliente_id) client_city, i.incident_scale,
                c.id_case, c.case_img1,c.case_img2,a.id_adviser,
                st.status_name, st.id_status               
                FROM cases as c
+               INNER JOIN cases_clients
+               ON cases_clients.id_case=c.id_case
                INNER JOIN asesoresprime_web.6Scr5XN_clientes as cl
-               ON cl.cliente_id=c.id_client
+               ON cl.cliente_id=cases_clients.id_client
                LEFT JOIN advisers as a
                ON a.id_adviser=c.id_adviser
                INNER JOIN status as st
@@ -948,6 +999,8 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+
+drop procedure if EXISTS showSectors;
 DELIMITER ;;
 CREATE PROCEDURE `showSectors`(
         IN id_adviser INT,
@@ -974,9 +1027,11 @@ BEGIN
         from cases c
         inner join advisers a
         on a.id_adviser=c.id_adviser
+        INNER JOIN cases_clients
+        ON cases_clients.id_case=c.id_case
 
         left join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         left join status
         on status.id_status=c.id_status
@@ -1004,18 +1059,34 @@ BEGIN
         
         END ;;
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-08 10:55:33
+
+drop procedure IF EXISTS addCase;
+DELIMITER ;;
+
+CREATE PROCEDURE `addCase`(
+        IN id_client INT,
+        IN incident_first VARCHAR(10)
+        )
+BEGIN
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+    SET AUTOCOMMIT=0;
+    SET @filtro = CONCAT(incident_first, '%');
+    SET @status = (select id_incident  from incidents where incident_code like @filtro);
+        INSERT INTO cases (id_case, id_incident, id_status, case_date)
+        values (0, @status,1, (select fecha_siniestro from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client)) ;           
+        SELECT CONCAT('Se está ingresando al procedure', @status ) AS Mensaje;
+        SET @ultimo_id = LAST_INSERT_ID();
+        insert into cases_clients (id_client,id_case)
+        values (id_client,@ultimo_id);
+        SELECT 'OK';
+        COMMIT;
+
+END ;;
+DELIMITER ;

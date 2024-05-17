@@ -142,7 +142,7 @@ async function bodybuilder(data, dataBody) {
     let row = "";
     let i = 1;
     let j = 1;
- 
+
     console.log(data);
     for (let sectorKey in dataBody) {
         row = row + `<tr><td colspan=6 style="text-align:left; text-transform: capitalize;"><h7><b>${dataBody[sectorKey].sector_name}</b></h7></td></tr>`
@@ -161,16 +161,17 @@ async function bodybuilder(data, dataBody) {
     return html2;
 }
 async function bodybuilder_pdf(data, dataBody) {
-    const scriptStart=`<tr style='height:40px;'><td style='width:50%px;'><b>`
-    const scriptMiddle= `</b></td> <td>: `
-    const scriptEnd='</td></tr>'
+    const scriptStart = `<tr style='height:40px;'><td style='width:50%px;'><b>`
+    const scriptMiddle = `</b></td> <td style="margin:10px"> <span> `
+    const scriptEnd = '</span></td></tr>'
     const route = "img_m/"
     const resG_w = 1920;
     const resG_h = 1080;
     const square = 300;
+    let row = "";
     const imagesize_w = square
-    const imagesize_h=square*resG_h/resG_w;
-    html = `
+    const imagesize_h = square * resG_h / resG_w;
+    row = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -211,12 +212,12 @@ async function bodybuilder_pdf(data, dataBody) {
             <div class="row" style="padding-left:20px">
             
             
-            <table class='table'">
+            <table class='table table-hover'">
             <tr><td colspan= 2 style="text-decoration: underline" ><h3>Datos del Asegurado</h3><td></tr>
             ${scriptStart}Nombre ${scriptMiddle} ${data[0].client_name} ${data[0].client_lastname}${scriptEnd}
             ${scriptStart}Rut ${scriptMiddle} ${data[0].client_rut}${scriptEnd}
             ${scriptStart}Dirección ${scriptMiddle} ${data[0].client_address}${scriptEnd}
-            ${scriptStart}Ciudad ${scriptMiddle} ${data[0].ciudad}${scriptEnd}
+            ${scriptStart}Ciudad ${scriptMiddle} ${data[0].client_city}${scriptEnd}
             ${scriptStart}Email ${scriptMiddle} ${data[0].client_email}${scriptEnd}
             ${scriptStart}Fono ${scriptMiddle} ${data[0].client_phone}${scriptEnd}
             </div>
@@ -228,18 +229,19 @@ async function bodybuilder_pdf(data, dataBody) {
             ${scriptStart}Intensidad ${scriptMiddle} ${data[0].incident_scale} ${scriptEnd}
             ${scriptStart}Información adicional ${scriptMiddle} ${data[0].incident_description} ${scriptEnd}
             <tr><td colspan= 2 style="text-decoration: underline" ><h3>Fotos Fachada </h3><td></tr><tr>`
-            imgf1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1));
-            imgf2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2));
+                imgf1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1));
+                imgf2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2));
 
-            if (imgf1) {
-                ` <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
-          
-            }
-            if (imgf2) {
-                `<td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
-             
-            }
-             `</tr>
+
+                if (imgf1) {
+                    row = row + ` <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+
+                }
+                if (imgf2) {
+                    row = row + `<td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+
+                }
+                row = row + `</tr>
         
 
             </table>
@@ -248,9 +250,8 @@ async function bodybuilder_pdf(data, dataBody) {
             
 
         </div>
-        <table class="table" style="border: none; font-size: 12px">
-        `
-    let row = "";
+        <table class="table table-hover" font-size: 12px">`
+
     let i = 1;
     let j = 1;
 
@@ -260,7 +261,7 @@ async function bodybuilder_pdf(data, dataBody) {
         let imgs1_1;
         let imgs2_1;
 
-    
+
 
         imgs1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + dataBody[sectorKey].damages[0].img1));
         imgs2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + dataBody[sectorKey].damages[0].img2));
@@ -276,7 +277,7 @@ async function bodybuilder_pdf(data, dataBody) {
         }
         row = row + "</td><td colspan=4>"
         if (imgs2) {
-            row = row +`<img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + dataBody[sectorKey].damages[0].img2)).toString('base64')}" width=${imagesize_w} height=${imagesize_h}>`
+            row = row + `<img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + dataBody[sectorKey].damages[0].img2)).toString('base64')}" width=${imagesize_w} height=${imagesize_h}>`
         }
         row = row + `</td></tr>`
         dataBody[sectorKey].damages.forEach(repair => {
@@ -291,7 +292,7 @@ async function bodybuilder_pdf(data, dataBody) {
                 </tr>
                 <td colspan=4 style='text-align:left'>`
             if (imgd1) {
-                row = row + `<img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">`    
+                row = row + `<img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">`
             }
             row = row + "</td> <td colspan=4 style='text-align:left'>"
             if (imgd2) {
@@ -299,7 +300,7 @@ async function bodybuilder_pdf(data, dataBody) {
             }
             row = row + `</td></tr>
             <tr><td colspan=8 style='text-align:left'> `
-            
+
             if (imgd3) {
                 row = row + `<img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image3)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">`
             }
@@ -312,7 +313,7 @@ async function bodybuilder_pdf(data, dataBody) {
         i = 1;
         j++
     }
-    let html2 = html + row + `</tbody></table></body></html>`
+    let html2 = row + `</tbody></table></body></html>`
 
     return html2;
 }
@@ -325,8 +326,8 @@ async function buildPDF(data, dataBody) {
     // Crea el PDF
     const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--enable-local-file-accesses'] });
     const page = await browser.newPage();
-    await page.setContent(html2,{ waitUntil: 'domcontentloaded' });
-    
+    await page.setContent(html2, { waitUntil: 'domcontentloaded' });
+
     const unicid = uuid.v4();
     const namepdf = unicid + '.pdf';
     // Configura opciones para el PDF
@@ -347,13 +348,13 @@ async function buildPDF(data, dataBody) {
 
     // Cierra el navegador
     await browser.close();
-    const pdfbuffer=await page.goto(path.join(__dirname, '../public/uploads/PDF/' + namepdf), { waitUntil: 'networkidle0' });
+    const pdfbuffer = await page.goto(path.join(__dirname, '../public/uploads/PDF/' + namepdf), { waitUntil: 'networkidle0' });
 
     buildPDF().then(() => {
         console.log('PDF generado correctamente.');
-      }).catch((err) => {
+    }).catch((err) => {
         console.error('Error al generar el PDF:', err);
-      });
+    });
 
     return pdfbuffer;
 
@@ -365,9 +366,8 @@ function imageToBase64(path) {
     let file = "";
 
     if (fs.existsSync(path)) {
-        console.log('File exists');
         return true
-   
+
     }
     else {
         console.log('File doesnt exists');;
@@ -498,5 +498,5 @@ function createKey(obj, key1, key2, value) {
     }
 }
 
-module.exports = { buildPDF, reOrdenar, reOrdenar_v2, createExcel, reOrdenar_3,bodybuilder_pdf };
+module.exports = { buildPDF, reOrdenar, reOrdenar_v2, createExcel, reOrdenar_3, bodybuilder_pdf };
 

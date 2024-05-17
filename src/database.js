@@ -1,9 +1,11 @@
 const mysql = require('mysql');
 const { promisify }= require('util');
+let pool;
 
-const { database } = require('./keys');
+const { database } = require('./keys')
+pool = mysql.createPool(database);
 
-const pool = mysql.createPool(database);
+
 
 pool.getConnection((err, connection) => {
   if (err) {
@@ -17,14 +19,25 @@ pool.getConnection((err, connection) => {
       console.error('Database connection was refused');
     }
   }
-
   if (connection) connection.release();
-  console.log('DB is Connected');
-
-  return;
+    console.log('DB is Connected');
 });
+
+
+
+    
+
 
 // Promisify Pool Querys
 pool.query = promisify(pool.query);
+  pool.end = promisify(pool.end);
 
-module.exports = pool;
+
+
+async function exQuery(string){    
+
+  const query = await pool.query(string)
+  return query
+}
+
+module.exports = {pool, exQuery};
