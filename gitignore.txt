@@ -1,23 +1,6 @@
 # Dependencias
 node_modules/
+src/backup/keys.js
+src/backup/asesoresprime_cub_procedures.sql
+src/backup/asesoresprime_cub_tables_data.sql
 
-# Archivos de entorno
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-
-
-
-# Otros archivos y carpetas
-src/keys.js
-src/backup/
