@@ -27,6 +27,7 @@
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
+drop procedure if EXISTS addCase;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `addCase`(
         IN id_client INT,
@@ -44,13 +45,34 @@ BEGIN
     SET @status = (select id_incident  from incidents where incident_code like @filtro);
         INSERT INTO cases (id_case, id_incident, id_status, case_date)
         values (0, @status,1, (select fecha_siniestro from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client)) ;           
-        SELECT CONCAT('Se est¨¢ ingresando al procedure', @status ) AS Mensaje;
+        SELECT CONCAT('Se estï¿½ï¿½ ingresando al procedure', @status ) AS Mensaje;
         SET @ultimo_id = LAST_INSERT_ID();
         insert into cases_clients (id_client,id_case)
         values (id_client,@ultimo_id);
         SELECT 'OK';
         COMMIT;
 
+END ;;
+DELIMITER ;
+
+drop procedure if EXISTS delImgCase;
+DELIMITER ;;
+CREATE  PROCEDURE `delImgCase`(
+        IN image1 varchar(200),
+        IN image2 varchar(200),
+        IN id_case_v INT
+        )
+BEGIN
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+          SELECT 'ERROR';
+          ROLLBACK;
+        END;
+        START TRANSACTION;
+        SET AUTOCOMMIT=0;
+        update cases set case_img1= image2, case_img2=image1 WHERE id_case=id_case_v;
+        SELECT 'OK';
+        COMMIT;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -66,6 +88,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+drop procedure if EXISTS addDamageRepair;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `addDamageRepair`(
         IN damage_name VARCHAR(100),
@@ -73,23 +96,24 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `addDam
         IN damage_desc VARCHAR(200),
         IN cadena VARCHAR(200),
         IN adviser_name VARCHAR(100))
-BEGIN
+BEGIN   
         DECLARE longitud INT;
         DECLARE posicion INT DEFAULT 1;
         DECLARE valor VARCHAR(255);
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
+
 
         INSERT into damages (id_damage,damage_name,damage_unit,damage_description, createdby)
         values (0,damage_name,damage_unit,damage_desc,adviser_name);
         SET @ultimo_id = LAST_INSERT_ID();
-    
-
-
-
-    
-    SET longitud = LENGTH(cadena);
-
-    
-    WHILE posicion <= longitud DO
+         SET longitud = LENGTH(cadena);
+         WHILE posicion <= longitud DO
         
         SET posicion = IF(LOCATE(',', cadena) > 0, LOCATE(',', cadena), longitud + 1);
         
@@ -99,6 +123,7 @@ BEGIN
             insert into damages_repairs(id_damage_repair,id_damage, id_repair)
         values (0,@ultimo_id, valor);
         END WHILE;
+        COMMIT;
 
 
         END ;;
@@ -181,6 +206,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+drop procedure if EXISTS dataInsert;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `dataInsert`(
         IN id_sector INT,
@@ -193,10 +219,17 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `dataIn
         IN img3 VARCHAR(200),
         IN customized INT)
 BEGIN
-        SELECT 'Se est¨¢ ingresando al procedure' AS Mensaje;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
+        SELECT 'Se estÃ¡ ingresando al procedure' AS Mensaje;
                 IF id_c_d_s = 0   THEN
                 
-                        SELECT 'Se est¨¢ ingresando un nuevo da?o' AS Mensaje;
+                        SELECT 'Se estï¿½ï¿½ ingresando un nuevo da?o' AS Mensaje;
    
                         INSERT INTO c_d_s(c_d_s.id_c_d_s,c_d_s.id_damage,c_d_s.id_case,c_d_s.id_sector)
                         VALUES (0,id_damage,id_case,id_sector);
@@ -211,7 +244,7 @@ BEGIN
                         INSERT INTO damage_images(damage_images.id_damage_images,damage_images.id_d_c_d_s, damage_images.image1, damage_images.image2, damage_images.image3)
                         VALUES (0,@ultimo2_id, img1,img2,img3);
                 ELSE
-                        SELECT 'Se est¨¢ actualizando un nuevo da?o' AS Mensaje;
+                        SELECT 'Se estï¿½ï¿½ actualizando un nuevo da?o' AS Mensaje;
                         UPDATE c_d_s SET c_d_s.id_damage = id_damage WHERE c_d_s.id_c_d_s  = id_c_d_s and c_d_s.id_sector=id_sector;
 
                         INSERT INTO d_c_d_s(id_d_c_d_s,id_c_d_s,size,customized)
@@ -223,6 +256,7 @@ BEGIN
                         VALUES (0,@ultimo2_id, img1,img2,img3);
 
                 END IF;
+                commit;
          END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -238,6 +272,7 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+drop procedure if EXISTS `dataUpdate`;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `dataUpdate`(IN id_damage INT,
         IN id_c_d_s INT,
@@ -246,7 +281,13 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `dataUp
         IN img2 VARCHAR(200),
         IN img3 VARCHAR(200))
 BEGIN
-
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
         UPDATE d_c_d_s SET d_c_d_s.id_damage = id_damage WHERE id_c_d_s  = id_c_d_s;
 
         INSERT INTO d_c_d_s(id_d_c_d_s,id_c_d_s,size)
@@ -254,7 +295,7 @@ BEGIN
         SET @ultimo2_id = LAST_INSERT_ID();
         INSERT INTO damage_images(id_damage_images,id_d_c_d_s, image1, image2, image3)
         VALUES (0,@ultimo2_id, img1,img2,img3);
-
+        COMMIT;
         END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;

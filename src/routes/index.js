@@ -92,8 +92,8 @@ GROUP BY
 router.post('/myinsp', isLoggedIn, async (req, res) => {
     try {
 
-        const imageNames = await helpers.resizeImage(req.files);
-        const query = `update cases set case_img1= "${imageNames.image}", case_img2="${imageNames.image1}" WHERE id_case=${req.body.id_case}`;
+        const imageNames = await helpers.resizeImage(req.files); 
+        const query= `call delImgCase("${imageNames.image}","${imageNames.image1}",${req.body.id_case})`;
         console.log(query)
         await exQuery(query);
         req.flash('success', "Actualización de imagen exitosa.");
@@ -192,7 +192,6 @@ router.get('/addCase', isAdmin, async (req, res) => {
         console.log(query)
         await exQuery(query)
         res.redirect('/cases')
-
     }
     catch (err) {
         console.log("Error al ejecutar la consulta", err)
@@ -636,6 +635,9 @@ router.get('/createPdf', isAdmin, async (req, res) => {
         res.redirect(`/cases`);
 
     }
+})
+router.get('/clients', isAdmin, async (req, res) => {
+    res.render('clients')
 })
 
 module.exports = router;

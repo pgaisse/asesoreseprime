@@ -28,113 +28,97 @@
         </div>
         <div class="card-body" id="ttk">
 
-          <table class="table">
-          
-            <tbody>
+          {{#action_repairs as |ar|}}
+          {{#if ar.id_sector}}
+          <div class="card mb-3 p-1 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title text-capitalize">{{sector_name}} </h5>
+              <p class="card-text text-start">
+                <b>Recinto N°:</b> {{id_case}}.{{id_sector}} <br>
+                <b>Numero de daños:</b> {{ndamages}} <br>
+                <b>Dimensiones:</b> ancho: {{ar.sector_w_size}} alto: {{ar.sector_h_size}} largo:
+                {{ar.sector_l_size}}<br>
+                <a href="../damages?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}"><i class="fas fa-edit"></i></a>
+                <a onclick="deleteRegConfirm(event,'/delsector?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')"
+                  href="#"><i class="fa-solid fa-trash-can"></i></a>
 
-              {{#action_repairs as |ar|}}
-              {{#if ar.id_sector}}
-              <tr>
-                <td colspan="4" style="text-align: left;">
-                  <a href="../damages?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}"><i
-                      class="fas fa-edit"></i></a>
-                  <a
-                    onclick="deleteRegConfirm(event,'/delsector?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')" href="#"><i
-                      class="fa-solid fa-trash-can"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-                  <b>N°{{ar.id_case}}.{{ar.id_sector}} Recinto: {{ar.sector_name}}, Dimensiones:
-                  ancho: {{ar.sector_w_size}} alto: {{ar.sector_h_size}} largo: {{ar.sector_l_size}}, N° de daños: {{ar.ndamages}}</b>
-                </td>
-              </tr>
-              <tr>
-
-                <div class="galeria">
-                  <td colspan="2">
-                    {{#if img1}}
-                    <img src="img_t/thumb_{{img1}}" data-full-image="/{{img1}}" width="100%" height="auto" alt="Imagen 1" class="miniatura"
-                      id="imagebox1">
-                    {{/if}}
-                  </td>
-                  <td colspan="2">
-                    {{#if img2}}
-                    <img src="img_t/thumb_{{img2}}" data-full-image="/{{img2}}" width="100%" height="auto" alt="Imagen 2" class="miniatura"
-                      id="imagebox2">
-                    {{/if}}
-                  </td>
-
-                  <!-- Añade más imágenes según sea necesario -->
-
-                </div>
-
-
-
-                <td>{{ar.shs}}</td>
-                {{else}}
-              <tr>
-                <td colspan="8">Aún no se han agregado sectores</td>
-              </tr>
+                {{#if img1}}
+              <div class="col w-100 image-container ">
+                <img class="thumbnail card-img-bottom  w-100 rounded-3 " src="img_t/thumb_{{img1}}"
+                  data-full-image="img_w/{{img1}}" data-full-image2={{#if img2}}"img_w/{{img2}}"{{else}}""{{/if}}
+                  id="imagebox1" onclick="showImage(this)">
+              </div>
               {{/if}}
 
-              {{/action_repairs}}
-              </tr>
+              </p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
 
-            </tbody>
-          </table>
-
-
-          
-          <div style="text-align: left;">
-            <a href="#" id="toggleButton">Agregar Sectores</a>
           </div>
-          <br />
+
+
+
+          {{else}}
+
+          Aún no se han agregado sectores
+
+          {{/if}}
+
+          {{/action_repairs}}
+
           <div id="imagenCompletaContenedor" class="imagen-completa-contenedor" style="display: none;">
 
-            <img src="" id="imagenCompleta" class="imagen-completa">
+            <img src="" id="imagenCompleta">
+            <span onclick="closeModal()">&times</span>
+            <a class="prev" onclick="changeImage(-1)">&#10094;</a>
+            <a class="next" onclick="changeImage(1)">&#10095;</a>
+             </div>
 
-          </div>
-          <br />
 
-          <div id="form" style="display:none;">
-            <h5 style="text-align: left;">Agregar sector </h5>
+          <div id="form3" style="display:none;">
+
             <form action="/sectors" method="POST" enctype="multipart/form-data">
-              <tr>
-                <td><select class="form-select" aria-label=".form-select-lg example" name="id_sector">
-                    {{#each rowSectors}}{{this.id_sector}}<option value="{{this.id_sector}}" placeholder="Largo"
-                      selected="true">{{this.sector_name}}</option>{{/each}}
-                  </select></td>
-              <tr>
-                <td><input type="Number" class="form-control" id="sector_l_size" name="sector_l_size"
-                    placeholder="Largo"></td>
-              </tr>
-              <tr>
-                <td><input type="Number" class="form-control" id="sector_w_size" name="sector_w_size"
-                    placeholder="Ancho"></td>
-              </tr>
-              <tr>
-                <td><input type="Number" class="form-control" id="sector_h_size" name="sector_h_size"
-                    placeholder="Alto"></td>
-              </tr>
-              <tr>
-                <td><label for="files_" class="form-control" style="margin-bottom: -34px; "><i
-                      class="fa-solid fa-image"></i></label>
-                  <input id='files_' class="form-control" type="file" style="visibility:hidden;" name="image"
-                    accept="image/*">
-                </td>
-              </tr>
-              <tr>
-                <td><label for="files_1" class="form-control" style="margin-bottom: -34px; "><i
-                      class="fa-solid fa-image"></i></label>
-                  <input id='files_1' class="form-control" type="file" style="visibility:hidden;" name="image1"
-                    accept="image/*">
-                </td>
-              </tr>
+
+              <select class="form-select" aria-label=".form-select-lg example" name="id_sector">
+                {{#each rowSectors}}{{this.id_sector}}<option value="{{this.id_sector}}" placeholder="Largo"
+                  selected="true">{{this.sector_name}}</option>{{/each}}
+              </select>
+
+              <input type="Number" class="form-control" id="sector_l_size" name="sector_l_size" placeholder="Largo">
+
+
+              <input type="Number" class="form-control" id="sector_w_size" name="sector_w_size" placeholder="Ancho">
+
+
+              <input type="Number" class="form-control" id="sector_h_size" name="sector_h_size" placeholder="Alto">
+
+
+              <label for="files_" class="form-control" style="margin-bottom: -34px; "><i
+                  class="fa-solid fa-image"></i></label>
+              <input id='files_' class="form-control" type="file" style="visibility:hidden;" name="image"
+                accept="image/*">
+
+
+
+              <label for="files_1" class="form-control" style="margin-bottom: -34px; "><i
+                  class="fa-solid fa-image"></i></label>
+              <input id='files_1' class="form-control" type="file" style="visibility:hidden;" name="image1"
+                accept="image/*">
+
+
 
               <input type="hidden" name="id_case" id="id_case" value="{{vcase}}">
-              <td colspan="2" style=""><button class="btn btn-success btn-block" type="submit" id="upload_" disabled><i
-                    class="fa-solid fa-check"></i></button></td>
+              <button class="btn btn-success btn-block form-control" type="submit" id="upload_" disabled><i
+                  class="fa-solid fa-check"></i></button>
 
 
             </form>
           </div>
+          <br />
+          <a href="#form3" id="toggleButton">Agregar Sectores</a>
+
+
+
         </div>
       </div>
     </div>

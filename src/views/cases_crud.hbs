@@ -1,478 +1,305 @@
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
-
 <link rel="stylesheet" href="static/vendor/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="static/vendor/fontawesome/all.min.css" />
 
 <div class="container p-4">
-    <div class="row">
-        <div class="col-md-10 mx-auto" align="left">
-            <a href="/cases"><i class="fa-solid fa-arrow-left-long" style="margin-left: 0;"></i>Volver a todos los
-                casos</a>
 
-            <div class="card text-center">
-                <div class="card-body" align="left">
-                    <div style="float:right; margin-top:1px"> <span><a
-                                href="/generate-pdf?id_case={{data.[0].id_case}}"><i
-                                    class="fa-regular fa-file-pdf">Descargar Informe</i></a></span>
-                    </div>
-                    <div style="text-align: center;">
-                        <p>
-                        <h4><b>Detalles del caso N° {{data.[0].id_case}} ({{data.[0].status_name}})</b></h4>
-                        </p>
+    <div class="col-md-10 mx-auto">
+        <a href="/cases"><i class="fa-solid fa-arrow-left-long" style="margin-left: 0;"></i>Volver a todos los
+            casos</a>
 
-                    </div>
-                    <table class="table table-hover" align="left">
-                        <thead class="thead-gray">
-                            <tr>
-                                <th id="tablecaset" colspan="3">
-                                    <h5><b>Datos del Siniestro</b></h5>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Codigo del Siniestro</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].incident_code}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b> Fecha del Siniestro</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].incident_date}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b> Descripción del Siniestro</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].incident_description}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase"><b>Actualizar Estado </b></td>
-                            <td>
-                                <form action="/cases_crud" method="POST" enctype="multipart/form-data">
-                                    <select class="form-control" name="id_status" id="id_status">
-                                        <option value="{{data.[0].id_status}}" selected>{{data.[0].status_name}}
-                                        </option>
-                                        {{#each data3}}
-
-                                        <option value="{{this.id_status}}">{{this.status_name}}{{this.adviser_lastname}}
-                                        </option>
-                                        {{/each }}
-
-                                    </select>
-                            </td>
-                            <td colspan="2"><button class="btn btn-success btn-block" type="submit"
-                                    id="uploadadvcase"><i class="fa-solid fa-check"></i></button></td>
-                        </tr>
-                        <tr>
-                            <input type="hidden" name="id_case" id="id_case" value="{{data.[0].id_case}}">
-                        </tr>
-                        </form>
-
-
-                        <thead class="thead-gray">
-                            <tr>
-                                <th id="tablecaset" colspan="3">
-                                    <h5><b>Datos del Cliente</b></h5>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td id="tablecase">
-                                <b> Nombre</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].client_name}} {{data.[0].client_lastname}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Rut</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].client_rut}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Teléfono</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].client_phone}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Dirección</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].client_address}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b> Correo Electrónico</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].client_email}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Número de Cliente</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].id_client}}
-                            </td>
-                        </tr>
-
-                        <thead class="thead-gray">
-                            <tr>
-
-                                <th id="tablecaset" colspan="3">
-                                    <h5><b>Datos del Asesor</b></h5>
-                                </th>
-                            </tr>
-                        </thead>
-                        {{#if data.[0].id_adviser}}
-                        <tr>
-                            <td id="tablecase">
-                                <b>Nombre</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].adviser_name}} {{data.[0].adviser_lastname}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Rut</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].adviser_rut}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>N° de Acesor</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].id_adviser}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b> Cargo</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].adviser_role}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Correo Electrónico</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].adviser_email}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="tablecase">
-                                <b>Teléfono</b>
-                            </td>
-                            <td id="tablecase" colspan="2">
-                                {{data.[0].adviser_phone}}
-                            </td>
-                        </tr>
-                        {{else}}
-                        <form action="/cases_crud" method="POST" enctype="multipart/form-data">
-
-                            <tr>
-                                <td id="tablecase" colspan="3" style="color: red;">
-                                    Caso no asignado
-                                </td>
-                            </tr>
-                            <tr>
-                                <td id="tablecase"><b>Asignar a </b></td>
-                                <td>
-                                    <select class="form-control" name="id_adviser" id="id_adviser">
-                                        {{#each data2}}
-
-                                        <option value="{{this.id_adviser}}">{{this.adviser_name}}
-                                            {{this.adviser_lastname}}</option>
-                                        {{/each }}
-
-                                    </select>
-                                </td>
-                                <td colspan="2"><button class="btn btn-success btn-block" type="submit"
-                                        id="uploadadvcase"><i class="fa-solid fa-check"></i></button></td>
-                            </tr>
-                            <tr>
-                                <input type="hidden" name="id_case" id="id_case" value="{{data.[0].id_case}}">
-                            </tr>
-                        </form>
-                        {{/if }}
-
-                    </table>
-                    {{#if data.[0].id_adviser}}
-
-                    <div class="item-list">
-                        <!--
-                        <table class="table table">
-                            {{#if rowDamages.[0].sector_name}}
-
-                            <thead class="thead-gray">
-                                <tr>
-                                    <th id="tablecaset" colspan="3">
-                                        <h5><b>Detalles De Inspección</b></h5>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tr>
-                                <td id="tablecase">
-                                    Fecha inspección
-                                </td>
-                                <td id="tablecase" colspan="2">
-                                    {{rowDamages.[0].damages.[0].datec}}
-                                </td>
-
-                            </tr>
-                            <tr>
-
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Recintos
-                                </td>
-                            </tr>
-
-                            {{#each rowDamages}}
-                            <tr>
-                                <td id="tablecase" colspan="2">
-                                    <b>
-                                        <h6>
-                                            {{this.sector_name}}
-                                        </h6>
-                                    </b>
-                                </td>
-                            <tr>
-                                <td colspan="2">
-                                    Descripción de daños
-                                </td>
-                            </tr>
-                            {{#each damages}}
-                            <tr>
-                                <td>
-                                    {{this.damage_name}} ({{this.damage_size}} {{this.damage_unit}})
-                                </td>
-                                <td>
-                                    {{#if this.damage_image1}}
-                                    <img src="img_t/thumb_{{this.damage_image1}}" data-full-image="/{{this.damage_image1}}"
-                                        alt="Imagen 1" class="miniatura" id="imagebox1">
-                                    {{/if}}
-                                    {{#if this.damage_image2}}
-                                    <img src="img_t/thumb_{{this.damage_image2}}" data-full-image="/{{this.damage_image2}}"
-                                        alt="Imagen 2" class="miniatura" id="imagebox2">
-                                    {{/if}}
-                                    {{#if this.damage_image3}}
-                                    <img src="img_t/thumb_{{this.damage_image3}}" data-full-image="/{{this.damage_image3}}"
-                                        alt="Imagen 3" class="miniatura" id="imagebox3">
-                                    {{/if}}
-
-
-                                </td>
-                            </tr>
-
-                            {{/each}}
-                            </tr>
-                            {{/each}}
-
-                            {{else}}
-                            <tr>
-                                <td colspan="2" style="color: red;">
-                                    No hay registros
-                                </td>
-                            </tr>
-                            {{/if}}
-                        </table>
-                    </div>
-
-                    {{/if}}
--->
-                        <h5><b>Detalles de Inspección</b></h5>
-                        <p> Fotos de Fachada: </p>
-                        <table class="table">
-                            <tr>
-                                <td>
-                                    {{#if data.[0].case_img1}}
-                                    <img src="img_t/thumb_{{data.[0].case_img1}}"
-                                        data-full-image="img_w/{{data.[0].case_img1}}" width="100%" height="auto"
-                                        alt={{data.[0].case_img1}} class="miniatura" id="imagebox2">
-                                    {{/if}}
-                                </td>
-                                <td>
-                                    {{#if data.[0].case_img2}}
-                                    <img src="img_t/thumb_{{data.[0].case_img2}}"
-                                        data-full-image="img_w/{{data.[0].case_img2}}" width="100%" height="auto"
-                                        alt={{data.[0].case_img2}} class="miniatura" id="imagebox2">
-                                    {{/if}}
-                                </td>
-                            </tr>
-                        </table>
-
-
-
-                        <p style="text-align: center;"> {{#each data}}
-                            {{#if this.img1}}
-                            <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}" alt="Imagen 1"
-                                class="miniatura" id="imagebox1">
-                            {{/if}}
-                            {{#if this.img2}}
-                            <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}" alt="Imagen 2"
-                                class="miniatura" id="imagebox2">
-                            {{/if}}
-                            {{/each}}
-                        </p>
-                        {{#if rowDamages.[0].sector_name}}
-
-                        <ul id="nav-tree" class="nav-tree">
-                            {{#each rowDamages as |d|}}
-                            <li id="li20-{{@index}}" data-value="li20-{{@index}}">
-                                <a>
-                                    {{this.sector_name}} ({{this.damages.length}})
-                                </a>
-                                <ul>
-                                    <table class="table">
-                                        {{#with d.damages.[0]}}
-                                        <tr>
-                                            <td>
-                                                <b>Dimensiones: </b> Ancho: {{sector_w_size}}, Alto:{{sector_h_size}},
-                                                Largo:{{sector_l_size}}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-
-
-                                                {{#if this.img1}}
-                                                <img src="img_t/thumb_{{this.img1}}" data-full-image="/{{this.img1}}"
-                                                    alt="Imagen 1" class="miniatura" id="imagebox1">
-                                                {{/if}}
-                                                {{#if this.img2}}
-                                                <img src="img_t/thumb_{{this.img2}}" data-full-image="/{{this.img2}}"
-                                                    alt="Imagen 2" class="miniatura" id="imagebox2">
-                                                {{/if}}
-
-                                            </td>
-                                        </tr>
-                                        {{/with}}
-                                    </table>
-                                    {{#each damages}}
-                                    <li id="li40-{{this.id_damage_images}}" data-value="li40-{{this.id_damage_images}}">
-                                        <a>
-                                            {{this.damage_name}}
-                                        </a>
-
-                                        <ul>
-                                            <li id="li60-{{this.id_damage_images}}"
-                                                data-value="li60-{{this.id_damage_images}}">
-                                                <a>
-                                                    <table class="table">
-                                                        <tr>
-                                                            <td>
-                                                                {{#if this.damage_image1}}
-                                                                <img src="img_t/thumb_{{this.damage_image1}}"
-                                                                    data-full-image="/{{this.damage_image1}}"
-                                                                    alt="Imagen 1" class="miniatura" id="imagebox1">
-                                                                {{/if}}
-                                                                {{#if this.damage_image2}}
-                                                                <img src="img_t/thumb_{{this.damage_image2}}"
-                                                                    data-full-image="/{{this.damage_image2}}"
-                                                                    alt="Imagen 2" class="miniatura" id="imagebox2">
-                                                                {{/if}}
-                                                                {{#if this.damage_image3}}
-                                                                <img src="img_t/thumb_{{this.damage_image3}}"
-                                                                    data-full-image="/{{this.damage_image3}}"
-                                                                    alt="Imagen 3" class="miniatura" id="imagebox3">
-                                                                {{/if}}
-
-
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td id="tablecaset" style="text-transform: none;">
-                                                                <b> Cantidad de daño</b>
-
-                                                                {{this.damage_size}}({{#if this.customized}}
-                                                                m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}})
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td id="tablecase"> <b> Descripción del daño</b> </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td style="text-align: justify;">
-                                                                {{this.damage_description}} Lorem ipsum dolor sit
-                                                                amet consectetur adipisicing elit. Aliquid delectus
-                                                                ducimus hic expedita nulla voluptates laborum
-                                                                repellendus itaque necessitatibus minima impedit
-                                                                amet, ab nostrum mollitia perspiciatis doloribus
-                                                                maiores voluptas consequuntur!</td>
-                                                        </tr>
-                                                    </table>
-                                                </a>
-                                            </li>
-
-                                        </ul>
-
-                                    </li>
-                                    {{/each}}
-                                </ul>
-                                {{/each}}
-                            </li>
-                        </ul>
-                        {{else}}
-                        <p style="font-style: italic;color: red;"> No hay registros en esta inspección</p>
-                        {{/if}}
-
-
-
-
-                    </div>
-                </div>
+        <div class="card" style="margin-bottom: 10px ;">
+            <div class="card-body">
+                <h5 class="card-title">Datos del Siniestro</h5>
+                <p class="card-text  text-start">
+                    <b>Códido:</b> {{data.[0].incident_code}} <br>
+                    <b> Fecha:</b> {{data.[0].incident_date}} <br>
+                    <b> Descripción:</b> {{data.[0].incident_description}} <br>
+                    <b>N° de Caso:</b> {{data.[0].id_case}} <br>
+                    <b>Informe:</b> <a href="/generate-pdf?id_case={{data.[0].id_case}}"><i
+                            class="fa-regular fa-file-pdf">Descargar
+                            Informe</i></a> <br>
+                    <b>Estado:</b> {{data.[0].status_name}} <br>
+                    <span class="text-center"> <b>Actualizar Estado </b></span>
+                <form action="/cases_crud" method="POST" enctype="multipart/form-data">
+                    <select class="form-control" name="id_status" id="id_status">
+                        <option value="{{data.[0].id_status}}" selected>{{data.[0].status_name}}
+                        </option>
+                        {{#each data3}}
+                        <option value="{{this.id_status}}">{{this.status_name}}{{this.adviser_lastname}}
+                        </option>
+                        {{/each }}
+                    </select>
+                    <button class="btn btn-success btn-block form-control" type="submit" id="uploadadvcase"><i
+                            class="fa-solid fa-check"></i></button>
+                    <input type="hidden" name="id_case" id="id_case" value="{{data.[0].id_case}}">
+                </form>
+                </p>
             </div>
         </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                NavTree.createBySelector("#nav-tree", {
-                    searchable: false,
-                    showEmptyGroups: true,
 
-                    groupOpenIconClass: "fas",
-                    groupOpenIcon: "fa-chevron-down",
 
-                    groupCloseIconClass: "fas",
-                    groupCloseIcon: "fa-chevron-right",
 
-                    linkIconClass: "fas",
-                    linkIcon: "fa-link",
 
-                    searchPlaceholderText: "Search",
+        <div class="card" style="margin-bottom: 10px ;">
+            <div class="card-body mt-40">
+                <h5 class="card-title">Datos del Cliente</h5>
+                <p class="card-text text-start">
+                    <b>Nombre</b>: <span class="text-capitalize"> {{data.[0].client_name}}
+                        {{data.[0].client_lastname}}</span><br>
+                    <b>Rut </b>: {{data.[0].client_rut}}<br>
+                    <b>Teléfono </b>: {{data.[0].client_phone}}<br>
+                    <b>Dirección </b>: {{data.[0].client_address}}<br>
+                    <b> E-mail </b>: {{data.[0].client_email}}<br>
+                    <b>Nº de Cliente :</b> {{data.[0].id_client}}<br>
+                <p class="card-text">
 
-                    iconPlace: "start"
-                });
+                </p>
+            </div>
+
+        </div>
+
+        <div class="card" style="margin-bottom: 10px ;">
+            <div class="card-body">
+                <h5 class="card-title">Datos del Asesor</h5>
+
+                {{#if data.[0].id_adviser}}
+                <p class="card-text text-start">
+
+
+                    <b>Nombre</b> <span class="text-capitalize">: {{data.[0].adviser_name}}
+                        {{data.[0].adviser_lastname}}</span><br>
+                    <b>Rut</b> : {{data.[0].adviser_rut}}<br>
+                    <b>N° de Acesor</b>: {{data.[0].id_adviser}}<br>
+                    <b>Cargo</b> : {{data.[0].adviser_role}}<br>
+                    <b>E-mail</b> : {{data.[0].adviser_email}}<br>
+                    <b>Teléfono</b> : {{data.[0].adviser_phone}}<br>
+                </p>
+
+                {{else}}
+
+                <form action="/cases_crud" method="POST" enctype="multipart/form-data">
+                    <p class="card-text text-start">
+                        Caso no asignado <br>
+                        <b>Asignar a </b>
+                        <select class="form-control" name="id_adviser" id="id_adviser"
+                            style="text-transform: capitalize;">
+                            {{#each data2}}
+                            <option value="{{this.id_adviser}}"> <span> {{this.adviser_name}}
+                                    {{this.adviser_lastname}} </span></option>
+                            {{/each }}
+
+                        </select>
+
+                        <button class="btn btn-success btn-block form-control" type="submit" id="uploadadvcase"><i
+                                class="fa-solid fa-check"></i></button>
+                        <input type="hidden" name="id_case" id="id_case" value="{{data.[0].id_case}}">
+                    </p>
+                </form>
+
+                {{/if }}
+
+
+            </div>
+
+        </div>
+        <div id="imagenCompletaContenedor" class="imagen-completa-contenedor" style="display: none;">
+
+            <img src="" id="imagenCompleta">
+            <span onclick="closeModal()">&times</span>
+            <a class="prev" onclick="changeImage(-1)">&#10094;</a>
+            <a class="next" onclick="changeImage(1)">&#10095;</a>
+        </div>
+
+        {{#if data.[0].id_adviser}}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Detalles de Inspecció</h5>
+                <p class="card-text text-start">
+                <div class="item-list">
+                    <p> Fotos de Fachada: </p>
+                    <div class="row">
+                        <div class="col-2 w-50 image-container ">
+                            {{#if data.[0].case_img1}}
+                            <img class="thumbnail card-img-bottom  w-100 rounded-3 "
+                                src="img_t/thumb_{{data.[0].case_img1}}" data-full-image="img_w/{{data.[0].case_img1}}"
+                                data-full-image2={{#if
+                                data.[0].case_img2}}"img_w/{{data.[0].case_img2}}"{{else}}""{{/if}} id="imagebox1"
+                                onclick="showImage(this)">
+                            {{/if}}
+                        </div>
+                        <div class="col-2 w-50 image-container ">
+                            {{#if data.[0].case_img2}}
+                            <img class="thumbnail card-img-bottom  w-100 rounded-3 "
+                                src="img_t/thumb_{{data.[0].case_img2}}" data-full-image="img_w/{{data.[0].case_img2}}"
+                                data-full-image2={{#if
+                                data.[0].case_img1}}"img_w/{{data.[0].case_img1}}"{{else}}""{{/if}} id="imagebox1"
+                                onclick="showImage(this)">
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    {{/if}}
+                    {{#if rowDamages.[0].sector_name}}
+
+                    <ul id="nav-tree" class="nav-tree text-start">
+                        {{#each rowDamages as |d|}}
+                        <li id="li20-{{@index}}" data-value="li20-{{@index}}">
+                            <a>
+                                {{this.sector_name}} ({{this.damages.length}})
+                            </a>
+                            <ul>
+
+                                {{#with d.damages.[0]}}
+                                <p class="card-text">
+                                    <b>Dimensiones: </b><br>
+                                    Ancho: {{sector_w_size}} <br>
+                                    Alto:{{sector_h_size}} <br>
+                                    Largo:{{sector_l_size}} <br>
+                                </p>
+
+                                <div class="row w-100">
+                                    <div class="col-2 w-50">
+                                        {{#if this.img1}}
+                                        <img class="thumbnail card-img-bottom  w-100 rounded-3 "
+                                            src="img_t/thumb_{{this.img1}}" data-full-image="img_w/{{this.img1}}"
+                                            data-full-image2={{#if this.img2}}"img_w/{{this.img2}}"{{else}}""{{/if}}
+                                            id="imagebox1" onclick="showImage(this)">
+                                        {{/if}}
+                                    </div>
+                                    <div class="col-2 w-50">
+                                        {{#if this.img2}}
+                                        <img class="thumbnail card-img-bottom  w-100 rounded-3 "
+                                            src="img_t/thumb_{{this.img2}}" data-full-image="img_w/{{this.img2}}"
+                                            data-full-image2={{#if this.img1}}"img_w/{{this.img1}}"{{else}}""{{/if}}
+                                            id="imagebox1" onclick="showImage(this)">
+                                        {{/if}}
+                                    </div>
+
+                                </div>
+                                {{/with}}
+
+                                {{#each damages}}
+                                <li id="li40-{{this.id_damage_images}}" data-value="li40-{{this.id_damage_images}}">
+                                    <a>
+                                        {{this.damage_name}}
+                                    </a>
+
+                                    <ul>
+                                        <li id="li60-{{this.id_damage_images}}"
+                                            data-value="li60-{{this.id_damage_images}}">
+                                            <a style="all:unset;"  >
+                                                <p  class="card-text text-start" style="text-align: justify;" >
+                                                    <b> Cantidad de daño</b>
+                                                    {{this.damage_size}}({{#if this.customized}}
+                                                    m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) <b> Descripción
+                                                        del daño</b>
+                                                    {{this.damage_description}} Lorem ipsum dolor sit
+                                                    amet consectetur adipisicing elit. Aliquid delectus
+                                                    ducimus hic expedita nulla voluptates laborum
+                                                    repellendus itaque necessitatibus minima impedit
+                                                    amet, ab nostrum mollitia perspiciatis doloribus
+                                                    maiores voluptas consequuntur!
+                                                </p>
+                                                <div class="row w-100 ">
+                                                    <div class="col-3 ml-0">
+                                                        {{#if this.damage_image1}}
+                                                        <img class="thumbnail card-img-bottom rounded-3 "
+                                                            src="img_t/thumb_{{this.damage_image1}}"
+                                                            data-full-image="img_w/{{this.damage_image1}}"
+                                                            data-full-image2={{#if
+                                                            this.damage_image2}}"img_w/{{this.damage_image2}}"{{else}}""{{/if}}
+                                                            data-full-image3={{#if
+                                                            this.damage_image3}}"img_w/{{this.damage_image3}}"{{else}}""{{/if}}
+                                                            id="imagebox1" onclick="showImage(this)" style="width:90px">
+                                                        {{/if}}
+                                                    </div>
+                                                    <div class="col-3 m-auto">
+                                                        {{#if this.damage_image2}}
+                                                        <img class="thumbnail card-img-bottom rounded-3 "
+                                                            src="img_t/thumb_{{this.damage_image2}}"
+                                                            data-full-image="img_w/{{this.damage_image2}}"
+                                                            data-full-image2={{#if
+                                                            this.damage_image1}}"img_w/{{this.damage_image1}}"{{else}}""{{/if}}
+                                                            data-full-image3={{#if
+                                                            this.damage_image3}}"img_w/{{this.damage_image3}}"{{else}}""{{/if}}
+                                                            id="imagebox1" onclick="showImage(this)" style="width:90px">
+                                                        {{/if}}
+                                                    </div>
+                                                    <div class="col-3 m-auto">
+                                                        {{#if this.damage_image3}}
+                                                        <img class="thumbnail card-img-bottom rounded-3 "
+                                                            src="img_t/thumb_{{this.damage_image3}}"
+                                                            data-full-image="img_w/{{this.damage_image3}}"
+                                                            data-full-image2={{#if
+                                                            this.damage_image1}}"img_w/{{this.damage_image1}}"{{else}}""{{/if}}
+                                                            data-full-image3={{#if
+                                                            this.damage_image2}}"img_w/{{this.damage_image2}}"{{else}}""{{/if}}
+                                                            id="imagebox1" onclick="showImage(this)" style="width:90px; max-width:110px; object-fit: contain;">
+                                                        {{/if}}
+                                                    </div>
+                                                </div>
+
+                                                
+                                                    
+
+
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                </li>
+                                {{/each}}
+                            </ul>
+                            {{/each}}
+                        </li>
+                    </ul>
+                    {{else}}
+                    <p style="font-style: italic;color: red;"> No hay registros en esta inspección</p>
+                </div>
+
+                </p>
+                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+            <img class="card-img-bottom" src="..." alt="Card image cap">
+        </div>
+
+        {{/if}}
+
+
+
+
+
+
+
+    </div>
+
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
+    <script src="/tree.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            NavTree.createBySelector("#nav-tree", {
+                searchable: false,
+                showEmptyGroups: true,
+
+                groupOpenIconClass: "fas",
+                groupOpenIcon: "fa-chevron-down",
+
+                groupCloseIconClass: "fas",
+                groupCloseIcon: "fa-chevron-right",
+
+                linkIconClass: "fas",
+                linkIcon: "fa-link",
+
+                searchPlaceholderText: "Search",
+
+                iconPlace: "start"
             });
-        </script>
-        <script src="/tree.js"></script>
+        });
+    </script>

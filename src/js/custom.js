@@ -13,7 +13,7 @@ var inputElement = document.querySelector('#table_name');
 function deleteRegConfirm(event, url) {
   swal("¿Está seguro de que desea eliminar el registro?", {
     buttons: {
-      
+
       catch: {
         text: "Aceptar",
         value: "catch",
@@ -31,7 +31,7 @@ function deleteRegConfirm(event, url) {
 
         default:
           event.preventDefault();
-          
+
       }
     });
 
@@ -199,44 +199,39 @@ function generatedatafield() {
 
 }
 
-
-document.querySelectorAll('.miniatura').forEach(item => {
-  item.addEventListener('click', function () {
-    const rutaImagenCompleta = this.getAttribute('data-full-image');
-    const contenedor = document.getElementById('imagenCompletaContenedor');
-    const imagenCompleta = document.getElementById('imagenCompleta');
-
-
-    imagenCompleta.src = ''; // Limpia la fuente anterior por si hubiera una carga en progreso
-    imagenCompleta.src = rutaImagenCompleta; // Establece la nueva ruta de la imagen completa
-    contenedor.style.display = 'block'; // Muestra el contenedor con la imagen completa
-  });
-});
-
-// Opcional: Cerrar la imagen completa al hacer clic fuera de ella
-if (document.getElementById('imagenCompletaContenedor')) {
-  document.getElementById('imagenCompletaContenedor').addEventListener('click', function () {
-    document.getElementById('imagenCompleta').src = '';
-    const nav = document.getElementsByClassName('sb-nav-fixed sb-sidenav-toggled');
-    const contima = document.getElementsByClassName('imagenCompletaContenedor');
-    contima.style.display = 'none';
-    nav.style.display = 'block';
-    this.style.display = 'none';
-  });
-
-
-  document.getElementById('imagenCompletaContenedor').addEventListener('click', function (event) {
-    if (event.target === this) {
-      this.style.display = 'none'; // Oculta el contenedor
-      // Remueve el src de la imagen grande, efectivamente "descargándola"
-      document.getElementById('imagenCompleta').src = '';
+let currentIndex = 0; // Index of the current image shown in the modal
+const images = [];
+function showImage(element) {
+    const src = element.getAttribute('data-full-image');
+    const img= document.getElementById('imagenCompleta');
+    const imgContainer= document.getElementById('imagenCompletaContenedor');
+    images[0]=element.getAttribute('data-full-image');
+    images[1]=element.getAttribute('data-full-image2');
+    if (element.getAttribute('data-full-image3')!=null){
+      images[2]=element.getAttribute('data-full-image3');
     }
-  });
+    img.src = src;
+     
+    img.onload = function () {
+      imgContainer.style.display = 'block'; // Muestra el contenedor con la imagen completa
 
+       }
+    currentIndex = images.findIndex((imgSrc) => imgSrc === src);
+  }
+
+  function changeImage(step) {
+    currentIndex += step;
+  
+    if (currentIndex >= images.length) currentIndex = 0;
+    if (currentIndex < 0) currentIndex = images.length - 1;
+
+    document.getElementById('imagenCompleta').src = images[currentIndex];
 }
 
+
+
 document.getElementById('toggleButton').addEventListener('click', function () {
-  var formDiv = document.getElementById('form');
+  var formDiv = document.getElementById('form3');
   if (formDiv.style.display === 'none') {
     formDiv.style.display = 'block'; // Muestra el div
     this.innerText = 'Ocultar'; // Cambia el texto del botón a 'Ocultar'
@@ -245,3 +240,8 @@ document.getElementById('toggleButton').addEventListener('click', function () {
     this.innerText = 'Mostrar'; // Cambia el texto del botón a 'Mostrar'
   }
 });
+
+function closeModal() {
+  const imgContainer= document.getElementById('imagenCompletaContenedor');
+  imgContainer.style.display="none";
+}
