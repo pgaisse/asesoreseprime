@@ -2,22 +2,19 @@
 <link rel="stylesheet" href="static/vendor/fontawesome/all.min.css" />
 
 <div class="container p-4">
-
     <div class="col-md-10 mx-auto">
         <a href="/cases"><i class="fa-solid fa-arrow-left-long" style="margin-left: 0;"></i>Volver a todos los
             casos</a>
-
         <div class="card" style="margin-bottom: 10px ;">
             <div class="card-body">
                 <h5 class="card-title">Datos del Siniestro</h5>
                 <p class="card-text  text-start">
-                    <b>Códido:</b> {{data.[0].incident_code}} <br>
-                    <b> Fecha:</b> {{data.[0].incident_date}} <br>
-                    <b> Descripción:</b> {{data.[0].incident_description}} <br>
+                    <b>Código:</b> {{data.[0].incident_code}} <br>
+                    <b>Fecha:</b> {{data.[0].incident_date}} <br>
+                    <b>Descripción:</b> {{data.[0].incident_description}} <br>
                     <b>N° de Caso:</b> {{data.[0].id_case}} <br>
                     <b>Informe:</b> <a href="/generate-pdf?id_case={{data.[0].id_case}}"><i
-                            class="fa-regular fa-file-pdf">Descargar
-                            Informe</i></a> <br>
+                            class="fa-regular fa-file-pdf">Descargar Informe</i></a> <br>
                     <b>Estado:</b> {{data.[0].status_name}} <br>
                     <span class="text-center"> <b>Actualizar Estado </b></span>
                 <form action="/cases_crud" method="POST" enctype="multipart/form-data">
@@ -36,11 +33,6 @@
                 </p>
             </div>
         </div>
-
-
-
-
-
         <div class="card" style="margin-bottom: 10px ;">
             <div class="card-body mt-40">
                 <h5 class="card-title">Datos del Cliente</h5>
@@ -50,23 +42,17 @@
                     <b>Rut </b>: {{data.[0].client_rut}}<br>
                     <b>Teléfono </b>: {{data.[0].client_phone}}<br>
                     <b>Dirección </b>: {{data.[0].client_address}}<br>
-                    <b> E-mail </b>: {{data.[0].client_email}}<br>
+                    <b>E-mail </b>: {{data.[0].client_email}}<br>
                     <b>Nº de Cliente :</b> {{data.[0].id_client}}<br>
                 <p class="card-text">
-
                 </p>
             </div>
-
         </div>
-
         <div class="card" style="margin-bottom: 10px ;">
             <div class="card-body">
                 <h5 class="card-title">Datos del Asesor</h5>
-
                 {{#if data.[0].id_adviser}}
                 <p class="card-text text-start">
-
-
                     <b>Nombre</b> <span class="text-capitalize">: {{data.[0].adviser_name}}
                         {{data.[0].adviser_lastname}}</span><br>
                     <b>Rut</b> : {{data.[0].adviser_rut}}<br>
@@ -75,9 +61,7 @@
                     <b>E-mail</b> : {{data.[0].adviser_email}}<br>
                     <b>Teléfono</b> : {{data.[0].adviser_phone}}<br>
                 </p>
-
                 {{else}}
-
                 <form action="/cases_crud" method="POST" enctype="multipart/form-data">
                     <p class="card-text text-start">
                         Caso no asignado <br>
@@ -88,34 +72,26 @@
                             <option value="{{this.id_adviser}}"> <span> {{this.adviser_name}}
                                     {{this.adviser_lastname}} </span></option>
                             {{/each }}
-
                         </select>
-
                         <button class="btn btn-success btn-block form-control" type="submit" id="uploadadvcase"><i
                                 class="fa-solid fa-check"></i></button>
                         <input type="hidden" name="id_case" id="id_case" value="{{data.[0].id_case}}">
                     </p>
                 </form>
-
                 {{/if }}
-
-
             </div>
-
         </div>
         <div id="imagenCompletaContenedor" class="imagen-completa-contenedor" style="display: none;">
-
             <img src="" id="imagenCompleta">
             <span onclick="closeModal()">&times</span>
             <a class="prev" onclick="changeImage(-1)">&#10094;</a>
             <a class="next" onclick="changeImage(1)">&#10095;</a>
         </div>
-
         {{#if data.[0].id_adviser}}
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Detalles de Inspecció</h5>
-                <p class="card-text text-start">
+                <h5 class="card-title">Detalles de Inspección</h5>
+               
                 <div class="item-list">
                     <p> Fotos de Fachada: </p>
                     <div class="row">
@@ -137,11 +113,10 @@
                                 onclick="showImage(this)">
                             {{/if}}
                         </div>
-                    </div>
 
+                    </div>
                     {{/if}}
                     {{#if rowDamages.[0].sector_name}}
-
                     <ul id="nav-tree" class="nav-tree text-start">
                         {{#each rowDamages as |d|}}
                         <li id="li20-{{@index}}" data-value="li20-{{@index}}">
@@ -149,15 +124,13 @@
                                 {{this.sector_name}} ({{this.damages.length}})
                             </a>
                             <ul>
-
                                 {{#with d.damages.[0]}}
                                 <p class="card-text">
                                     <b>Dimensiones: </b><br>
-                                    Ancho: {{sector_w_size}} <br>
-                                    Alto:{{sector_h_size}} <br>
-                                    Largo:{{sector_l_size}} <br>
+                                    <b>Ancho: </b>{{sector_w_size}} <br>
+                                    <b>Alto: </b>{{sector_h_size}} <br>
+                                    <b>Largo:</b> {{sector_l_size}} <br>
                                 </p>
-
                                 <div class="row w-100">
                                     <div class="col-2 w-50">
                                         {{#if this.img1}}
@@ -175,25 +148,22 @@
                                             id="imagebox1" onclick="showImage(this)">
                                         {{/if}}
                                     </div>
-
                                 </div>
                                 {{/with}}
-
                                 {{#each damages}}
                                 <li id="li40-{{this.id_damage_images}}" data-value="li40-{{this.id_damage_images}}">
                                     <a>
                                         {{this.damage_name}}
                                     </a>
-
                                     <ul>
                                         <li id="li60-{{this.id_damage_images}}"
                                             data-value="li60-{{this.id_damage_images}}">
-                                            <a style="all:unset;"  >
-                                                <p  class="card-text text-start" style="text-align: justify;" >
-                                                    <b> Cantidad de daño</b>
+                                            <a style="all:unset;">
+                                                <p class="card-text text-start" style="text-align: justify;">
+                                                    <b>Cantidad de daño</b>
                                                     {{this.damage_size}}({{#if this.customized}}
-                                                    m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) <b> Descripción
-                                                        del daño</b>
+                                                    m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) <br>
+                                                    <b> Descripción del daño</b>
                                                     {{this.damage_description}} Lorem ipsum dolor sit
                                                     amet consectetur adipisicing elit. Aliquid delectus
                                                     ducimus hic expedita nulla voluptates laborum
@@ -201,7 +171,7 @@
                                                     amet, ab nostrum mollitia perspiciatis doloribus
                                                     maiores voluptas consequuntur!
                                                 </p>
-                                                <div class="row w-100 ">
+                                                <div class="row w-100 text-center ">
                                                     <div class="col-3 ml-0">
                                                         {{#if this.damage_image1}}
                                                         <img class="thumbnail card-img-bottom rounded-3 "
@@ -211,10 +181,11 @@
                                                             this.damage_image2}}"img_w/{{this.damage_image2}}"{{else}}""{{/if}}
                                                             data-full-image3={{#if
                                                             this.damage_image3}}"img_w/{{this.damage_image3}}"{{else}}""{{/if}}
-                                                            id="imagebox1" onclick="showImage(this)" style="width:90px">
+                                                            id="imagebox1" onclick="showImage(this)"
+                                                            style="width:90px;">
                                                         {{/if}}
                                                     </div>
-                                                    <div class="col-3 m-auto">
+                                                    <div class="col-3 m-0">
                                                         {{#if this.damage_image2}}
                                                         <img class="thumbnail card-img-bottom rounded-3 "
                                                             src="img_t/thumb_{{this.damage_image2}}"
@@ -223,10 +194,11 @@
                                                             this.damage_image1}}"img_w/{{this.damage_image1}}"{{else}}""{{/if}}
                                                             data-full-image3={{#if
                                                             this.damage_image3}}"img_w/{{this.damage_image3}}"{{else}}""{{/if}}
-                                                            id="imagebox1" onclick="showImage(this)" style="width:90px">
+                                                            id="imagebox1" onclick="showImage(this)"
+                                                            style="width:90px;">
                                                         {{/if}}
                                                     </div>
-                                                    <div class="col-3 m-auto">
+                                                    <div class="col-3 m-0">
                                                         {{#if this.damage_image3}}
                                                         <img class="thumbnail card-img-bottom rounded-3 "
                                                             src="img_t/thumb_{{this.damage_image3}}"
@@ -235,20 +207,14 @@
                                                             this.damage_image1}}"img_w/{{this.damage_image1}}"{{else}}""{{/if}}
                                                             data-full-image3={{#if
                                                             this.damage_image2}}"img_w/{{this.damage_image2}}"{{else}}""{{/if}}
-                                                            id="imagebox1" onclick="showImage(this)" style="width:90px; max-width:110px; object-fit: contain;">
+                                                            id="imagebox1" onclick="showImage(this)"
+                                                            style="width:90px;">
                                                         {{/if}}
                                                     </div>
                                                 </div>
-
-                                                
-                                                    
-
-
                                             </a>
                                         </li>
-
                                     </ul>
-
                                 </li>
                                 {{/each}}
                             </ul>
@@ -258,13 +224,11 @@
                     {{else}}
                     <p style="font-style: italic;color: red;"> No hay registros en esta inspección</p>
                 </div>
-
-                </p>
+                
                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
             <img class="card-img-bottom" src="..." alt="Card image cap">
         </div>
-
         {{/if}}
 
 

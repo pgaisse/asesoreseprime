@@ -23,7 +23,7 @@ const app = express();
 require('./lib/passport');
 
 // Settings
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 3389);
 app.set('views', path.join(__dirname, 'views'));
 
 console.log(path.join(__dirname, 'js'));

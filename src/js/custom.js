@@ -245,3 +245,29 @@ function closeModal() {
   const imgContainer= document.getElementById('imagenCompletaContenedor');
   imgContainer.style.display="none";
 }
+
+function checkpassword() {
+  var password = document.getElementById("adviser_password").value;
+  var confirmPassword = document.getElementById("adviser_repassword").value;
+  var submitButton = document.getElementById("bsubmit");
+  var messageContainer = document.getElementById("cont");
+
+  // Reglas de validación
+  var valid = password.length >= 8; // Longitud mínima de 8 caracteres
+  valid = valid && /[a-z]/.test(password); // Debe contener al menos una letra minúscula
+  valid = valid && /[A-Z]/.test(password); // Debe contener al menos una letra mayúscula
+  valid = valid && /\d/.test(password); // Debe contener al menos un dígito
+
+  // Verificar que las contraseñas coincidan
+  if (password === confirmPassword && valid) {
+    submitButton.disabled = false; // Activa el botón si las condiciones se cumplen
+    messageContainer.innerHTML = ""; // Limpia mensajes de error
+  } else {
+    submitButton.disabled = true; // Desactiva el botón si las condiciones no se cumplen
+    if (!valid) {
+      messageContainer.innerHTML = "La contraseña debe tener al menos 8 caracteres, incluyendo números, y letras mayúsculas y minúsculas.";
+    } else if (password !== confirmPassword) {
+      messageContainer.innerHTML = "Las contraseñas no coinciden.";
+    }
+  }
+}
