@@ -20,10 +20,9 @@
         {{#if ar.id_sector}}
         <div class="card mb-3 p-1 shadow-sm">
           <div class="card-body">
-            <h5 class="card-title text-capitalize">{{sector_name}} </h5>
+            <h5 class="card-title text-capitalize">{{ar.damage_name}} </h5>
             <p class="card-text text-start">
-              <b>Recinto N°:</b> {{id_case}}.{{id_sector}}.{{id_c_d_s}} <br>
-              <b>Daño:</b> {{damage_name}} <br>
+              <b>Daño N°:</b> {{id_case}}.{{id_sector}}.{{id_c_d_s}} <br>
               <b>Cantidad:</b> {{ar.damage_size}} ({{#if
               ar.customized}}m<sup>2</sup>{{else}}{{ar.damage_unit}}{{/if}})<br>
               <a onclick="deleteRegConfirm(event,'/delreg?id_c_d_s={{ar.id_c_d_s}}&id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')"
