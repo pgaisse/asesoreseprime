@@ -617,18 +617,157 @@ BEGIN
         
         END ;;
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+drop procedure if EXISTS `addsector`;
+DELIMITER ;;
+CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `addsector`(IN id_sector_ INT,
+        IN id_case_ INT,
+        IN sector_w_size_ DECIMAL,
+        IN sector_l_size_ DECIMAL,
+        IN sector_h_size_ DECIMAL,
+        IN img_ VARCHAR(200),
+        IN img1_ VARCHAR(200))
+BEGIN
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
+        insert into c_d_s (id_sector, id_case) values (id_sector_ ,id_case_);
+        insert into dimentions (id_case, id_sector, sector_w_size, sector_l_size, sector_h_size, img1, img2)
+        values (id_case_, id_sector_, sector_w_size_,sector_l_size_,sector_h_size_,img_, img1_);
+        SELECT 'OK';
+        COMMIT;
+        END ;;
+DELIMITER ;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+drop procedure if EXISTS `delsector`;
+DELIMITER ;;
+CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `delsector`(
+        IN id_sector_ INT,
+        IN id_case_ INT,
+        IN id_adviser_ INT)
+BEGIN
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SHOW ERRORS; 
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
 
--- Dump completed on 2024-05-17 12:19:43
+        delete di from c_d_s cd
+        inner join d_c_d_s dc
+        on dc.id_c_d_s=cd.id_c_d_s
+        inner join damage_images di
+        on di.id_d_c_d_s=dc.id_d_c_d_s
+        inner join cases 
+        on cases.id_case= cd.id_case
+        inner join advisers ON advisers.id_adviser=cases.id_adviser
+        where cd.id_sector=id_sector_  and cd.id_case=id_case_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin');
+
+        delete dimentions from dimentions 
+        inner join cases on cases.id_case=dimentions.id_case 
+        inner join advisers ON advisers.id_adviser=cases.id_adviser
+        where dimentions.id_sector = id_sector_ and cases.id_case=id_case_ and (cases.id_adviser= id_adviser_ OR advisers.adviser_role='admin' );
+      
+       
+        delete c_d_s from c_d_s inner join cases ON cases.id_case=c_d_s.id_case
+        inner join advisers ON advisers.id_adviser=cases.id_adviser
+        where c_d_s.id_sector= id_sector_ and cases.id_case=id_case_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin' );
+
+        
+
+       SELECT 'OK';
+        COMMIT;
+        END ;;
+DELIMITER ;
+
+
+drop procedure if EXISTS `delDamage`;
+DELIMITER ;;
+CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `delDamage`(
+        IN id_adviser_ INT,
+        IN id_c_d_s_ INT)
+BEGIN
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SHOW ERRORS; 
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
+
+        delete di from c_d_s cd
+        inner join d_c_d_s dc
+        on dc.id_c_d_s=cd.id_c_d_s
+        inner join damage_images di
+        on di.id_d_c_d_s=dc.id_d_c_d_s
+        inner join cases 
+        on cases.id_case= cd.id_case
+        inner join advisers ON advisers.id_adviser=cases.id_adviser
+        where  cd.id_c_d_s=id_c_d_s_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin');
+
+
+        delete c_d_s from c_d_s 
+        inner join cases 
+        ON cases.id_case=c_d_s.id_case
+        inner join advisers 
+        ON advisers.id_adviser=cases.id_adviser
+        where  c_d_s.id_c_d_s=id_c_d_s_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin' );
+        
+
+       SELECT 'OK';
+        COMMIT;
+        END ;;
+DELIMITER ;
+
+drop procedure if EXISTS `updateDamage`;
+DELIMITER ;;
+CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `updateDamage`(
+        IN id_adviser_ INT,
+        IN id_c_d_s_ INT)
+BEGIN
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+  BEGIN
+    SHOW ERRORS; 
+    SELECT 'ERROR';
+    ROLLBACK;
+  END;
+  START TRANSACTION;
+        SET AUTOCOMMIT=0;
+
+        delete di from c_d_s cd
+        inner join d_c_d_s dc
+        on dc.id_c_d_s=cd.id_c_d_s
+        inner join damage_images di
+        on di.id_d_c_d_s=dc.id_d_c_d_s
+        inner join cases 
+        on cases.id_case= cd.id_case
+        inner join advisers 
+        ON advisers.id_adviser=cases.id_adviser
+        where  cd.id_c_d_s=id_c_d_s_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin');
+
+
+        update c_d_s 
+        inner join cases 
+        on cases.id_case= c_d_s.id_case
+        inner join advisers 
+        ON advisers.id_adviser=cases.id_adviser        
+        
+        SET c_d_s.id_damage=null 
+
+        where  c_d_s.id_c_d_s=id_c_d_s_ and (cases.id_adviser=id_adviser_ OR advisers.adviser_role='admin' );
+
+        
+
+       SELECT 'OK';
+        COMMIT;
+        END ;;
+DELIMITER ;
+
+
+        

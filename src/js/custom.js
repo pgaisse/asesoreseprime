@@ -25,7 +25,6 @@ function deleteRegConfirm(event, url) {
       switch (value) {
         case "catch":
           window.location.href = url;
-          swal("Listo!", "Registro Eliminado", "success");
           //
           break;
 

@@ -1,10 +1,6 @@
 {{#if user}}
 
 
-
-
-
-
 <div class="container">
   <div class="row">
     <div class="col-md-7 mx-auto" align="left">
@@ -25,8 +21,8 @@
               <b>Daño N°:</b> {{id_case}}.{{id_sector}}.{{id_c_d_s}} <br>
               <b>Cantidad:</b> {{ar.damage_size}} ({{#if
               ar.customized}}m<sup>2</sup>{{else}}{{ar.damage_unit}}{{/if}})<br>
-              <a onclick="deleteRegConfirm(event,'/delreg?id_c_d_s={{ar.id_c_d_s}}&id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')"
-                href="#"><i class="fa-solid fa-trash-can"></i></a><br>
+              <a onclick="deleteRegConfirm(event,'')"
+                href="/delreg?id_c_d_s={{ar.id_c_d_s}}&id_case={{ar.id_case}}&id_sector={{ar.id_sector}}&return=damages"><i class="fa-solid fa-trash-can"></i></a><br>
 
               {{#if damage_image1}}
             <div class="col w-100 image-container ">
@@ -142,7 +138,7 @@
 
 
 
-            <input type="Number" class="form-control" id="damage_size" name="damage_size" placeholder="Cantidad de daño"
+            <input type="Number" step="0.1" class="form-control" id="damage_size" name="damage_size" placeholder="Cantidad de daño"
               style="text-align: center;">
 
 

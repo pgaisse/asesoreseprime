@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {pool, exQuery} = require('../database');
+const { pool, exQuery } = require('../database');
 const { isLoggedIn, isNLoggedIn, isAdmin } = require('../lib/auth');
 const { log } = require('handlebars');
 const sharp = require('sharp');
@@ -9,7 +9,7 @@ const helpers = require('../lib/helpers');
 const fs = require('fs')
 const path = require('path');
 const puppeteer = require('puppeteer');
-const {format} = require('timeago.js')
+const { format } = require('timeago.js')
 
 
 
@@ -65,7 +65,7 @@ GROUP BY
     client_address, 
     client_rut, 
     status.status_name;`;
-        console.log(showCases)
+        //console.log(showCases)
         if (req.query.case_img && req.query.id_case) {
             const qupdate = `update cases set ${req.query.case_img}=NULL WHERE id_case=${req.query.id_case}`
             await exQuery(qupdate);
@@ -78,7 +78,7 @@ GROUP BY
 
         const results = await exQuery(showCases);
         const queryCases = results;
-       
+
         res.render('myinsp', { cases: queryCases });
     }
     catch (error) {
@@ -93,8 +93,8 @@ GROUP BY
 router.post('/myinsp', isLoggedIn, async (req, res) => {
     try {
 
-        const imageNames = await helpers.resizeImage(req.files); 
-        const query= `call delImgCase("${imageNames.image}","${imageNames.image1}",${req.body.id_case})`;
+        const imageNames = await helpers.resizeImage(req.files);
+        const query = `call delImgCase("${imageNames.image}","${imageNames.image1}",${req.body.id_case})`;
         console.log(query)
         await exQuery(query);
         req.flash('success', "Actualización de imagen exitosa.");
@@ -189,7 +189,7 @@ router.get('/addCase', isAdmin, async (req, res) => {
     try {
         const id_client = req.query.id_client;
         const ts = req.query.ts;
-        const query= `call addCase(${id_client},"${ts[0]}")`
+        const query = `call addCase(${id_client},"${ts[0]}")`
         console.log(query)
         await exQuery(query)
         res.redirect('/cases')
@@ -294,7 +294,7 @@ router.get('/sectors', isLoggedIn, async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        req.flash('message', 'Ocurrió un error al ingresar al caso');
+        req.flash('message', 'Caso inválido ' + error);
         res.redirect(`/myinsp`)
 
     }
@@ -309,11 +309,10 @@ router.post('/sectors', isLoggedIn, async (req, res) => {
     try {
 
         const imageNames = await helpers.resizeImage(req.files);
-        const queryInsert1 = `insert into c_d_s (id_sector, id_case) values (${req.body.id_sector} ,${req.body.id_case});`;
-        const queryInsert2 = `insert into dimentions (id_case, id_sector, sector_w_size, sector_l_size, sector_h_size, img1, img2)
-                                    values (${req.body.id_case}, ${req.body.id_sector}, ${req.body.sector_w_size},${req.body.sector_l_size},${req.body.sector_h_size},"${imageNames.image}", "${imageNames.image1}")`;
-        await exQuery(queryInsert1);
-        await exQuery(queryInsert2);
+        const query = `call addsector(${req.body.id_sector},${req.body.id_case},${req.body.sector_w_size},
+            ${req.body.sector_l_size},${req.body.sector_h_size},"${imageNames.image}", "${imageNames.image1}");`;
+        console.log(query)
+        await exQuery(query);
         const [getl_id] = await exQuery("SELECT max(id_c_d_s) m_id from c_d_s");
 
         req.flash('success', 'Recinto agregado satisfactoriamente');
@@ -336,31 +335,42 @@ router.get('/damages', isLoggedIn, async (req, res) => {
         const id_sector = req.query.id_sector;
         const id_c_d_s = req.query.id_c_d_s;
         const id_adviser = req.user.id_adviser;
-        sql1 = "Select damage_name, damage_unit, id_damage from damages";
-        sql3 = "Select damage_unit from damages group by damage_unit";
-        sql4 = "Select id_repair, repair_name, repair_unit,  repair_price from repairs";
-        let sql2 = `call queryDamages(${id_sector},${id_adviser},${id_case});`;
-        const vcase = id_case;
-        [results1] = await exQuery(`Select sector_name from sectors where id_sector=${id_sector}`);
-        sector_name = results1;
-        const defaultDamages = await exQuery(sql1);
-        const defaultDamageunits = await exQuery(sql3);
-        const defaultrepairs = await exQuery(sql4);
+        const valSector = req.query.id_sector != 'undefined'? await exQuery(`select id_sector from c_d_s where id_sector=${id_sector} and id_case=${id_case}`) : "";
+        const chekDamageNull = await exQuery(`select id_damage from c_d_s where id_sector=${id_sector} and id_case=${id_case} and id_damage is NULL;`)
+        if (valSector != "") //verificación de datos navegaor
+        {
+            const vcase = id_case;
+            const sql1 = "Select damage_name, damage_unit, id_damage from damages";
+            const sql3 = "Select damage_unit from damages group by damage_unit";
+            const sql4 = "Select id_repair, repair_name, repair_unit,  repair_price from repairs";
 
-        if (req.query.id_c_d_s) {
-            res.render('damages', { vcase, defaultDamages, defaultDamageunits, id_case, id_sector, sector_name, id_c_d_s, defaultrepairs });
+            [results1] = await exQuery(`Select sector_name from sectors where id_sector=${id_sector}`);
+            sector_name = results1;
+            const defaultDamages = await exQuery(sql1);
+            const defaultDamageunits = await exQuery(sql3);
+            const defaultrepairs = await exQuery(sql4);
+            if (chekDamageNull == 'NULL') {
+                res.render('damages', { vcase, defaultDamages, defaultDamageunits, id_case, id_sector, sector_name, id_c_d_s, defaultrepairs });
+            }
+            else {
+                let sql2 = `call queryDamages(${id_sector},${id_adviser},${id_case});`;
+                const [results] = await exQuery(sql2);
+                const damages = results;
+                res.render('damages', { damages, vcase, defaultDamages, defaultDamageunits, id_case, id_sector, sector_name, defaultrepairs });
+            }
         }
         else {
-
-            const [results] = await exQuery(sql2);
-            const damages = results;
-            res.render('damages', { damages, vcase, defaultDamages, defaultDamageunits, id_case, id_sector, sector_name, defaultrepairs });
+            req.flash('message', 'Recinto Inválido');
+            res.redirect(`/sectors?id_case=${id_case}`)
         }
 
+
+
     }
-    catch(error) {
+    catch (error) {
         console.log(error);
-        res.redirect(`damages?id_case=${req.body.id_case}&id_sector=${req.body.id_sector}`);
+        req.flash('message', 'Ocurrió un error al cargar los daño ' + error);
+        //res.redirect(`damages?id_case=${req.body.id_case}&id_sector=${req.body.id_sector}`);
 
     }
 
@@ -369,12 +379,20 @@ router.get('/damages', isLoggedIn, async (req, res) => {
 router.post('/damages', isLoggedIn, async (req, res) => {
 
     try {
+        let id_c_d_s = 0;
+        const query = await exQuery(`select id_c_d_s from c_d_s where id_sector=${req.body.id_sector} and id_case=${req.body.id_case} and id_damage is NULL;`)
+        if ('id_c_d_s' in query) {
+            id_c_d_s = query[0].id_c_d_s;
+        }
+        else {
+            id_c_d_s = 0;
+        }
+        console.log(" llooooggi  :" + id_c_d_s);
         const imageNames = await helpers.resizeImage(req.files);
-        const id_c_d_s = req.body.id_c_d_s ? req.body.id_c_d_s : 0;
-        console.log("valor c_d_s = " + id_c_d_s);
         insert1 = `CALL dataInsert(${req.body.id_sector},${id_c_d_s},${req.body.id_damage},${req.body.damage_size},${req.body.id_case},"${imageNames.image}","${imageNames.image1}","${imageNames.image2}",${req.body.inlineRadioOptions});`
         console.log(insert1);
         await exQuery(insert1);
+
         req.flash('success', 'Daño agregado satisfactoriamente');
         res.redirect(`/damages?id_case=${req.body.id_case}&id_sector=${req.body.id_sector}`);
     }
@@ -418,15 +436,16 @@ router.post('/addDamageRepair', isLoggedIn, async (req, res) => {
 
 
 router.get('/delreg', isLoggedIn, async (req, res) => {
+    const id_adviser = req.user.id_adviser;
+    const id_case = req.query.id_case;
+    const retornar = req.query.return;
+    const id_c_d_s = req.query.id_c_d_s;
+    const id_damage_images = req.query.id_damage_images;
+    const id_sector = req.query.id_sector;
     try {
-        const adviser = req.user.id_adviser;
-        const id_case = req.query.id_case;
-        const id_c_d_s = req.query.id_c_d_s;
-        const id_damage_images = req.query.id_damage_images;
-        const id_sector = req.query.id_sector;
-        const checkLastDamage = `Select count(*) FROM c_d_s where id_c_d_s=${id_c_d_s} and id_case=(select cases.id_case from cases where cases.id_adviser=${adviser} and cases.id_case=${id_case})`;
 
-        const del = `DELETE FROM c_d_s where id_c_d_s=${id_c_d_s} and id_case=(select cases.id_case from cases where cases.id_adviser=${adviser} and cases.id_case=${id_case})`;
+
+
         const selectImagesDamages = `Select di.image1, di.image2, di.image3 from c_d_s cd
         inner join d_c_d_s dc
         on dc.id_c_d_s=cd.id_c_d_s
@@ -434,17 +453,32 @@ router.get('/delreg', isLoggedIn, async (req, res) => {
         on di.id_d_c_d_s=dc.id_d_c_d_s
         inner join cases c
         on c.id_case= cd.id_case
-        where cd.id_sector=${req.query.id_sector} and cd.id_c_d_s=${id_c_d_s} and c.id_adviser=${req.user.id_adviser} and cd.id_case=${req.query.id_case};`;
-        const upd = `update c_d_s SET id_damage=null WHERE id_c_d_s=${id_c_d_s} and c_d_s.id_sector=${req.query.id_sector} and c_d_s.id_case=${req.query.id_case};`
+        where cd.id_c_d_s=${id_c_d_s} and c.id_adviser=${req.user.id_adviser};`;
+        const query = `select count(*) as contador from c_d_s where id_case=${req.query.id_case} and id_sector=${req.query.id_sector}`
+       
+        const checkLastDamage = await exQuery(query);
+       
+        let checkLD=0;
+        if (checkLastDamage[0].hasOwnProperty('contador')){
+            checkLD= checkLastDamage[0].contador
+        }
+        else{
+            checkLD=0;
+        }
+        const upd = `call updateDamage(${id_adviser},${id_c_d_s});`
+        const del = `call delDamage(${id_adviser},${id_c_d_s})`;
+        //const upd = `update c_d_s SET id_damage=null WHERE id_c_d_s=${id_c_d_s} and c_d_s.id_sector=${req.query.id_sector} and c_d_s.id_case=${req.query.id_case};`
 
-        const queryDelUp = checkLastDamage > 0 ? del : upd; //gestion para conservar registro de sector indepenciente exista o no daño
+        const queryDelUp = checkLD > 1 ? del : upd; //gestion para conservar registro de sector indepenciente exista o no daño
+    
         resultsImagesDamages = await exQuery(selectImagesDamages);
+
         await exQuery(queryDelUp);
 
         await helpers.delFile(resultsImagesDamages);
 
         req.flash('success', 'Dato Eliminado correctamente');
-        res.redirect(`/damages?id_case=${id_case}&id_sector=${id_sector}`);
+        res.redirect(`/${retornar}?id_case=${id_case}& id_sector=${id_sector}`);
     }
     catch (error) {
         console.log(error);
@@ -461,11 +495,7 @@ router.get('/delsector', isLoggedIn, async (req, res) => {
     try {
 
 
-        const delSector1 = `delete c_d_s from c_d_s inner join cases ON cases.id_case=c_d_s.id_case
-         where c_d_s.id_sector= ${req.query.id_sector} and cases.id_case=${req.query.id_case} and cases.id_adviser=${req.user.id_adviser};`;
-        const delSector2 = `delete dimentions from dimentions inner join cases on cases.id_case=dimentions.id_case
-        where dimentions.id_sector = ${req.query.id_sector} and cases.id_case=${req.query.id_case} and cases.id_adviser= ${req.user.id_adviser}`;
-        console.log(delSector1)
+        const delSector1 = `call delsector(${req.query.id_sector} ,${req.query.id_case} ,${req.user.id_adviser});`;
         const selectImagesDamages = `Select di.image1, di.image2, di.image3 from c_d_s cd
         inner join d_c_d_s dc
         on dc.id_c_d_s=cd.id_c_d_s
@@ -479,14 +509,13 @@ router.get('/delsector', isLoggedIn, async (req, res) => {
         where cases.id_case=${req.query.id_case} and dimentions.id_sector=${req.query.id_sector} and cases.id_adviser=${req.user.id_adviser}`;
         const sid = await exQuery(selectImagesDamages);
         const sidi = await exQuery(selectImagesDimentions);
+        console.log(delSector1)
         await exQuery(delSector1);
-        await exQuery(delSector2);
-
         //await helpers.delFile(sid);
         await helpers.delFile(sidi);
         await helpers.delFile(sid);
         req.flash('success', 'Dato Eliminado correctamente');
-        res.redirect(`/sectors?id_case=${req.query.id_case}`);
+        res.redirect(`/${req.query.return}`);
     }
     catch (error) {
         console.log(error);
@@ -525,7 +554,7 @@ router.get('/cases_crud', isAdmin, async (req, res) => {
     }
     catch (error) {
         console.log(error);
-        req.flash('message', 'Ocurrió un error al cargar el caso');
+        req.flash('message', 'Ocurrió un error al cargar el caso' + error + "    ");
         res.redirect(`/cases`);
     }
 
@@ -541,7 +570,7 @@ router.post('/cases_crud', isAdmin, async (req, res) => {
 
 
         const exead = req.body.id_adviser && !req.body.id_status ? await exQuery(queryupad) : await exQuery(queryupst);
-     
+
 
         res.redirect(`/cases_crud?id_case=${req.body.id_case}`);
     }
@@ -556,7 +585,7 @@ router.post('/cases_crud', isAdmin, async (req, res) => {
 
 })
 
-router.get('/generate-pdf',isAdmin, async (req, res) => {
+router.get('/generate-pdf', isAdmin, async (req, res) => {
 
     const id_case = req.query.id_case;
     const id_admin = req.user.id_adviser;
@@ -608,7 +637,7 @@ router.get('/createPdf', isAdmin, async (req, res) => {
         // console.log(organizedData)
         const dataBody = await pdfService.reOrdenar_v2(organizedData);
         const [header_b] = await exQuery(query2);
-        await pool.end((err)=>{
+        await pool.end((err) => {
             console.log("Mysql Connection ends");
         })
         //const body = await pdfService.buildPDF(header_b, dataBody);

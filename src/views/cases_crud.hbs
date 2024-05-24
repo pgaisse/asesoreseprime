@@ -91,7 +91,7 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Detalles de Inspección</h5>
-               
+
                 <div class="item-list">
                     <p> Fotos Generales del Inmueble </p>
                     <div class="row">
@@ -123,13 +123,26 @@
                             <a>
                                 {{this.sector_name}} ({{this.damages.length}})
                             </a>
+
                             <ul>
                                 {{#with d.damages.[0]}}
+                                <div id="contsec" class="w-100 text-end">
+                                    <a href="../damages?id_case={{id_case}}&id_sector={{id_sector}}"><i
+                                            class="fas fa-edit"></i></a> &nbsp;&nbsp;
+
+                                    <a href="#contsec"
+                                        onclick="deleteRegConfirm(event,'/delsector?id_case={{id_case}}&id_sector={{this.id_sector}}&return=cases_crud?id_case={{id_case}}')"><i
+                                            class="fa-solid fa-trash-can"></i></a>
+                                </div>
+
                                 <p class="card-text">
-                                    <b>Dimensiones: </b><br>
-                                    <b>Ancho: </b>{{sector_w_size}} <br>
-                                    <b>Alto: </b>{{sector_h_size}} <br>
-                                    <b>Largo:</b> {{sector_l_size}} <br>
+
+
+
+                                    <b>Dimensiones :</b>
+                                    <b>Ancho: </b>{{sector_w_size}},
+                                    <b>Alto: </b>{{sector_h_size}},
+                                    <b>Largo:</b> {{sector_l_size}}
                                 </p>
                                 <div class="row w-100">
                                     <div class="col-2 w-50">
@@ -160,9 +173,11 @@
                                             data-value="li60-{{this.id_damage_images}}">
                                             <a style="all:unset;">
                                                 <p class="card-text text-start" style="text-align: justify;">
-                                                    <b>Cantidad de daño</b>
-                                                    {{this.damage_size}}({{#if this.customized}}
-                                                    m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) <br>
+                                                    <div class="w-100 text-end"><a
+                                                            onclick="deleteRegConfirm(event,'/delreg?id_c_d_s={{id_c_d_s}}&id_case={{id_case}}&id_sector={{id_sector}}&return=cases_crud?id_case={{id_case}}')"
+                                                            href="#"><i class="fa-solid fa-trash-can"></i></a></div>
+                                                    <div> <b> N° de daño: </b> {{id_case}}.{{id_sector}}.{{id_c_d_s}}</div>
+                                                    <div> <b></b> Cantidad de daño : </b>{{this.damage_size}}({{#if this.customized}}m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) </div><br>
                                                     <b> Descripción del daño</b>
                                                     {{this.damage_description}} Lorem ipsum dolor sit
                                                     amet consectetur adipisicing elit. Aliquid delectus
@@ -224,7 +239,7 @@
                     {{else}}
                     <p style="font-style: italic;color: red;"> No hay registros en esta inspección</p>
                 </div>
-                
+
                 <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
             </div>
             <img class="card-img-bottom" src="..." alt="Card image cap">

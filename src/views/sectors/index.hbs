@@ -39,7 +39,7 @@
                 <b>Dimensiones:</b> ancho: {{ar.sector_w_size}} alto: {{ar.sector_h_size}} largo:
                 {{ar.sector_l_size}}<br>
                 <a href="../damages?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}"><i class="fas fa-edit"></i></a>
-                <a onclick="deleteRegConfirm(event,'/delsector?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}')"
+                <a onclick="deleteRegConfirm(event,'/delsector?id_case={{ar.id_case}}&id_sector={{ar.id_sector}}&return=sectors?id_case={{ar.id_case}}')"
                   href="#"><i class="fa-solid fa-trash-can"></i></a>
 
                 {{#if img1}}
@@ -84,13 +84,13 @@
                   selected="true">{{this.sector_name}}</option>{{/each}}
               </select>
 
-              <input type="Number" class="form-control" id="sector_l_size" name="sector_l_size" placeholder="Largo">
+              <input type="Number" step="0.1" class="form-control" id="sector_l_size" name="sector_l_size" placeholder="Largo">
 
 
-              <input type="Number" class="form-control" id="sector_w_size" name="sector_w_size" placeholder="Ancho">
+              <input type="Number" step="0.1" class="form-control" id="sector_w_size" name="sector_w_size" placeholder="Ancho">
 
 
-              <input type="Number" class="form-control" id="sector_h_size" name="sector_h_size" placeholder="Alto">
+              <input type="Number" step="0.1" class="form-control" id="sector_h_size" name="sector_h_size" placeholder="Alto">
 
 
               <label for="files_" class="form-control" style="margin-bottom: -34px; "><i

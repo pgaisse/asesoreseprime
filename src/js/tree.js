@@ -64,6 +64,7 @@ class NavTree {
 
       li.replaceChild(li_container, a);
       li_container.append(a);
+      li_container.append(a);
 
       const icon_link = a.cloneNode();
       icon_link.classList.add("px-0");
