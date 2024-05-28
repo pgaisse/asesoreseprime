@@ -1,11 +1,9 @@
 const { json } = require("express");
-const pdf = require('html-pdf');
 const path = require('path');
 const fs = require('fs')
 const puppeteer = require('puppeteer');
 const util = require('util')
 const htmlToXlsx = require('html-to-xlsx')
-const chromeEval = require('chrome-page-eval')({ puppeteer })
 const writeFileAsync = util.promisify(fs.writeFile)
 const uuid = require('uuid');
 const unicid = uuid.v4();
@@ -324,7 +322,8 @@ async function buildPDF(data, dataBody) {
     const html2 = await bodybuilder_pdf(data, dataBody);
     //console.log(html2)
     // Crea el PDF
-    const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--enable-local-file-accesses'] });
+    
+    const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--enable-local-file-accesses','--no-sandbox'] });
     const page = await browser.newPage();
     await page.setContent(html2, { waitUntil: 'domcontentloaded' });
 

@@ -10,6 +10,7 @@ const fs = require('fs')
 const path = require('path');
 const puppeteer = require('puppeteer');
 const { format } = require('timeago.js')
+const { body, validationResult } = require('validator');
 
 
 
@@ -109,28 +110,14 @@ router.post('/myinsp', isLoggedIn, async (req, res) => {
     }
 });
 
+let formData = {}
 router.post('/cases', isAdmin, async (req, res) => {
     try {
-        const value = req.body.search_input;
-        const column = req.body.search;
-        const table = column;
-        const table2 = table.split('_');
-        let table3 = "";
-        if (table.includes('id')) {
-            table3 = table2[1];
-            if (table3[table3.length - 1] !== 's') {
-                table3 = table3 + 's';
-            }
-        }
-        else {
-            table3 = table2[0];
-            if (table3[table3.length - 1] !== 's') {
-                table3 = table3 + 's';
-            }
+        
+        formData = req.body;
+        
 
-        }
-
-        res.redirect(`/cases?table=${table3}&column=${column}&value=${value}`);
+        res.redirect(`/cases`);
     }
     catch (error) {
         req.flash('message', 'Ocurrió un error en la búsqueda');
@@ -145,41 +132,39 @@ router.post('/cases', isAdmin, async (req, res) => {
 
 router.get('/cases', isAdmin, async (req, res) => {
     try {
-        const tablef = req.query.table;
-        const column = req.query.column;
-        const value = req.query.value;
-        let sql = "";
-        const statusColumns = "Select status.status_name from status;";
-        if (!tablef?.trim() || !column?.trim() || !value?.trim()) {
-            sql = `call showAllCases("cases","id_case",'>',"0")`;
-        }
-        else {
+        
+        const search_type   = formData.search_type|| "";
+        const search_body   = formData.search_body | "";
+        const search_status = formData.search_status || "";
+        const search_start  = formData.search_start || "";
+        const search_end    = formData.search_end || "";
 
-            sql = `call showAllCases("${tablef}","${column}",'=',"${value}")`;
-        }
-        const queryClients = "Select cliente_id id_client,numero_caso, nombre client_name, apellidos client_lastname, direccion client_address, tipo_siniestros indicent_type from asesoresprime_web.6Scr5XN_clientes where numero_caso >0  order by cliente_id ASC limit 10";
+        const statusColumns = "Select status.id_status, status.status_name from status;";
+
+        console.log(formData)
+        const sql =  `call showAllCases("${search_type}" ,'${search_body}','${search_status}','${search_start}','${search_end}');`
+     
+        const queryClients = `Select cliente_id id_client,numero_caso, nombre client_name, apellidos client_lastname, rut client_rut, direccion client_address,
+         tipo_siniestros indicent_type from asesoresprime_web.6Scr5XN_clientes where NOT EXISTS (
+            SELECT 1 
+            FROM cases
+            WHERE cases.num_case = asesoresprime_web.6Scr5XN_clientes.numero_caso
+        )
+          order by cliente_id ASC limit 5`;
         const resultsClients = await exQuery(queryClients);
-
+        console.log(resultsClients);
 
         const [results] = await exQuery(sql);
-        campos_en = Object.keys(results[0]);
-        // this array must update each time that query is modify
-        campos_sp = ['N° de caso', 'Estado de caso', 'Fecha de caso', 'N° asesor', 'Nombre de asesor', 'Apellido de asesor', 'Código de siniestro', 'Nombre de cliente', 'Apellido de cliente', 'Rut de cliente', 'Dirección del cliente'];
-        //campos                  =   campos_sp.concat(campos_en);
         showAllCases = results;
 
         const statusResults = await exQuery(statusColumns);
 
-        const campos = campos_sp.map((elem, index) => {
-            return { campos_sp: elem, campos_en: campos_en[index] };
-        });
-
-        res.render('cases', { cases: showAllCases, campos, statusFields: statusResults, resultsClients });
+        res.render('cases', { cases: showAllCases, statusFields: statusResults, resultsClients });
     }
     catch (error) {
         console.log(error)
         req.flash('message', 'Ocurrió un error en casos');
-        res.redirect('cases')
+        //res.redirect('cases')
 
     }
 
@@ -335,7 +320,7 @@ router.get('/damages', isLoggedIn, async (req, res) => {
         const id_sector = req.query.id_sector;
         const id_c_d_s = req.query.id_c_d_s;
         const id_adviser = req.user.id_adviser;
-        const valSector = req.query.id_sector != 'undefined'? await exQuery(`select id_sector from c_d_s where id_sector=${id_sector} and id_case=${id_case}`) : "";
+        const valSector = req.query.id_sector != 'undefined' ? await exQuery(`select id_sector from c_d_s where id_sector=${id_sector} and id_case=${id_case}`) : "";
         const chekDamageNull = await exQuery(`select id_damage from c_d_s where id_sector=${id_sector} and id_case=${id_case} and id_damage is NULL;`)
         if (valSector != "") //verificación de datos navegaor
         {
@@ -455,22 +440,22 @@ router.get('/delreg', isLoggedIn, async (req, res) => {
         on c.id_case= cd.id_case
         where cd.id_c_d_s=${id_c_d_s} and c.id_adviser=${req.user.id_adviser};`;
         const query = `select count(*) as contador from c_d_s where id_case=${req.query.id_case} and id_sector=${req.query.id_sector}`
-       
+
         const checkLastDamage = await exQuery(query);
-       
-        let checkLD=0;
-        if (checkLastDamage[0].hasOwnProperty('contador')){
-            checkLD= checkLastDamage[0].contador
+
+        let checkLD = 0;
+        if (checkLastDamage[0].hasOwnProperty('contador')) {
+            checkLD = checkLastDamage[0].contador
         }
-        else{
-            checkLD=0;
+        else {
+            checkLD = 0;
         }
         const upd = `call updateDamage(${id_adviser},${id_c_d_s});`
         const del = `call delDamage(${id_adviser},${id_c_d_s})`;
         //const upd = `update c_d_s SET id_damage=null WHERE id_c_d_s=${id_c_d_s} and c_d_s.id_sector=${req.query.id_sector} and c_d_s.id_case=${req.query.id_case};`
 
         const queryDelUp = checkLD > 1 ? del : upd; //gestion para conservar registro de sector indepenciente exista o no daño
-    
+
         resultsImagesDamages = await exQuery(selectImagesDamages);
 
         await exQuery(queryDelUp);

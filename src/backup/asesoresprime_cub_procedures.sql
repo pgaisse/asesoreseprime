@@ -43,8 +43,8 @@ BEGIN
     SET AUTOCOMMIT=0;
     SET @filtro = CONCAT(incident_first, '%');
     SET @status = (select id_incident  from incidents where incident_code like @filtro);
-        INSERT INTO cases (id_case, id_incident, id_status, case_date)
-        values (0, @status,1, (select fecha_siniestro from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client)) ;           
+        INSERT INTO cases (id_case, id_incident, id_status, case_date, num_case)
+        values (0, @status,1, (select fecha_siniestro from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client), (select numero_caso from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client)) ;           
         SELECT CONCAT('Se est�� ingresando al procedure', @status ) AS Mensaje;
         SET @ultimo_id = LAST_INSERT_ID();
         insert into cases_clients (id_client,id_case)
@@ -433,38 +433,83 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
+--call ShowAllCases("cases.numero_caso=2",1,'2024-05-01','2024-06-07');
+drop procedure if EXISTS `showAllCases`;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `showAllCases`(
-    IN ntable VARCHAR(40),
-    IN nfield VARCHAR(40),
-    IN op VARCHAR(40),
-    IN nvalue VARCHAR(40)
+    IN query_first VARCHAR(80),
+    IN query_second VARCHAR(80),
+    IN id_status_ int,
+    IN date_start_ date,
+    IN date_end_ date
 )
 BEGIN
+DECLARE cond1 VARCHAR(80);
+DECLARE cond2 VARCHAR(80);
+DECLARE cond3 VARCHAR(80);
+set cond1="";
+set cond2="";
+set cond3="";
+IF query_second='' or query_second is null or query_second=0 THEN
+        set cond1="";
+        IF id_status_='' or id_status_  is null or id_status_=0  THEN
+                SET cond2 = "";
+                
+        ELSE
+                SET cond2 = CONCAT('where status.id_status= ', id_status_);
+                
+        END IF;  
+ELSE
+        SET cond1 = CONCAT('where ', query_first, "=", query_second);
+        IF id_status_='' or id_status_  is null or id_status_=0 THEN
+               SET cond2 = "";
+                
+        ELSE
+        
+         SET cond2 = CONCAT(' and status.id_status = ', id_status_);
+                
+        END IF;
+END IF;
     
+
+        IF date_start_ is null or date_start_ ='' or date_start_='0000-00-00' THEN
+                SET cond3='';
+        ELSE         
+                IF id_status_='' or id_status_  is null or id_status_=0  THEN
+        
+                        SET cond3=CONCAT(' where cases.case_date  BETWEEN "' ,date_start_,'" AND "',date_end_,'" ');
+                ELSE
+                        SET cond3=CONCAT(' and cases.case_date BETWEEN "'  ,date_start_,'" AND "',date_end_,'"');
+                END IF;
+        END IF;
     SET @query = CONCAT('SELECT 
     cases.id_case, status.status_name, cases.case_date, advisers.id_adviser, advisers.adviser_name, 
-    advisers.adviser_lastname, incidents.incident_code, asesoresprime_web.6Scr5XN_clientes.nombre client_name,
+    advisers.adviser_lastname, incidents.incident_code,incidents.incident_type, asesoresprime_web.6Scr5XN_clientes.nombre client_name,
     asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname, 
     asesoresprime_web.6Scr5XN_clientes.rut client_rut,
-    asesoresprime_web.6Scr5XN_clientes.direccion  client_address FROM cases 
-    Inner JOIN cases_clients 
+    asesoresprime_web.6Scr5XN_clientes.direccion  client_address,
+    asesoresprime_web.6Scr5XN_clientes.numero_caso,
+    asesoresprime_web.6Scr5XN_clientes.cliente_id id_client
+    
+    FROM cases 
+    inner JOIN cases_clients 
     on cases_clients.id_case=cases.id_case
-    INNER JOIN asesoresprime_web.6Scr5XN_clientes 
+    inner JOIN asesoresprime_web.6Scr5XN_clientes 
     ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases_clients.id_client 
     LEFT JOIN advisers 
     ON advisers.id_adviser = cases.id_adviser 
-    INNER JOIN status 
+    inner JOIN status 
     ON status.id_status = cases.id_status 
-    INNER JOIN incidents 
-    ON incidents.id_incident = cases.id_incident WHERE ', ntable, '.', nfield, ' ', op, ' "', nvalue, '";');
-    
-    
+    inner JOIN incidents 
+    ON incidents.id_incident = cases.id_incident 
+    ', cond1, cond2, cond3, ' limit 10');
+
     PREPARE stmt FROM @query;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
 END ;;
 DELIMITER ;
+call ShowAllCases("asesoresprime_web.6Scr5XN_clientes.numero_caso",1886124,1,'2024-12-10','2024-12-10');
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -769,5 +814,47 @@ DECLARE EXIT HANDLER FOR SQLEXCEPTION
         END ;;
 DELIMITER ;
 
+
+
+drop procedure if EXISTS `showMycases`;
+DELIMITER ;;
+CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `showMycases`(
+        IN id_adviser_ INT)
+BEGIN
+
+SELECT
+    (
+        SELECT COUNT(DISTINCT cs2.id_sector)
+        FROM c_d_s cs2
+        WHERE cs2.id_case = cases.id_case
+    ) AS nsectors,
+    cases.id_case,
+    cases.case_img1,
+    cases.case_img2,
+    cases.case_date,
+    asesoresprime_web.6Scr5XN_clientes.nombre as client_name,
+    asesoresprime_web.6Scr5XN_clientes.apellidos as client_lastname,
+    asesoresprime_web.6Scr5XN_clientes.direccion as client_address,
+    asesoresprime_web.6Scr5XN_clientes.rut as client_rut,
+    status.status_name
+FROM cases
+INNER JOIN advisers ON advisers.id_adviser = cases.id_adviser
+INNER JOIN status ON status.id_status = cases.id_status
+INNER JOIN cases_clients ON cases_clients.id_case = cases.id_case
+
+INNER JOIN asesoresprime_web.6Scr5XN_clientes ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases_clients.id_client
+WHERE advisers.id_adviser = id_adviser_
+GROUP BY 
+    cases.id_case, 
+    cases.case_img1, 
+    cases.case_img2, 
+    cases.case_date, 
+    client_name, 
+    client_lastname, 
+    client_address, 
+    client_rut, 
+    status.status_name;
+        END ;;
+DELIMITER ;
 
         
