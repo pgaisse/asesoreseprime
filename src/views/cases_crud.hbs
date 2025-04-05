@@ -12,7 +12,7 @@
                     <b>Código:</b> {{data.[0].incident_code}} <br>
                     <b>Fecha:</b> {{data.[0].incident_date}} <br>
                     <b>Descripción:</b> {{data.[0].incident_description}} <br>
-                    <b>N° de Caso:</b> {{data.[0].id_case}} <br>
+                    <b>N° de Caso:</b> {{data.[0].num_case}} <br>
                     <b>Informe:</b> <a href="/generate-pdf?id_case={{data.[0].id_case}}"><i
                             class="fa-regular fa-file-pdf">Descargar Informe</i></a> <br>
                     <b>Estado:</b> {{data.[0].status_name}} <br>
@@ -37,13 +37,13 @@
             <div class="card-body mt-40">
                 <h5 class="card-title">Datos del Cliente</h5>
                 <p class="card-text text-start">
-                    <b>Nombre</b>: <span class="text-capitalize"> {{data.[0].client_name}}
+                    <b>Nombre:</b> <span class="text-capitalize"> {{data.[0].client_name}}
                         {{data.[0].client_lastname}}</span><br>
-                    <b>Rut </b>: {{data.[0].client_rut}}<br>
-                    <b>Teléfono </b>: {{data.[0].client_phone}}<br>
-                    <b>Dirección </b>: {{data.[0].client_address}}<br>
-                    <b>E-mail </b>: {{data.[0].client_email}}<br>
-                    <b>Nº de Cliente :</b> {{data.[0].id_client}}<br>
+                    <b>Rut:</b> {{data.[0].client_rut}}<br>
+                    <b>Teléfono:</b> {{data.[0].client_phone}}<br>
+                    <b>Dirección:</b> {{data.[0].client_address}}<br>
+                    <b>E-mail:</b> {{data.[0].client_email}}<br>
+                    <b>Nº de Cliente:</b> {{data.[0].id_client}}<br>
                 <p class="card-text">
                 </p>
             </div>
@@ -53,13 +53,13 @@
                 <h5 class="card-title">Datos del Asesor</h5>
                 {{#if data.[0].id_adviser}}
                 <p class="card-text text-start">
-                    <b>Nombre</b> <span class="text-capitalize">: {{data.[0].adviser_name}}
+                    <b>Nombre:</b> <span class="text-capitalize"> {{data.[0].adviser_name}}
                         {{data.[0].adviser_lastname}}</span><br>
-                    <b>Rut</b> : {{data.[0].adviser_rut}}<br>
-                    <b>N° de Acesor</b>: {{data.[0].id_adviser}}<br>
-                    <b>Cargo</b> : {{data.[0].adviser_role}}<br>
-                    <b>E-mail</b> : {{data.[0].adviser_email}}<br>
-                    <b>Teléfono</b> : {{data.[0].adviser_phone}}<br>
+                    <b>Rut:</b> {{data.[0].adviser_rut}}<br>
+                    <b>N° de Acesor:</b> {{data.[0].id_adviser}}<br>
+                    <b>Cargo:</b> {{data.[0].adviser_role}}<br>
+                    <b>E-mail:</b> {{data.[0].adviser_email}}<br>
+                    <b>Teléfono:</b> {{data.[0].adviser_phone}}<br>
                 </p>
                 {{else}}
                 <form action="/cases_crud" method="POST" enctype="multipart/form-data">
@@ -139,7 +139,7 @@
 
 
 
-                                    <b>Dimensiones :</b>
+                                    <b>Dimensiones:</b><br>
                                     <b>Ancho: </b>{{sector_w_size}},
                                     <b>Alto: </b>{{sector_h_size}},
                                     <b>Largo:</b> {{sector_l_size}}
@@ -176,15 +176,13 @@
                                                     <div class="w-100 text-end"><a
                                                             onclick="deleteRegConfirm(event,'/delreg?id_c_d_s={{id_c_d_s}}&id_case={{id_case}}&id_sector={{id_sector}}&return=cases_crud?id_case={{id_case}}')"
                                                             href="#"><i class="fa-solid fa-trash-can"></i></a></div>
-                                                    <div> <b> N° de daño: </b> {{id_case}}.{{id_sector}}.{{id_c_d_s}}</div>
-                                                    <div> <b></b> Cantidad de daño : </b>{{this.damage_size}}({{#if this.customized}}m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) </div><br>
-                                                    <b> Descripción del daño</b>
-                                                    {{this.damage_description}} Lorem ipsum dolor sit
-                                                    amet consectetur adipisicing elit. Aliquid delectus
-                                                    ducimus hic expedita nulla voluptates laborum
-                                                    repellendus itaque necessitatibus minima impedit
-                                                    amet, ab nostrum mollitia perspiciatis doloribus
-                                                    maiores voluptas consequuntur!
+                                                    <div> <b> N° de daño: </b> </div>{{id_case}}.{{id_sector}}.{{id_c_d_s}}
+                                                    <div> <b> Cantidad de daño: </b></div>{{this.damage_size}}({{#if this.customized}}m<sup>2</sup>{{else}}{{this.damage_unit}}{{/if}}) 
+                                                    <div> <b> Fecha de modificación: </b> </div>{{this.uploadAt}}
+                                                    <b> Descripción del daño:</b>
+                                                    <span style="text-align: justify;"></span>
+                                                    {{this.damage_description}} 
+                                                    
                                                 </p>
                                                 <div class="row w-100 text-center ">
                                                     <div class="col-3 ml-0">

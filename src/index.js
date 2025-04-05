@@ -8,7 +8,7 @@ const flash = require('connect-flash');
 const MySQLStore = require('express-mysql-session')(session);
 const bodyParser = require('body-parser');
 
-  
+
 
 const uuid = require('uuid');
 const unicid = uuid.v4();
@@ -33,112 +33,7 @@ app.engine('hbs', exphbs.engine({
   layoutsDir: path.join(app.get('views'), 'layouts'),
   partialsDir: path.join(app.get('views'), 'partials'),
   extname: '.hbs',
-  helpers: {
-    ifCond: function (v1, v2, options) {
-      console.log('1:' + v1);
-      console.log('2:' + v2);
-      if (v1 === v2) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
-
-    },
-
-    nodupl: function (name_sector, name_sector_ant) {
-
-      if (name_sector != name_sector_ant) {
-
-        return "";
-      }
-      else {
-        return name_sector;
-      }
-
-      id_sector_ant = id_sector
-
-
-    },
-
-    or: function (v1, v2, options) {
-      if (v1 || v2) {
-        return options.fn(this);
-      }
-      else {
-        return options.inverse(this);
-
-      }
-    },
-    rest: function (v1) {
-      const result = v1 - 1;
-      if (result >= 1) {
-        return result;
-      }
-      else {
-        return 1;
-      }
-
-
-    },
-    setVar: function (varName, varValue, options) {
-      options.data.root[varName] = varValue;
-    },
-    sum: function (v1, max) {
-      const result = v1 + 1;
-      return result;
-
-    },
-
-    findTable: function (obj) {
-      const id = 0;
-      for (var prop in obj) {
-        //if(prop.includes('id_'))
-        {
-          return prop;
-        }
-      }
-    },
-    objectToArray: function (object) {
-      return Object.entries(object);
-    },
-    findId: function (obj) {
-      for (var prop in obj) {
-        //if(prop.includes('id_'))
-        {
-          return obj[prop];
-        }
-      }
-    },
-    icons: function (nameTable) {
-
-
-
-      var icons = [['incidents', 'fas fa-exclamation-triangle'], ['repairs', 'fas fa-hammer'], ['advisers', 'fas fa-user'], ['cases', 'fas fa-folder-open'], ['clients', 'fas fa-user-friends'], ['budgets', 'far fa-clipboard'], ['damages', 'fas fa-house-damage'], ['dimentions', 'fa-solid fa-maximize'], ['sectors', 'fas fa-map-marker-alt'], ['status', 'fas fa-check-circle']];
-      //const objetoJSON = JSON.parse(icons);
-
-
-      for (let i = 0; i < icons.length; i++) {
-        if (icons[i][0] == nameTable) {
-          return icons[i][1]
-        }
-
-      }
-
-    },
-    genField: function (type_f) {
-      let html_v = '';
-
-      console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + type_f);
-      if (type_f == 'varchar') {
-        html_v = `<input type="text" name="adviser_name" placeholder="Name" class="form-control" >`;
-
-
-      }
-      else if ('int') {
-        html_v = `<input type="Number" name="adviser_name" placeholder="Name" class="form-control" >`;
-      }
-      return html_v;
-    }
-  },
+  helpers: require('./lib/handlebars'),
 
 }))
 app.set('view engine', '.hbs');
@@ -146,7 +41,7 @@ app.set('view engine', '.hbs');
 
 
 // Middlewares
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(multer({

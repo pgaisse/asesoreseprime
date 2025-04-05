@@ -61,7 +61,7 @@
                             <div class="input-group-prepend">
 
                                 <select name="search_type" class="form-control rounded-0 shadow-none text-start" >
-                                    <option value="asesoresprime_web.6Scr5XN_clientes.numero_caso" selected> Número del caso</option>
+                                    <option value="6Scr5XN_clientes.numero_caso" selected> Número del caso</option>
                                     <option value="advises.adviser_name">Nombre asesor</option>
                                     <option value="clients.client_name">Nombre de cliente</option>
 
@@ -113,36 +113,36 @@
         {{#each cases}}
         <div class="card" style="margin-bottom: 10px; padding-right: 10px; background-color: #faefd7;">
 
-            <div class="text-end mr-1"><a href="/cases_crud?id_case={{this.id_case}}"><i
+            <div class="text-end mr-1"><a href="/cases_crud?id_case={{id_case}}"><i
                         class="fa-solid fa-glasses"></i></a></div>
 
             <div class="card-body">
-                <h5 class="card-title">{{this.client_name}} {{this.client_lastname}}</h5>
-                <h5 class="card-title">({{this.status_name}})</h5>
+                <h5 class="card-title">{{client_name}} {{client_lastname}}</h5>
+                <h5 class="card-title">({{status_name}})</h5>
                 <p class="card-text">
 
 
 
                 <div class="w-100 text-start">
-                    <b> Número de caso: </b> {{this.numero_caso}}
+                    <b> Número de caso: </b> {{numero_caso}}
                 </div>
                 <div class="w-100 text-start">
-                    <b> Fecha del caso: </b> {{this.case_date}}
+                    <b> Fecha del caso: </b> {{case_date}}
                 </div>
                 <div class="w-100 text-start">
-                    <b> Rut cliente: </b> {{this.client_rut}}
+                    <b> Rut cliente: </b> {{client_rut}}
                 </div>
                 <div class=" w-100 text-start">
-                    <b>Tipo de siniestro: </b>{{this.incident_type}}
+                    <b>Tipo de siniestro: </b>{{incident_type}}
                 </div>
                 <div class="w-100 text-start">
-                    <b>Dirección: </b>{{this.client_address}}
+                    <b>Dirección: </b>{{client_address}}
                 </div>
 
 
-                {{#if this.adviser_name}}
+                {{#if adviser_name}}
                 <div class="w-100 text-start text-capitalize">
-                    <b>Asesor: </b> {{this.adviser_name}} {{this.adviser_lastname}}
+                    <b>Asesor: </b> {{adviser_name}} {{adviser_lastname}}
                 </div>
                 {{else}}
                 <div class="w-100">

@@ -158,6 +158,169 @@ async function bodybuilder(data, dataBody) {
     let html2 = html + row + '</tbody></table></body></html>'
     return html2;
 }
+
+const latex = require("node-latex");
+
+const _ = require('lodash');
+async function pdf_latex(data, dataBody) {
+    try {
+        const resG_w = 1920;
+        const resG_h = 1080;
+        const square = 200;
+        let unicid;
+        const route = "img_m/"
+        let row = "";
+        const imagesize_w = square
+        const imagesize_h = square * resG_h / resG_w;
+        const base = fs.readFileSync(
+            path.join(__dirname, "../public/latex/base.tex"),
+            "utf8"
+        );
+        console.log("RUTA: ", __dirname)
+
+        let content = `     \\includegraphics[width=0.3\\textwidth]{${path.join(__dirname, `../public/style-1/img/logo_p.png`)}}
+                        \\begin{center}
+                        \\textbf{\\underline{\\LARGE Informe de Reparaciones}}
+                        \\end{center}
+
+                        \\textbf{\\underline{Datos del Asegurado}}
+                        \\begin{itemize}
+                        \\item Nombre:  ${data[0].client_name} ${data[0].client_lastname}
+                        \\item Rut: ${data[0].client_rut}
+                        \\item Dirección: ${data[0].client_address.replace("#", " ")}
+                        \\item Ciudad: ${data[0].client_city}
+                        \\item Email: ${data[0].client_email}
+                        \\item Fono: ${data[0].client_phone}
+                        \\end{itemize}
+                        
+                        \\textbf{\\underline{Antecedentes del Siniestro}}\\par
+                        \\begin{itemize}
+                        \\item Tipo de Siniestro: ${data[0].incident_type}
+                        \\item Siniestro: ${data[0].incident_code}
+                        \\item Fecha del Siniestro: ${data[0].incident_date}
+                        \\item Intensidad: ${data[0].incident_scale}
+                        \\item Información adicional: ${data[0].incident_description}
+                        \\end{itemize}`
+        console.log('IMAGENES : ', data[0].case_img1, data[0].case_img2)
+        if (data[0].case_img1 && data[0].case_img2) {
+            content +=
+                `\\begin{center}\\large\\textbf{Fachada}\\end{center}
+                        \\begin{figure}[H]
+                        \\centering
+                        \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)}}
+                        \\hspace{0.5cm}
+                        \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)}}
+                        \\end{figure}`
+        }
+        console.log(dataBody)
+
+        for (let i = 0; i < dataBody.length; i++) {
+
+       
+        content += `\\begin{center}\\large\\textbf{${_.capitalize(dataBody[0].sector_name)}}` + ` (Ancho: ` + dataBody[0].sector_w_size + `, Largo: ` + dataBody[0].sector_l_size + `, Alto : ` + dataBody[0].sector_h_size + `).\\end{center}\\par
+      \\par`;
+
+        if (dataBody[i].img1 && dataBody[i].img2) {
+            content +=
+                ` 
+                    \\begin{figure}[H]
+                    \\centering
+                    \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + dataBody[i].img1)}}
+                    \\hspace{0.5cm}
+                    \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + dataBody[i].img2)}}
+                    \\end{figure}`
+        }
+    
+        const scale = 0.6;
+        const img_damage1 = dataBody[i].damage_image1 ? `\\begin{subfigure}[b]{0.3\\textwidth}\\centering\\includegraphics[width=${imagesize_w * scale} px,height=${imagesize_h * scale} px]{${path.join(__dirname, `../public/uploads/images/${route}` + dataBody[i].damage_image1)}}\\end{subfigure}` : "";
+        const img_damage2 = dataBody[i].damage_image2 ? `\\begin{subfigure}[b]{0.3\\textwidth}\\centering\\includegraphics[width=${imagesize_w * scale} px,height=${imagesize_h * scale} px]{${path.join(__dirname, `../public/uploads/images/${route}` + dataBody[i].damage_image2)}}\\end{subfigure}` : "";
+        const img_damage3 = dataBody[i].damage_image3 ? `\\begin{subfigure}[b]{0.3\\textwidth}\\centering\\includegraphics[width=${imagesize_w * scale} px,height=${imagesize_h * scale} px]{${path.join(__dirname, `../public/uploads/images/${route}` + dataBody[i].damage_image3)}}\\end{subfigure}` : "";
+
+        if(img_damage1 ||img_damage1 ||img_damage1){
+           content+=` \\begin{center}\\textbf{{\\large Daños presentados en ${_.capitalize(dataBody[i].sector_name)}}}\\end{center}`
+        }
+
+        content += ` \\textbf{\\underline{${_.capitalize(dataBody[i].damage_name)}}}` + ` (Cantidad de daño : ` + dataBody[i].damage_size + ` ` + dataBody[i].damage_unit + `).\\par
+      \\par\\vspace{0.5cm}`;
+
+  
+
+
+        content +=
+            `
+                \\begin{figure}[H]
+                ${img_damage1}
+                ${img_damage2}
+                ${img_damage3}
+            \\end{figure}`
+
+
+        }
+
+
+
+        /* content += `
+                         \\textbf{${j + 1}. ${sector.sector_name}} \\[0.5em]
+
+                         \\begin{figure}[H]
+                             \\centering
+                             \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + sector.damages[0].img1)}}
+                             \\hspace{0.5cm}
+                             \\includegraphics[width=${imagesize_w} px,height=${imagesize_h} px]{${path.join(__dirname, `../public/uploads/images/${route}` + sector.damages[0].img2)}}
+                         \\end{figure}
+
+                         ${sector.damages.map((repair, i) => {
+             content += `
+                             \\textbf{${j + 1}.${i + 1} ${repair.damage_name} (${repair.damage_size} ${repair.damage_unit})} \\[0.5em]
+
+                             \\begin{figure}[H]
+                             \\centering
+                             \\includegraphics[width=${imagesize_w},height=${imagesize_h}]{${path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image1)}}
+                             \\hspace{0.5cm}
+                             \\includegraphics[width=${imagesize_w},height=${imagesize_h}]{${path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image2)}}
+                             \\end{figure}
+
+                             \\begin{figure}[H]
+                             \\centering
+                             \\includegraphics[width=${imagesize_w},height=${imagesize_h}]{${path.join(__dirname, `../public/uploads/images/${route}` + repair.damage_image3)}}
+                             \\end{figure}
+                             `;
+         }).join('')}
+                         `;
+     }).join('')}
+                     \\end{longtable}`*/
+
+        const textoReplaced = base.replace("replacebody", content);
+
+        fs.writeFileSync(
+            path.join(__dirname, "../public/latex/input.tex"),
+            textoReplaced,
+            "utf8"
+        );
+        unicid = uuid.v4();
+        const input = fs.createReadStream(path.join(__dirname, "../public/latex/input.tex"));
+        const filename = `CL_${unicid}.pdf`;
+        console.log(filename);
+        const output = fs.createWriteStream(
+            path.join(__dirname, `../public/latex/CL_${unicid}.pdf`)
+        );
+        const pdf = latex(input);
+
+        pdf.pipe(output);
+        pdf.on("error", (err) => console.error(err));
+        pdf.on("finish", () => {
+            console.log("PDF generated!");
+
+
+        });
+    } catch (error) {
+        console.log(error);
+    }
+
+
+
+}
+
 async function bodybuilder_pdf(data, dataBody) {
     const scriptStart = `<tr style='height:40px;'><td style='width:50%px;'><b>`
     const scriptMiddle = `</b></td> <td style="margin:10px"> <span> `
@@ -227,19 +390,19 @@ async function bodybuilder_pdf(data, dataBody) {
             ${scriptStart}Intensidad ${scriptMiddle} ${data[0].incident_scale} ${scriptEnd}
             ${scriptStart}Información adicional ${scriptMiddle} ${data[0].incident_description} ${scriptEnd}
             <tr><td colspan= 2 style="text-decoration: underline" ><h3>Fotos Fachada </h3><td></tr><tr>`
-                imgf1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1));
-                imgf2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2));
+    imgf1 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1));
+    imgf2 = imageToBase64(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2));
 
 
-                if (imgf1) {
-                    row = row + ` <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+    if (imgf1) {
+        row = row + ` <td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img1)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
 
-                }
-                if (imgf2) {
-                    row = row + `<td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
+    }
+    if (imgf2) {
+        row = row + `<td> <img src="data:image/jpeg;base64,${fs.readFileSync(path.join(__dirname, `../public/uploads/images/${route}` + data[0].case_img2)).toString('base64')}"  width=${imagesize_w} height=${imagesize_h}">  </td>`
 
-                }
-                row = row + `</tr>
+    }
+    row = row + `</tr>
         
 
             </table>
@@ -322,10 +485,10 @@ async function buildPDF(data, dataBody) {
     const html2 = await bodybuilder_pdf(data, dataBody);
     //console.log(html2)
     // Crea el PDF
-    
-    const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--enable-local-file-accesses','--no-sandbox'] });
+
+    const browser = await puppeteer.launch({ headless: 'new', args: ['--allow-file-access-from-files', '--enable-local-file-accesses', '--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
-    await page.setContent(html2, { waitUntil: 'domcontentloaded' });
+    await page.setContent("html2", { waitUntil: 'domcontentloaded' });
 
     const unicid = uuid.v4();
     const namepdf = unicid + '.pdf';
@@ -497,5 +660,5 @@ function createKey(obj, key1, key2, value) {
     }
 }
 
-module.exports = { buildPDF, reOrdenar, reOrdenar_v2, createExcel, reOrdenar_3, bodybuilder_pdf };
+module.exports = { buildPDF, reOrdenar, reOrdenar_v2, createExcel, reOrdenar_3, bodybuilder_pdf, pdf_latex };
 

@@ -25,7 +25,7 @@
                 href="/delreg?id_c_d_s={{ar.id_c_d_s}}&id_case={{ar.id_case}}&id_sector={{ar.id_sector}}&return=damages"><i class="fa-solid fa-trash-can"></i></a><br>
 
               {{#if damage_image1}}
-            <div class="col w-100 image-container ">
+            <div class="col w-100 image-container">
               <img class="thumbnail card-img-bottom  w-100 rounded-3 " src="img_t/thumb_{{damage_image1}}"
                 data-full-image="img_t/thumb_{{damage_image1}}" data-full-image2={{#if
                 damage_image2}}"img_t/thumb_{{damage_image2}}"{{else}}""{{/if}} data-full-image3={{#if
@@ -35,7 +35,7 @@
             {{/if}}
 
             </p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <p class="card-text"><small class="text-muted">Last updated {{timeago ar.uploadAt}} </small></p>
           </div>
 
         </div>

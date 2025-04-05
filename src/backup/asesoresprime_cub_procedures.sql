@@ -44,7 +44,7 @@ BEGIN
     SET @filtro = CONCAT(incident_first, '%');
     SET @status = (select id_incident  from incidents where incident_code like @filtro);
         INSERT INTO cases (id_case, id_incident, id_status, case_date, num_case)
-        values (0, @status,1, (select fecha_siniestro from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client), (select numero_caso from asesoresprime_web.6Scr5XN_clientes where cliente_id=id_client)) ;           
+        values (0, @status,1, (select fecha_siniestro from 6Scr5XN_clientes where cliente_id=id_client), (select numero_caso from 6Scr5XN_clientes where cliente_id=id_client)) ;           
         SELECT CONCAT('Se est�� ingresando al procedure', @status ) AS Mensaje;
         SET @ultimo_id = LAST_INSERT_ID();
         insert into cases_clients (id_client,id_case)
@@ -154,8 +154,8 @@ BEGIN
         inner join advisers a
         on a.id_adviser=c.id_adviser
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=c.id_client
+        inner join 6Scr5XN_clientes
+        on 6Scr5XN_clientes.cliente_id=c.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -212,7 +212,7 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `dataIn
         IN id_sector INT,
         IN id_c_d_s INT,
         IN id_damage INT,
-        IN damage_size INT,
+        IN damage_size DECIMAL(10,2),
         IN id_case INT,
         IN img1 VARCHAR(200),
         IN img2 VARCHAR(200),
@@ -311,6 +311,8 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
+
+DROP PROCEDURE IF EXISTS queryDamages;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `queryDamages`(
         IN id_sector INT,
@@ -318,7 +320,7 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `queryD
         IN id_case INT)
 BEGIN
         SELECT     
-        damages.damage_name, damages.damage_description,a.id_adviser, c.id_case, sectors.sector_name, sectors.id_sector,si.customized,
+        cs.uploadAt, damages.damage_name, damages.damage_description,a.id_adviser, c.id_case, sectors.sector_name, sectors.id_sector,si.customized,
         si.size as damage_size, im.image1 as damage_image1, im.image2 as damage_image2, im.image3 as damage_image3, damages.damage_unit,cs.id_c_d_s,
         id_damage_images
 
@@ -329,8 +331,8 @@ BEGIN
         inner join cases_clients
         on cases_clients.id_case=c.id_case
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
+        inner join 6Scr5XN_clientes
+        on 6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -373,6 +375,8 @@ DELIMITER ;
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
+
+drop procedure if EXISTS queryDamages2;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `queryDamages2`(
         IN id_adviser INT,
@@ -381,7 +385,7 @@ BEGIN
         SELECT     
         damages.damage_name, damages.damage_description,a.id_adviser, c.id_case, sectors.sector_name,si.customized, sectors.id_sector, d.sector_w_size,d.sector_h_size,d.sector_l_size, d.img1, d.img2,
         si.size as damage_size, im.image1 as damage_image1, im.image2 as damage_image2, im.image3 as damage_image3, damages.damage_unit,cs.id_c_d_s,
-        id_damage_images, sectors.createdAt as datec
+        id_damage_images, sectors.createdAt as datec, cs.uploadAt
         from cases c
         inner join advisers a
         on a.id_adviser=c.id_adviser
@@ -389,8 +393,8 @@ BEGIN
         inner join cases_clients
         on cases_clients.id_case=c.id_case
 
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
+        inner join 6Scr5XN_clientes
+        on 6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         inner join status
         on status.id_status=c.id_status
@@ -436,7 +440,7 @@ DELIMITER ;
 --call ShowAllCases("cases.numero_caso=2",1,'2024-05-01','2024-06-07');
 drop procedure if EXISTS `showAllCases`;
 DELIMITER ;;
-CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `showAllCases`(
+CREATE PROCEDURE `showAllCases`(
     IN query_first VARCHAR(80),
     IN query_second VARCHAR(80),
     IN id_status_ int,
@@ -452,7 +456,7 @@ set cond2="";
 set cond3="";
 IF query_second='' or query_second is null or query_second=0 THEN
         set cond1="";
-        IF id_status_='' or id_status_  is null or id_status_=0  THEN
+        IF id_status_  is null or id_status_=0  THEN
                 SET cond2 = "";
                 
         ELSE
@@ -460,8 +464,8 @@ IF query_second='' or query_second is null or query_second=0 THEN
                 
         END IF;  
 ELSE
-        SET cond1 = CONCAT('where ', query_first, "=", query_second);
-        IF id_status_='' or id_status_  is null or id_status_=0 THEN
+        SET cond1 = CONCAT('where ', query_first, '=', query_second);
+        IF id_status_  is null or id_status_=0 THEN
                SET cond2 = "";
                 
         ELSE
@@ -472,44 +476,47 @@ ELSE
 END IF;
     
 
-        IF date_start_ is null or date_start_ ='' or date_start_='0000-00-00' THEN
+        IF date_start_ is null or date_start_='0000-00-00' THEN
                 SET cond3='';
         ELSE         
-                IF id_status_='' or id_status_  is null or id_status_=0  THEN
+                IF id_status_  is null or id_status_=0  THEN
         
-                        SET cond3=CONCAT(' where cases.case_date  BETWEEN "' ,date_start_,'" AND "',date_end_,'" ');
+                        SET cond3=CONCAT(' where cases.case_date  BETWEEN ' ,date_start_,' AND ',date_end_);
                 ELSE
-                        SET cond3=CONCAT(' and cases.case_date BETWEEN "'  ,date_start_,'" AND "',date_end_,'"');
+                        SET cond3=CONCAT(' and cases.case_date BETWEEN '  ,date_start_,' AND ',date_end_);
                 END IF;
         END IF;
     SET @query = CONCAT('SELECT 
     cases.id_case, status.status_name, cases.case_date, advisers.id_adviser, advisers.adviser_name, 
-    advisers.adviser_lastname, incidents.incident_code,incidents.incident_type, asesoresprime_web.6Scr5XN_clientes.nombre client_name,
-    asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname, 
-    asesoresprime_web.6Scr5XN_clientes.rut client_rut,
-    asesoresprime_web.6Scr5XN_clientes.direccion  client_address,
-    asesoresprime_web.6Scr5XN_clientes.numero_caso,
-    asesoresprime_web.6Scr5XN_clientes.cliente_id id_client
+    advisers.adviser_lastname, incidents.incident_code,incidents.incident_type, 6Scr5XN_clientes.nombre client_name,
+    6Scr5XN_clientes.apellidos client_lastname, 
+    6Scr5XN_clientes.rut client_rut,
+    6Scr5XN_clientes.direccion  client_address,
+    6Scr5XN_clientes.numero_caso,
+    6Scr5XN_clientes.cliente_id id_client
     
     FROM cases 
     inner JOIN cases_clients 
     on cases_clients.id_case=cases.id_case
-    inner JOIN asesoresprime_web.6Scr5XN_clientes 
-    ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases_clients.id_client 
+    inner JOIN 6Scr5XN_clientes 
+    ON 6Scr5XN_clientes.cliente_id = cases_clients.id_client 
     LEFT JOIN advisers 
     ON advisers.id_adviser = cases.id_adviser 
     inner JOIN status 
     ON status.id_status = cases.id_status 
     inner JOIN incidents 
     ON incidents.id_incident = cases.id_incident 
-    ', cond1, cond2, cond3, ' limit 10');
+      limit 10');
 
     PREPARE stmt FROM @query;
     EXECUTE stmt;
     DEALLOCATE PREPARE stmt;
 END ;;
 DELIMITER ;
-call ShowAllCases("asesoresprime_web.6Scr5XN_clientes.numero_caso",1886124,1,'2024-12-10','2024-12-10');
+call ShowAllCases("6Scr5XN_clientes.numero_caso",1886124,1,'2024-12-10','2024-12-10');
+
+
+call ShowAllCases("6Scr5XN_clientes.numero_caso",1886124,1,'2024-12-10','2024-12-10');
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
@@ -523,6 +530,7 @@ call ShowAllCases("asesoresprime_web.6Scr5XN_clientes.numero_caso",1886124,1,'20
 /*!50003 SET collation_connection  = gbk_chinese_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
+drop procedure if EXISTS showCase;
 DELIMITER ;;
 CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `showCase`(
         IN id_case INT,
@@ -530,13 +538,13 @@ CREATE DEFINER=`asesoresprime_asesoresprimeCub`@`203.30.15.56` PROCEDURE `showCa
 BEGIN
         SELECT cl.direccion client_address, cl.email client_email, cl.nombre client_name, cl.apellidos client_lastname, cl.rut client_rut,cl.cliente_id id_client, cl.telefono client_phone, 
          a.adviser_name, a.adviser_lastname, a.adviser_rut,a.adviser_email,a.adviser_username,a.adviser_role,a.adviser_phone,
-               i.incident_code, i.incident_date, i.incident_description,i.incident_type,(select p2.provincia from asesoresprime_web.6Scr5XN_clientes c2 inner join asesoresprime_web.6Scr5XN_provincias p2 ON p2.id=c2.ciudad where c2.cliente_id=cl.cliente_id) client_city, i.incident_scale,
+               i.incident_code, i.incident_date, i.incident_description,i.incident_type,(select p2.provincia from 6Scr5XN_clientes c2 inner join 6Scr5XN_provincias p2 ON p2.id=c2.ciudad where c2.cliente_id=cl.cliente_id) client_city, i.incident_scale,
                c.id_case, c.case_img1,c.case_img2,a.id_adviser,
-               st.status_name, st.id_status               
+               st.status_name, st.id_status, c.num_case              
                FROM cases as c
                INNER JOIN cases_clients
                ON cases_clients.id_case=c.id_case
-               INNER JOIN asesoresprime_web.6Scr5XN_clientes as cl
+               INNER JOIN 6Scr5XN_clientes as cl
                ON cl.cliente_id=cases_clients.id_client
                LEFT JOIN advisers as a
                ON a.id_adviser=c.id_adviser
@@ -572,10 +580,10 @@ BEGIN
         cases.case_date,
         cases.img1,
         cases.img2,
-        asesoresprime_web.6Scr5XN_clientes.nombre client_name, 
-        asesoresprime_web.6Scr5XN_clientes.apellidos client_lastname,
-        asesoresprime_web.6Scr5XN_clientes.direccion client_address, 
-        asesoresprime_web.6Scr5XN_clientes.rut client_rut,
+        6Scr5XN_clientes.nombre client_name, 
+        6Scr5XN_clientes.apellidos client_lastname,
+        6Scr5XN_clientes.direccion client_address, 
+        6Scr5XN_clientes.rut client_rut,
         status.status_name
         from c_d_s  as cs
         inner join cases
@@ -584,8 +592,8 @@ BEGIN
         on advisers.id_adviser=cases.id_adviser
         inner join status
         on status.id_status=cases.id_status
-        inner join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases.id_client
+        inner join 6Scr5XN_clientes
+        on 6Scr5XN_clientes.cliente_id=cases.id_client
         where advisers.id_adviser=1
         group by cs.id_case;
 
@@ -622,10 +630,10 @@ BEGIN
             where cs2.id_sector=cs.id_sector AND c2.id_case=id_case and c2.id_adviser=id_adviser and cs2.id_damage is not null)  as ndamages, 
             
         s.sector_name,s.id_sector,d.sector_w_size,d.sector_h_size,d.sector_l_size,d.img1, d.img2,
-        asesoresprime_web.6Scr5XN_clientes.nombre as client_name, 
-        asesoresprime_web.6Scr5XN_clientes.apellidos as client_lastname, 
-        asesoresprime_web.6Scr5XN_clientes.direccion as client_address, 
-        asesoresprime_web.6Scr5XN_clientes.rut as client_rut
+        6Scr5XN_clientes.nombre as client_name, 
+        6Scr5XN_clientes.apellidos as client_lastname, 
+        6Scr5XN_clientes.direccion as client_address, 
+        6Scr5XN_clientes.rut as client_rut
 
         from cases c
         inner join advisers a
@@ -633,8 +641,8 @@ BEGIN
         INNER JOIN cases_clients
         ON cases_clients.id_case=c.id_case
 
-        left join asesoresprime_web.6Scr5XN_clientes
-        on asesoresprime_web.6Scr5XN_clientes.cliente_id=cases_clients.id_client
+        left join 6Scr5XN_clientes
+        on 6Scr5XN_clientes.cliente_id=cases_clients.id_client
 
         left join status
         on status.id_status=c.id_status
@@ -832,17 +840,17 @@ SELECT
     cases.case_img1,
     cases.case_img2,
     cases.case_date,
-    asesoresprime_web.6Scr5XN_clientes.nombre as client_name,
-    asesoresprime_web.6Scr5XN_clientes.apellidos as client_lastname,
-    asesoresprime_web.6Scr5XN_clientes.direccion as client_address,
-    asesoresprime_web.6Scr5XN_clientes.rut as client_rut,
+    6Scr5XN_clientes.nombre as client_name,
+    6Scr5XN_clientes.apellidos as client_lastname,
+    6Scr5XN_clientes.direccion as client_address,
+    6Scr5XN_clientes.rut as client_rut,
     status.status_name
 FROM cases
 INNER JOIN advisers ON advisers.id_adviser = cases.id_adviser
 INNER JOIN status ON status.id_status = cases.id_status
 INNER JOIN cases_clients ON cases_clients.id_case = cases.id_case
 
-INNER JOIN asesoresprime_web.6Scr5XN_clientes ON asesoresprime_web.6Scr5XN_clientes.cliente_id = cases_clients.id_client
+INNER JOIN 6Scr5XN_clientes ON 6Scr5XN_clientes.cliente_id = cases_clients.id_client
 WHERE advisers.id_adviser = id_adviser_
 GROUP BY 
     cases.id_case, 
